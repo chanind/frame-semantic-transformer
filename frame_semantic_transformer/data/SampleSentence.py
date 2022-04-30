@@ -18,7 +18,7 @@ class SampleSentence:
     def trigger_labeled_text(self) -> str:
         pre_span = self.text[0 : self.trigger_loc[0]]
         post_span = self.text[self.trigger_loc[1] :]
-        return f"{pre_span} * {self.trigger} * {post_span}"
+        return f"{pre_span}* {self.trigger} *{post_span}"
 
     @property
     def frame_elements(self) -> list[tuple[str, str]]:
@@ -26,6 +26,12 @@ class SampleSentence:
             (element, self.text[loc_start:loc_end])
             for (loc_start, loc_end, element) in self.frame_element_locs
         ]
+
+    @property
+    def frame_elements_str(self) -> str:
+        return " | ".join(
+            [f"{element} = {text}" for element, text in self.frame_elements]
+        )
 
 
 def parse_samples_from_exemplars(
