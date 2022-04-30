@@ -1,13 +1,16 @@
 from syrupy.assertion import SnapshotAssertion
 from nltk.corpus import framenet as fn
 
-from frame_semantic_transformer.data.SampleSentence import parse_samples_from_exemplars
+from frame_semantic_transformer.data.SampleSentence import (
+    parse_samples_from_fulltext_doc,
+    parse_samples_from_lexical_unit,
+)
 
 
-def test_parse_samples_from_exemplars(snapshot: SnapshotAssertion) -> None:
+def test_parse_samples_from_lexical_unit(snapshot: SnapshotAssertion) -> None:
     lu = fn.lu(6403)  # repair.v
 
-    samples = parse_samples_from_exemplars(lu.exemplars)
+    samples = parse_samples_from_lexical_unit(lu)
 
     assert len(samples) == 9
     assert (
@@ -29,4 +32,10 @@ def test_parse_samples_from_exemplars(snapshot: SnapshotAssertion) -> None:
         samples[0].frame_elements_str
         == "Self_mover = all Scots lords and landed men | Goal = there , to Annan , | Purpose = to do homage to him"
     )
+    assert samples == snapshot
+
+
+def test_parse_samples_from_fulltext_doc(snapshot: SnapshotAssertion) -> None:
+    doc = fn.docs()[17]  # random document
+    samples = parse_samples_from_fulltext_doc(doc)
     assert samples == snapshot

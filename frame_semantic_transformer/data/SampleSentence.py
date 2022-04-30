@@ -34,25 +34,73 @@ class SampleSentence:
         )
 
 
-def parse_samples_from_exemplars(
-    exemplars: Iterable[Mapping[str, Any]]
+def extract_annotation_target(targets: list[tuple[int, int]]) -> tuple[int, int] | None:
+    """
+    For targets like "Ended up", where it's actually just a compount word, combine the targets together
+    Else, just return None and we can skip this target
+    """
+    target = targets[0]
+    remaining_targets = targets[1:]
+    if len(remaining_targets) == 0:
+        return target
+    subsequent_target = extract_annotation_target(remaining_targets)
+    if not subsequent_target:
+        return None
+    # until we see a counter-example, assume all multi-word targets are just compount-words with a space between
+    assert subsequent_target[0] - target[1] == 1
+    if subsequent_target[0] - target[1] > 1:
+        return None
+    return (target[0], subsequent_target[1])
+
+
+def parse_samples_from_annotation_set(
+    annotation_set: Iterable[Mapping[str, Any]]
 ) -> list[SampleSentence]:
     """
-    Helper to parse sample sentences out of framenet exemplars, contained in lexical units
+    Helper to parse sample sentences out of framenet annotation sets
+    Not all annotation sets contain frames, so this will filter out any invalid annotation sets
     ex: lu = fn.lus()[0]; samples = parse_samples_from_exemplars(lu.exemplars)
     """
     sample_sentences: list[SampleSentence] = []
-    for exemplar in exemplars:
-        for annotation in exemplar["annotationSet"]:
-            if "FE" in annotation and "Target" in annotation and "frame" in annotation:
-                assert len(annotation["Target"]) == 1
-                assert annotation["FE"][1] == {}
-                sample_sentences.append(
-                    SampleSentence(
-                        text=annotation["text"],
-                        trigger_loc=annotation["Target"][0],
-                        frame=annotation["frame"]["name"],
-                        frame_element_locs=annotation["FE"][0],
-                    )
+    for annotation in annotation_set:
+        if "FE" in annotation and "Target" in annotation and "frame" in annotation:
+            if annotation["FE"][1] != {}:
+                # I don't understand what the second part of this tuple is, just ignore it for now
+                continue
+            trigger_loc = extract_annotation_target(annotation["Target"])
+            # if the trigger loc is weird for some reason just skip it
+            if not trigger_loc:
+                continue
+            sample_sentences.append(
+                SampleSentence(
+                    text=annotation["text"],
+                    trigger_loc=trigger_loc,
+                    frame=annotation["frame"]["name"],
+                    frame_element_locs=annotation["FE"][0],
                 )
+            )
+    return sample_sentences
+
+
+def parse_samples_from_lexical_unit(
+    lexical_unit: Mapping[str, Any]
+) -> list[SampleSentence]:
+    """
+    Helper to parse sample sentences out of framenet exemplars, contained in lexical units
+    ex: lu = fn.lus()[0]; samples = parse_samples_from_exemplars(lu)
+    """
+    sample_sentences: list[SampleSentence] = []
+    for exemplar in lexical_unit["exemplars"]:
+        sample_sentences += parse_samples_from_annotation_set(exemplar["annotationSet"])
+    return sample_sentences
+
+
+def parse_samples_from_fulltext_doc(doc: Mapping[str, Any]) -> list[SampleSentence]:
+    """
+    Helper to parse sample sentences out of framenet exemplars, contained in lexical units
+    ex: lu = fn.lus()[0]; samples = parse_samples_from_exemplars(lu)
+    """
+    sample_sentences: list[SampleSentence] = []
+    for sentence in doc["sentence"]:
+        sample_sentences += parse_samples_from_annotation_set(sentence["annotationSet"])
     return sample_sentences

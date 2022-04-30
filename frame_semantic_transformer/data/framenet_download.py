@@ -1,4 +1,4 @@
-import nltk  # type: ignore
+import nltk
 
 
 def ensure_framenet_downloaded() -> None:
