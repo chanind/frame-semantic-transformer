@@ -1,0 +1,3 @@
+from frame_semantic_transformer.data.framenet_download import ensure_framenet_downloaded
+
+ensure_framenet_downloaded()

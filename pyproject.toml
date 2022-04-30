@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "frame-semantic-transformer"
+version = "0.1.0"
+description = ""
+authors = ["David Chanin <chanindav@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+nltk = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^22.3.0"
+mypy = "^0.950"
+flake8 = "^4.0.1"
+syrupy = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

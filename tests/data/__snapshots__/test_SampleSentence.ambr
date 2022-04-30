@@ -1,0 +1,13 @@
+# name: test_parse_samples_from_exemplars
+  list([
+    SampleSentence(text='The word is that the usurper , or those acting in his name , have sent out a call for all Scots lords and landed men to repair there , to Annan , to do homage to him . ', trigger_loc=(120, 126), frame='Self_motion', frame_element_locs=[(86, 116, 'Self_mover'), (127, 145, 'Goal'), (146, 165, 'Purpose')]),
+    SampleSentence(text='The latter were forced to repair to the waiting area where they enviously sipped ginger beer while waiting their turn and watching the old horses pull the machines into the water , one after another . ', trigger_loc=(26, 32), frame='Self_motion', frame_element_locs=[(0, 10, 'Self_mover'), (33, 198, 'Goal')]),
+    SampleSentence(text='To do the Cafe Posta properly , one repairs to the antique-filled back room ; front parlour strictly for tourists . ', trigger_loc=(36, 43), frame='Self_motion', frame_element_locs=[(0, 29, 'Purpose'), (32, 35, 'Self_mover'), (44, 75, 'Goal')]),
+    SampleSentence(text='Two of the cast fainted and most of the rest repaired to the nearest bar . ', trigger_loc=(45, 53), frame='Self_motion', frame_element_locs=[(28, 44, 'Self_mover'), (54, 72, 'Goal')]),
+    SampleSentence(text="Shortly they 'll both repair to the bedroom for another three minute interview break . ", trigger_loc=(22, 28), frame='Self_motion', frame_element_locs=[(0, 7, 'Time'), (8, 21, 'Self_mover'), (29, 43, 'Goal'), (44, 84, 'Purpose')]),
+    SampleSentence(text='The service over , Joshua repaired to the clinically clean Gents . ', trigger_loc=(26, 34), frame='Self_motion', frame_element_locs=[(0, 16, 'Time'), (19, 25, 'Self_mover'), (35, 64, 'Goal')]),
+    SampleSentence(text='He repaired to his kitchen area , flagrantly disregarding the woman who was being sick three rows behind the two men . ', trigger_loc=(3, 11), frame='Self_motion', frame_element_locs=[(0, 2, 'Self_mover'), (12, 31, 'Goal')]),
+    SampleSentence(text='He and Sergeant Joe , having met in Petticoat Lane and having talked , repaired to a pub and had a long and very friendly conversation . ', trigger_loc=(71, 79), frame='Self_motion', frame_element_locs=[(0, 19, 'Self_mover'), (22, 68, 'Time'), (80, 88, 'Goal')]),
+    SampleSentence(text='Fishermen would repair to the woods to cut hazel and withies to make or mend their pots , then set out in their small boats to their chosen ` grounds " to drop the pots . ', trigger_loc=(16, 22), frame='Self_motion', frame_element_locs=[(0, 9, 'Self_mover'), (23, 35, 'Goal'), (36, 87, 'Purpose')]),
+  ])
+# ---
