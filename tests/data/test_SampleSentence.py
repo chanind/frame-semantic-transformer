@@ -1,7 +1,9 @@
+from __future__ import annotations
 from syrupy.assertion import SnapshotAssertion
 from nltk.corpus import framenet as fn
 
 from frame_semantic_transformer.data.SampleSentence import (
+    SampleSentence,
     parse_samples_from_fulltext_doc,
     parse_samples_from_lexical_unit,
 )

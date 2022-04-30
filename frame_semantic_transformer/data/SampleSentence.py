@@ -46,9 +46,9 @@ def extract_annotation_target(targets: list[tuple[int, int]]) -> tuple[int, int]
     subsequent_target = extract_annotation_target(remaining_targets)
     if not subsequent_target:
         return None
-    # until we see a counter-example, assume all multi-word targets are just compount-words with a space between
-    assert subsequent_target[0] - target[1] == 1
-    if subsequent_target[0] - target[1] > 1:
+    # until we see a counter-example, assume all multi-word targets are just compound-words with a space between
+    target_loc_diff = subsequent_target[0] - target[1]
+    if target_loc_diff < 0 or target_loc_diff > 1:
         return None
     return (target[0], subsequent_target[1])
 
@@ -68,7 +68,7 @@ def parse_samples_from_annotation_set(
                 # I don't understand what the second part of this tuple is, just ignore it for now
                 continue
             trigger_loc = extract_annotation_target(annotation["Target"])
-            # if the trigger loc is weird for some reason just skip it
+            # if the trigger loc is weird for some reason just skip it for now
             if not trigger_loc:
                 continue
             sample_sentences.append(
