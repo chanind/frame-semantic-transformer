@@ -73,8 +73,8 @@ class T5FineTuner(pl.LightningModule):
 
     def _step(self, batch: Any) -> Any:
         outputs = self(
-            input_ids=batch["source_ids"],
-            attention_mask=batch["source_mask"],
+            input_ids=batch["input_ids"],
+            attention_mask=batch["attention_mask"],
             labels=batch["labels"],
         )
 
