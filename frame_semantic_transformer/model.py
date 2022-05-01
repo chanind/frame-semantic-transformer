@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import Any, Optional
 import pytorch_lightning as pl
 from transformers import (
-    T5Tokenizer,
     T5ForConditionalGeneration,
     AdamW,
     get_linear_schedule_with_warmup,
@@ -10,9 +9,7 @@ from transformers import (
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from frame_semantic_transformer.data.SentenceDataset import SentenceDataset
 from frame_semantic_transformer.data.load_framenet_samples import load_framenet_samples
-from frame_semantic_transformer.data.shuffle_and_split import shuffle_and_split
 
 
 class T5FineTuner(pl.LightningModule):
@@ -31,12 +28,12 @@ class T5FineTuner(pl.LightningModule):
     warmup_steps: int
     gradient_accumulation_steps: int
     model: T5ForConditionalGeneration
-    tokenizer: T5Tokenizer
 
     def __init__(
         self,
         model: T5ForConditionalGeneration,
-        tokenizer: T5Tokenizer,
+        train_dataset: Dataset[Any],
+        val_dataset: Dataset[Any],
         lr: float = 1e-4,
         eps: float = 1e-8,
         weight_decay: float = 0.0,
@@ -51,7 +48,6 @@ class T5FineTuner(pl.LightningModule):
         self.eps = eps
         self.weight_decay = weight_decay
         self.model = model
-        self.tokenizer = tokenizer
         self.batch_size = batch_size
         self.n_gpu = n_gpu
         self.num_train_epochs = num_train_epochs
@@ -59,9 +55,8 @@ class T5FineTuner(pl.LightningModule):
         self.warmup_steps = warmup_steps
 
         samples = load_framenet_samples()
-        train_samples, val_samples = shuffle_and_split(samples, 0.8)
-        self.train_dataset = SentenceDataset(train_samples, tokenizer)
-        self.val_dataset = SentenceDataset(val_samples, tokenizer)
+        self.train_dataset = train_dataset
+        self.val_dataset = val_dataset
 
     def is_logger(self) -> bool:
         # keep mypy happy...
