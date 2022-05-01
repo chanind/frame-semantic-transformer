@@ -89,15 +89,6 @@ class T5FineTuner(pl.LightningModule):
         loss = self._step(batch)
         return {"val_loss": loss}
 
-    def validation_epoch_end(self, outputs) -> dict[str, Any]:  # type: ignore
-        avg_loss = torch.stack([x["val_loss"] for x in outputs]).mean()
-        tensorboard_logs = {"val_loss": avg_loss}
-        return {
-            "avg_val_loss": avg_loss,
-            "log": tensorboard_logs,
-            "progress_bar": tensorboard_logs,
-        }
-
     def configure_optimizers(self) -> list[AdamW]:
         "Prepare optimizer and schedule (linear warmup and decay)"
 
