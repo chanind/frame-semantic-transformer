@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 import pytorch_lightning as pl
 from transformers import (
     T5ForConditionalGeneration,
@@ -8,8 +8,6 @@ from transformers import (
 )
 import torch
 from torch.utils.data import DataLoader, Dataset
-
-from frame_semantic_transformer.data.load_framenet_samples import load_framenet_samples
 
 
 class T5FineTuner(pl.LightningModule):
@@ -54,7 +52,6 @@ class T5FineTuner(pl.LightningModule):
         self.gradient_accumulation_steps = gradient_accumulation_steps
         self.warmup_steps = warmup_steps
 
-        samples = load_framenet_samples()
         self.train_dataset = train_dataset
         self.val_dataset = val_dataset
 
@@ -145,9 +142,12 @@ class T5FineTuner(pl.LightningModule):
         self,
         epoch: int,
         batch_idx: int,
-        optimizer: Any,
-        optimizer_idx: int,
-        second_order_closure: Optional[Any] = None,
+        optimizer: torch.optim.Optimizer,
+        optimizer_idx: int = 0,
+        optimizer_closure: Optional[Callable[[], Any]] = None,
+        on_tpu: bool = False,
+        using_native_amp: bool = False,
+        using_lbfgs: bool = False,
     ) -> None:
         optimizer.step()
         optimizer.zero_grad()
