@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Any, Sequence
 import torch
 from torch.utils.data import Dataset
