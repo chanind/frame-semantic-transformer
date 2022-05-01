@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Sequence, TypeVar
 from random import Random
 
