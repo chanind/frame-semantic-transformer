@@ -19,7 +19,9 @@ def evaluate(
     batch_size: int = 10,
 ) -> dict[str, list[int]]:
     results: dict[str, list[int]] = {"frame": [0, 0, 0], "args": [0, 0, 0]}
-    for samples_chunk in tqdm(chunk_list(samples, batch_size)):
+    for samples_chunk in tqdm(
+        chunk_list(samples, batch_size), total=len(samples) / batch_size
+    ):
         frame_inputs: list[str] = []
         args_inputs: list[str] = []
         expected_frame_outputs: list[str] = []
