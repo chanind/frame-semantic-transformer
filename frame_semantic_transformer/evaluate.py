@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Iterable
+from typing import Sequence
 from tqdm import tqdm
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from nltk.corpus import framenet as fn
@@ -15,7 +15,7 @@ all_valid_frames = {frame.name for frame in fn.frames()}
 def evaluate(
     model: T5ForConditionalGeneration,
     tokenizer: T5Tokenizer,
-    samples: Iterable[SampleSentence],
+    samples: Sequence[SampleSentence],
     batch_size: int = 10,
 ) -> dict[str, list[int]]:
     results: dict[str, list[int]] = {"frame": [0, 0, 0], "args": [0, 0, 0]}
