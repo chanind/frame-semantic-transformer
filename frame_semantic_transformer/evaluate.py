@@ -20,8 +20,8 @@ def evaluate(
         frame_task_input = sample.frame_classification_input
         args_task_input = sample.frame_args_input
 
-        frame_prediction = predict(model, tokenizer, frame_task_input)
-        args_prediction = predict(model, tokenizer, args_task_input)
+        frame_prediction = predict(model, tokenizer, frame_task_input)[0]
+        args_prediction = predict(model, tokenizer, args_task_input)[0]
 
         if frame_prediction == sample.frame:
             results["frame"][0] += 1
