@@ -3,6 +3,7 @@ from syrupy.assertion import SnapshotAssertion
 from nltk.corpus import framenet as fn
 
 from frame_semantic_transformer.data.load_framenet_samples import (
+    load_sesame_test_samples,
     parse_samples_from_fulltext_doc,
     parse_samples_from_lexical_unit,
 )
@@ -34,6 +35,10 @@ def test_parse_samples_from_lexical_unit(snapshot: SnapshotAssertion) -> None:
         == "Self_mover = all Scots lords and landed men | Goal = there , to Annan , | Purpose = to do homage to him"
     )
     assert samples == snapshot
+
+
+def test_load_sesame_test_samples() -> None:
+    assert len(load_sesame_test_samples()) == 17288
 
 
 def test_parse_samples_from_fulltext_doc(snapshot: SnapshotAssertion) -> None:

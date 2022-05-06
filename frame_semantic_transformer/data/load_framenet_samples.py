@@ -1,15 +1,30 @@
 from __future__ import annotations
 from nltk.corpus import framenet as fn
-from typing import Any, Iterable, Mapping
+from typing import Any, Iterable, Mapping, Optional
+
+from frame_semantic_transformer.data.sesame_data_splits import SESAME_TEST_FILES
 
 from .SampleSentence import SampleSentence
 
 
-def load_framenet_samples() -> list[SampleSentence]:
+def load_framenet_samples(
+    exclude_docs: Optional[Iterable[str]] = None,
+) -> list[SampleSentence]:
     samples: list[SampleSentence] = []
     for lu in fn.lus():
         samples += parse_samples_from_lexical_unit(lu)
     for doc in fn.docs():
+        if exclude_docs and doc.filename in exclude_docs:
+            continue
+        samples += parse_samples_from_fulltext_doc(doc)
+    return samples
+
+
+def load_sesame_test_samples() -> list[SampleSentence]:
+    samples: list[SampleSentence] = []
+    for doc in fn.docs():
+        if doc.filename in SESAME_TEST_FILES:
+            continue
         samples += parse_samples_from_fulltext_doc(doc)
     return samples
 
