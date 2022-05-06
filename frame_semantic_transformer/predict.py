@@ -67,8 +67,8 @@ def batch_predict(
         return_tensors="pt",
     )
     generated_ids = model.generate(
-        input_ids=input_encoding.input_ids,
-        attention_mask=input_encoding.attention_mask,
+        input_ids=input_encoding.input_ids.to(model.device),
+        attention_mask=input_encoding.attention_mask.to(model.device),
         num_beams=num_beams,
         max_length=max_length,
         repetition_penalty=repetition_penalty,
