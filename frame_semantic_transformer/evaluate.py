@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import Iterable
+from tqdm import tqdm
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from nltk.corpus import framenet as fn
 
@@ -16,7 +17,7 @@ def evaluate(
     samples: Iterable[SampleSentence],
 ) -> dict[str, list[int]]:
     results: dict[str, list[int]] = {"frame": [0, 0, 0], "args": [0, 0, 0]}
-    for sample in samples:
+    for sample in tqdm(samples):
         frame_task_input = sample.frame_classification_input
         args_task_input = sample.frame_args_input
 
