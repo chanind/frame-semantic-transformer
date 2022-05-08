@@ -4,19 +4,19 @@ import torch
 from torch.utils.data import Dataset
 from transformers import T5Tokenizer
 
-from .SampleSentence import SampleSentence
+from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
 
 MAX_SOURCE_LEN = 512
 MAX_TARGET_LEN = 512
 
 
-class SentenceDataset(Dataset[Any]):
+class TaskSampleDataset(Dataset[Any]):
     input_ids: torch.Tensor
     attention_mask: torch.Tensor
     labels: torch.Tensor
 
-    def __init__(self, samples: Sequence[SampleSentence], tokenizer: T5Tokenizer):
+    def __init__(self, samples: Sequence[TaskSample], tokenizer: T5Tokenizer):
         input_ids, attention_mask, labels = parse_samples(samples, tokenizer)
         self.input_ids = input_ids
         self.attention_mask = attention_mask
@@ -34,15 +34,13 @@ class SentenceDataset(Dataset[Any]):
 
 
 def parse_samples(
-    samples: Sequence[SampleSentence], tokenizer: T5Tokenizer
+    samples: Sequence[TaskSample], tokenizer: T5Tokenizer
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     input_sequences: list[str] = []
     output_sequences: list[str] = []
     for sample in samples:
-        input_sequences.append(sample.frame_classification_input)
-        output_sequences.append(sample.frame)
-        input_sequences.append(sample.frame_args_input)
-        output_sequences.append(sample.frame_elements_str)
+        input_sequences.append(sample.get_input())
+        output_sequences.append(sample.get_target())
 
     input_encoding = tokenizer(
         input_sequences,

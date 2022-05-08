@@ -24,3 +24,14 @@ SESAME_TEST_FILES = [
     "NTI__Syria_NuclearOverview.xml",
     "PropBank__AetnaLifeAndCasualty.xml",
 ]
+
+SESAME_DEV_FILES = [
+    "ANC__110CYL072.xml",
+    "KBEval__MIT.xml",
+    "LUCorpus-v0.3__20000415_apw_eng-NEW.xml",
+    "LUCorpus-v0.3__ENRON-pearson-email-25jul02.xml",
+    "Miscellaneous__Hijack.xml",
+    "NTI__NorthKorea_NuclearOverview.xml",
+    "NTI__WMDNews_062606.xml",
+    "PropBank__TicketSplitting.xml",
+]
