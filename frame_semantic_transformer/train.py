@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 import os
 from typing import Any, Optional
 import numpy as np
@@ -18,6 +19,7 @@ from frame_semantic_transformer.data.load_framenet_samples import (
 )
 
 DEFAULT_NUM_WORKERS = os.cpu_count() or 2
+logger = logging.getLogger(__name__)
 
 
 class TrainDataModule(pl.LightningDataModule):
@@ -173,9 +175,11 @@ def train(
     save_only_last_epoch: bool = False,
 ) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
     device = torch.device("cuda" if use_gpu else "cpu")
+    logging.info("loading base T5 model")
     model = T5ForConditionalGeneration.from_pretrained(base_model).to(device)
     tokenizer = T5Tokenizer.from_pretrained(base_model)
 
+    logging.info("loading train/test/val datasets")
     train_dataset = TaskSampleDataset(load_sesame_train_samples(), tokenizer)
     val_dataset = TaskSampleDataset(load_sesame_dev_samples(), tokenizer)
     test_dataset = TaskSampleDataset(load_sesame_test_samples(), tokenizer)
@@ -217,6 +221,8 @@ def train(
         precision=precision,
         log_every_n_steps=1,
     )
+
+    logger.info("beginning training")
 
     # fit trainer
     trainer.fit(model_wrapper, data_module)
