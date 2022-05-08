@@ -14,7 +14,7 @@ def is_valid_frame(frame: str) -> bool:
     return frame in get_all_valid_frame_names()
 
 
-@lru_cache
+@lru_cache(1)
 def get_all_valid_frame_names() -> set[str]:
     return {frame.name for frame in fn.frames()}
 
