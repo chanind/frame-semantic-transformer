@@ -5,16 +5,30 @@ from frame_semantic_transformer.data.framenet import get_fulltext_docs
 from frame_semantic_transformer.data.load_framenet_samples import (
     load_sesame_dev_samples,
     load_sesame_test_samples,
+    load_sesame_train_samples,
     parse_samples_from_fulltext_doc,
 )
 
 
 def test_load_sesame_test_samples() -> None:
-    assert len(load_sesame_test_samples()) == 11604
+    samples = load_sesame_test_samples()
+    assert len(samples) == 11604
 
 
 def test_load_sesame_dev_samples() -> None:
-    assert len(load_sesame_dev_samples()) == 3816
+    samples = load_sesame_dev_samples()
+    assert len(samples) == 3816
+
+
+def test_load_sesame_train_samples() -> None:
+    samples = load_sesame_train_samples()
+    trigger_id_samples = [
+        sample
+        for sample in samples
+        if sample.get_task_name() == "trigger_identification"
+    ]
+    assert len(trigger_id_samples) == 3425
+    assert len(samples) == 34513
 
 
 def test_parse_samples_from_fulltext_doc(snapshot: SnapshotAssertion) -> None:
