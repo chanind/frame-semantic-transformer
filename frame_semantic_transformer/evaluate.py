@@ -46,7 +46,7 @@ def evaluate(
         predictions = batch_predict(model, tokenizer, inputs)
         for sample, prediction in zip(samples_chunk, predictions):
             true_pos, false_pos, false_neg = sample.evaluate_prediction(prediction)
-            results[sample.get_task()][0] += true_pos
-            results[sample.get_task()][1] += false_pos
-            results[sample.get_task()][2] += false_neg
+            results[sample.get_task_name()][0] += true_pos
+            results[sample.get_task_name()][1] += false_pos
+            results[sample.get_task_name()][2] += false_neg
     return results
