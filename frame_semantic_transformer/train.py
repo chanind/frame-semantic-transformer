@@ -17,7 +17,6 @@ from frame_semantic_transformer.data.load_framenet_samples import (
     load_sesame_test_samples,
     load_sesame_dev_samples,
 )
-from frame_semantic_transformer.predict import predict_on_ids
 
 DEFAULT_NUM_WORKERS = os.cpu_count() or 2
 logger = logging.getLogger(__name__)

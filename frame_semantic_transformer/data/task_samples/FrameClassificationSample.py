@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from frame_semantic_transformer.data.framenet import is_valid_frame
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
