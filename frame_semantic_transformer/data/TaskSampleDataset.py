@@ -25,10 +25,13 @@ class TaskSampleDataset(Dataset[Any]):
         tokenizer: T5Tokenizer,
         balance_tasks: bool = False,
         seed: int = 42,
+        max_task_duplication_factor: int = 2,
     ):
         samples_to_parse = samples
         if balance_tasks:
-            samples_to_parse = balance_tasks_by_type(samples, seed)
+            samples_to_parse = balance_tasks_by_type(
+                samples, seed=seed, max_duplication_factor=max_task_duplication_factor
+            )
         input_ids, attention_mask, labels = parse_samples(samples_to_parse, tokenizer)
         self.input_ids = input_ids
         self.attention_mask = attention_mask
@@ -47,7 +50,9 @@ class TaskSampleDataset(Dataset[Any]):
 
 
 def balance_tasks_by_type(
-    samples: Sequence[TaskSample], seed: int
+    samples: Sequence[TaskSample],
+    max_duplication_factor: int = 2,
+    seed: int = 42,
 ) -> Sequence[TaskSample]:
     """
     try to force an approximate balance of task types by repeating tasks of uncommon types
@@ -58,9 +63,11 @@ def balance_tasks_by_type(
     max_task_count = max(counts_by_type.values())
     balanced_samples: list[TaskSample] = []
     for sample in samples:
-        sample_ratio = int(max_task_count / counts_by_type[sample.get_task_name()])
+        duplication_factor = int(
+            max_task_count / counts_by_type[sample.get_task_name()]
+        )
         # duplicate each sample in proportion to how few tasks of this type are in the original mix
-        for _ in range(sample_ratio):
+        for _ in range(min(max_duplication_factor, duplication_factor)):
             balanced_samples.append(sample)
     random.Random(seed).shuffle(balanced_samples)
     return balanced_samples

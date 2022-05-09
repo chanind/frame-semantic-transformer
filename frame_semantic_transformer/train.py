@@ -176,6 +176,7 @@ def train(
     num_workers: int = DEFAULT_NUM_WORKERS,
     save_only_last_epoch: bool = False,
     balance_tasks: bool = True,
+    max_task_duplication_factor: int = 2,
 ) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logging.info("loading base T5 model")
@@ -184,13 +185,22 @@ def train(
 
     logging.info("loading train/test/val datasets")
     train_dataset = TaskSampleDataset(
-        load_sesame_train_samples(), tokenizer, balance_tasks=balance_tasks
+        load_sesame_train_samples(),
+        tokenizer,
+        balance_tasks=balance_tasks,
+        max_task_duplication_factor=max_task_duplication_factor,
     )
     val_dataset = TaskSampleDataset(
-        load_sesame_dev_samples(), tokenizer, balance_tasks=balance_tasks
+        load_sesame_dev_samples(),
+        tokenizer,
+        balance_tasks=balance_tasks,
+        max_task_duplication_factor=max_task_duplication_factor,
     )
     test_dataset = TaskSampleDataset(
-        load_sesame_test_samples(), tokenizer, balance_tasks=balance_tasks
+        load_sesame_test_samples(),
+        tokenizer,
+        balance_tasks=balance_tasks,
+        max_task_duplication_factor=max_task_duplication_factor,
     )
 
     data_module = TrainDataModule(

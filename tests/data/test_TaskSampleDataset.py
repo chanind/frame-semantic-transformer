@@ -46,7 +46,7 @@ def test_balance_tasks_by_type() -> None:
         FrameClassificationSample("f2", (0, 2), "Greetings"),
         TriggerIdentificationSample("t1", []),
     ]
-    balanced_tasks = balance_tasks_by_type(tasks, 42)
+    balanced_tasks = balance_tasks_by_type(tasks, max_duplication_factor=10)
     assert len(balanced_tasks) == 14  # 5 arg, 4 frame, 5 trigger
     assert (
         len([t for t in balanced_tasks if t.get_task_name() == "args_extraction"]) == 5
@@ -61,3 +61,15 @@ def test_balance_tasks_by_type() -> None:
         )
         == 5
     )
+
+
+def test_balance_tasks_by_type_caps_replications() -> None:
+    tasks = [
+        ArgumentsExtractionSample("a1", (0, 2), "Greetings", []),
+        ArgumentsExtractionSample("a2", (0, 2), "Greetings", []),
+        ArgumentsExtractionSample("a3", (0, 2), "Greetings", []),
+        ArgumentsExtractionSample("a4", (0, 2), "Greetings", []),
+        TriggerIdentificationSample("t1", []),
+    ]
+    capped_balanced_tasks = balance_tasks_by_type(tasks, max_duplication_factor=2)
+    assert len(capped_balanced_tasks) == 6  # 4 arg, 2 trigger
