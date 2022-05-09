@@ -36,6 +36,7 @@ def evaluate(
     tokenizer: T5Tokenizer,
     samples: Sequence[TaskSample],
     batch_size: int = 10,
+    print_failures: bool = False,
 ) -> dict[str, list[int]]:
     results: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
     for samples_chunk in tqdm(
@@ -45,8 +46,12 @@ def evaluate(
 
         predictions = batch_predict(model, tokenizer, inputs)
         for sample, prediction in zip(samples_chunk, predictions):
-            true_pos, false_pos, false_neg = sample.evaluate_prediction(prediction)
+            score = sample.evaluate_prediction(prediction)
+            true_pos, false_pos, false_neg = score
             results[sample.get_task_name()][0] += true_pos
             results[sample.get_task_name()][1] += false_pos
             results[sample.get_task_name()][2] += false_neg
+            if print_failures and (false_neg > 0 or false_pos > 0):
+                print(score, sample.get_target(), prediction)
+
     return results
