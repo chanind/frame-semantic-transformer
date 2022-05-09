@@ -32,7 +32,6 @@ class TaskSampleDataset(Dataset[Any]):
             "input_ids": self.input_ids[index],
             "attention_mask": self.attention_mask[index],
             "labels": self.labels[index],
-            "sample": self.samples[index],
         }
 
 

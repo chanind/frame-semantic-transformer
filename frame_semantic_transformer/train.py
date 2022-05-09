@@ -137,10 +137,6 @@ class TrainingModelWrapper(pl.LightningModule):
     def test_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
         output = self._step(batch)
         loss = output.loss
-        predictions: list[str] = predict_on_ids(
-            self.model, self.tokenizer, batch["input_ids"], batch["attention_mask"]
-        )
-
         self.log("test_loss", loss, prog_bar=True, logger=True)
         return loss
 
