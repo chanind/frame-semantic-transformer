@@ -37,6 +37,14 @@ def evaluate(
     samples: Sequence[TaskSample],
     batch_size: int = 10,
     print_failures: bool = False,
+    num_beams: int = 5,
+    top_k: int = 50,
+    top_p: float = 0.95,
+    repetition_penalty: float = 2.5,
+    length_penalty: float = 1.0,
+    early_stopping: bool = True,
+    skip_special_tokens: bool = True,
+    clean_up_tokenization_spaces: bool = True,
 ) -> dict[str, list[int]]:
     results: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
     for samples_chunk in tqdm(
@@ -44,7 +52,19 @@ def evaluate(
     ):
         inputs = [sample.get_input() for sample in samples_chunk]
 
-        predictions = batch_predict(model, tokenizer, inputs)
+        predictions = batch_predict(
+            model,
+            tokenizer,
+            inputs,
+            num_beams=num_beams,
+            top_k=top_k,
+            top_p=top_p,
+            repetition_penalty=repetition_penalty,
+            length_penalty=length_penalty,
+            early_stopping=early_stopping,
+            skip_special_tokens=skip_special_tokens,
+            clean_up_tokenization_spaces=clean_up_tokenization_spaces,
+        )
         for sample, prediction in zip(samples_chunk, predictions):
             score = sample.evaluate_prediction(prediction)
             true_pos, false_pos, false_neg = score
