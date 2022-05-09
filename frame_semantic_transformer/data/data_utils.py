@@ -20,5 +20,7 @@ def standardize_punct(sent: str) -> str:
     updated_sent = re.sub(r"\*+", "*", updated_sent)
     # fix spaces in contractions
     updated_sent = re.sub(r"([a-zA-Z0-9])\s+(\*?n't)", r"\1\2", updated_sent)
+    # remove ``
+    updated_sent = re.sub(r"\s*``\s*", " ", updated_sent)
 
-    return updated_sent
+    return updated_sent.strip()

@@ -52,6 +52,9 @@ def evaluate(
             results[sample.get_task_name()][1] += false_pos
             results[sample.get_task_name()][2] += false_neg
             if print_failures and (false_neg > 0 or false_pos > 0):
-                print(score, sample.get_target(), prediction)
+                print(score)
+                print(sample.get_target())
+                print(prediction)
+                print("\n")
 
     return results

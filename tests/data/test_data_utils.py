@@ -41,3 +41,9 @@ def test_standardize_punct_allows_asterix_in_contractions() -> None:
     original = "She did *n't say so"
     expected = "She did*n't say so"
     assert standardize_punct(original) == expected
+
+
+def test_standardize_punct_removes_weird_double_backticks() -> None:
+    original = "`` I was *sad *when I *couldn't *go *to the snack bar to *buy a soda."
+    expected = "I was *sad *when I *couldn't *go *to the snack bar to *buy a soda."
+    assert standardize_punct(original) == expected
