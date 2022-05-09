@@ -2,7 +2,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 import re
 
-from transformers import T5Tokenizer
 from frame_semantic_transformer.data.data_utils import standardize_punct
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
@@ -69,4 +68,4 @@ def process_text_for_evaluation(sent: str) -> str:
     updated_sent = standardize_punct(sent)
     updated_sent = re.sub(r"\*\s+([a-zA-Z0-9])", r"*\1", updated_sent)
     updated_sent = re.sub(r"([a-zA-Z0-9])(\*?')", r"\1 \2", updated_sent)
-    return T5Tokenizer.clean_up_tokenization(updated_sent)
+    return updated_sent
