@@ -57,3 +57,11 @@ def test_standardize_punct_handles_question_marks() -> None:
     original = "Does Iran *intend to *become a Nuclear State ?"
     expected = "Does Iran * intend to * become a Nuclear State?"
     assert standardize_punct(original) == expected
+
+
+def test_standardize_punct_removes_spaces_before_commas() -> None:
+    original = "2- * Sheik of Albu'Ubaid ( Salah al-Dhari ) , who * slaughtered * thirty sheeps"
+    expected = (
+        "2- * Sheik of Albu'Ubaid ( Salah al-Dhari ), who * slaughtered * thirty sheeps"
+    )
+    assert standardize_punct(original) == expected
