@@ -23,6 +23,7 @@ class TriggerIdentificationSample(TaskSample):
         for loc in sorted(self.trigger_locs):
             # TODO: handle these special chars better
             output += self.text[prev_trigger_loc:loc] + "*"
+            prev_trigger_loc = loc
         output += self.text[prev_trigger_loc:]
         return output
 
@@ -46,7 +47,7 @@ class TriggerIdentificationSample(TaskSample):
                     false_neg += 1
                 else:
                     false_pos += 1
-            if is_target_trigger and is_pred_trigger:
+            elif is_target_trigger and is_pred_trigger:
                 true_pos += 1
             elif is_target_trigger and not is_pred_trigger:
                 false_neg += 1
@@ -54,6 +55,7 @@ class TriggerIdentificationSample(TaskSample):
                 false_pos += 1
 
         # if the predictions are longer than the targets, then every extra item is just wrong
-        false_pos += len(prediction_parts) - len(target_part)
+        if len(prediction_parts) > len(target_parts):
+            false_pos += len(prediction_parts) - len(target_parts)
 
         return (true_pos, false_pos, false_neg)

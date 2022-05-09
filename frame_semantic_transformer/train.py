@@ -17,6 +17,7 @@ from frame_semantic_transformer.data.load_framenet_samples import (
     load_sesame_test_samples,
     load_sesame_dev_samples,
 )
+from frame_semantic_transformer.predict import predict_on_ids
 
 DEFAULT_NUM_WORKERS = os.cpu_count() or 2
 logger = logging.getLogger(__name__)
@@ -111,29 +112,35 @@ class TrainingModelWrapper(pl.LightningModule):
         return self.model(*args, **kwargs)
 
     def _step(self, batch: Any) -> Any:
-        output = self(
+        return self(
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],
             labels=batch["labels"],
         )
-        return output.loss
 
     def training_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
-        loss = self._step(batch)
+        output = self._step(batch)
+        loss = output.loss
         self.log(
             "train_loss", loss, prog_bar=True, logger=True, on_epoch=True, on_step=True
         )
         return loss
 
     def validation_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
-        loss = self._step(batch)
+        output = self._step(batch)
+        loss = output.loss
         self.log(
             "val_loss", loss, prog_bar=True, logger=True, on_epoch=True, on_step=True
         )
         return loss
 
     def test_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
-        loss = self._step(batch)
+        output = self._step(batch)
+        loss = output.loss
+        predictions: list[str] = predict_on_ids(
+            self.model, self.tokenizer, batch["input_ids"], batch["attention_mask"]
+        )
+
         self.log("test_loss", loss, prog_bar=True, logger=True)
         return loss
 

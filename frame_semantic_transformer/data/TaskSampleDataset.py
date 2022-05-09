@@ -15,12 +15,14 @@ class TaskSampleDataset(Dataset[Any]):
     input_ids: torch.Tensor
     attention_mask: torch.Tensor
     labels: torch.Tensor
+    samples: Sequence[TaskSample]
 
     def __init__(self, samples: Sequence[TaskSample], tokenizer: T5Tokenizer):
         input_ids, attention_mask, labels = parse_samples(samples, tokenizer)
         self.input_ids = input_ids
         self.attention_mask = attention_mask
         self.labels = labels
+        self.samples = samples
 
     def __len__(self) -> int:
         return len(self.input_ids)
@@ -30,6 +32,7 @@ class TaskSampleDataset(Dataset[Any]):
             "input_ids": self.input_ids[index],
             "attention_mask": self.attention_mask[index],
             "labels": self.labels[index],
+            "sample": self.samples[index],
         }
 
 
