@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from frame_semantic_transformer.data.data_utils import standardize_punct
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
@@ -25,14 +26,14 @@ class TriggerIdentificationSample(TaskSample):
             output += self.text[prev_trigger_loc:loc] + "*"
             prev_trigger_loc = loc
         output += self.text[prev_trigger_loc:]
-        return output
+        return standardize_punct(output)
 
     def evaluate_prediction(self, prediction: str) -> tuple[int, int, int]:
         true_pos = 0
         false_pos = 0
         false_neg = 0
 
-        prediction_parts = prediction.split()
+        prediction_parts = standardize_punct(prediction).split()
         target_parts = self.get_target().split()
 
         for i, target_part in enumerate(target_parts):

@@ -4,7 +4,7 @@ from typing import Sequence
 from tqdm import tqdm
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
-from frame_semantic_transformer.data.chunk_list import chunk_list
+from frame_semantic_transformer.data.data_utils import chunk_list
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 from frame_semantic_transformer.predict import batch_predict
 

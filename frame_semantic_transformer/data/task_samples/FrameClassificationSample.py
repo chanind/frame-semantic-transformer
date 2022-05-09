@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from frame_semantic_transformer.data.data_utils import standardize_punct
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
@@ -40,4 +41,4 @@ class FrameClassificationSample(TaskSample):
         pre_span = self.text[0 : self.trigger_loc[0]]
         post_span = self.text[self.trigger_loc[1] :]
         # TODO: handle these special chars better
-        return f"{pre_span}* {self.trigger} *{post_span}"
+        return standardize_punct(f"{pre_span}*{self.trigger}{post_span}")
