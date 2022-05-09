@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from frame_semantic_transformer.data.task_samples.TriggerIdentificationSample import (
     TriggerIdentificationSample,
+    process_text_for_evaluation,
 )
 
 
@@ -19,25 +20,32 @@ def test_get_input() -> None:
 
 
 def test_get_target() -> None:
-    expected = "Your *contribution *to Goodwill will *mean *more than you *may *know."
+    expected = (
+        "Your * contribution * to Goodwill will * mean * more than you * may * know."
+    )
     assert sample.get_target() == expected
 
 
 def test_evaluate_prediction() -> None:
-    pred = "Your contribution *to Goodwill *will *mean *more than you may *know."
+    pred = "Your contribution * to Goodwill * will * mean * more than you may * know."
     assert sample.evaluate_prediction(pred) == (4, 1, 2)
 
 
 def test_evaluate_prediction_fails_for_elements_whose_content_doesnt_match() -> None:
-    pred = "Your AHAHAHAHA *to BADWILL will *PSYCH *more than you may *know."
+    pred = "Your AHAHAHAHA * to BADWILL will * PSYCH * more than you may * know."
     assert sample.evaluate_prediction(pred) == (3, 1, 3)
 
 
 def test_evaluate_prediction_treats_missing_words_as_wrong() -> None:
-    pred = "Your *contribution *to Goodwill will *mean"
+    pred = "Your * contribution * to Goodwill will * mean"
     assert sample.evaluate_prediction(pred) == (3, 2, 3)
 
 
 def test_evaluate_prediction_treats_excess_words_as_false_positives() -> None:
-    pred = "Your *contribution *to Goodwill will *mean *more than you *may *know. ha ha ha ha!"
+    pred = "Your * contribution * to Goodwill will * mean * more than you * may * know. ha ha ha ha!"
     assert sample.evaluate_prediction(pred) == (6, 4, 0)
+
+
+def test_process_text_for_evaluation_handles_contractions() -> None:
+    assert process_text_for_evaluation("couldn't") == "couldn 't"
+    assert process_text_for_evaluation("couldn*'t") == "couldn *'t"
