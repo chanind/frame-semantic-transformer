@@ -1,4 +1,6 @@
 from __future__ import annotations
+from collections import defaultdict
+import random
 from typing import Any, Sequence
 import torch
 from torch.utils.data import Dataset
@@ -17,8 +19,17 @@ class TaskSampleDataset(Dataset[Any]):
     labels: torch.Tensor
     samples: Sequence[TaskSample]
 
-    def __init__(self, samples: Sequence[TaskSample], tokenizer: T5Tokenizer):
-        input_ids, attention_mask, labels = parse_samples(samples, tokenizer)
+    def __init__(
+        self,
+        samples: Sequence[TaskSample],
+        tokenizer: T5Tokenizer,
+        balance_tasks: bool = False,
+        seed: int = 42,
+    ):
+        samples_to_parse = samples
+        if balance_tasks:
+            samples_to_parse = balance_tasks_by_type(samples, seed)
+        input_ids, attention_mask, labels = parse_samples(samples_to_parse, tokenizer)
         self.input_ids = input_ids
         self.attention_mask = attention_mask
         self.labels = labels
@@ -33,6 +44,26 @@ class TaskSampleDataset(Dataset[Any]):
             "attention_mask": self.attention_mask[index],
             "labels": self.labels[index],
         }
+
+
+def balance_tasks_by_type(
+    samples: Sequence[TaskSample], seed: int
+) -> Sequence[TaskSample]:
+    """
+    try to force an approximate balance of task types by repeating tasks of uncommon types
+    """
+    counts_by_type: dict[str, int] = defaultdict(int)
+    for sample in samples:
+        counts_by_type[sample.get_task_name()] += 1
+    max_task_count = max(counts_by_type.values())
+    balanced_samples: list[TaskSample] = []
+    for sample in samples:
+        sample_ratio = int(max_task_count / counts_by_type[sample.get_task_name()])
+        # duplicate each sample in proportion to how few tasks of this type are in the original mix
+        for _ in range(sample_ratio):
+            balanced_samples.append(sample)
+    random.Random(seed).shuffle(balanced_samples)
+    return balanced_samples
 
 
 def parse_samples(
