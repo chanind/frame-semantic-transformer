@@ -1,12 +1,21 @@
 from __future__ import annotations
 from collections import defaultdict
-from typing import Sequence
+from typing import Any, Sequence, Type
 from tqdm import tqdm
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.data.data_utils import chunk_list
+from frame_semantic_transformer.data.task_samples.ArgumentsExtractionSample import (
+    ArgumentsExtractionSample,
+)
+from frame_semantic_transformer.data.task_samples.FrameClassificationSample import (
+    FrameClassificationSample,
+)
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
-from frame_semantic_transformer.predict import batch_predict
+from frame_semantic_transformer.data.task_samples.TriggerIdentificationSample import (
+    TriggerIdentificationSample,
+)
+from frame_semantic_transformer.predict import batch_predict, predict_on_ids
 
 
 def calc_eval_metrics(
@@ -66,7 +75,7 @@ def evaluate(
             clean_up_tokenization_spaces=clean_up_tokenization_spaces,
         )
         for sample, prediction in zip(samples_chunk, predictions):
-            score = sample.evaluate_prediction(prediction)
+            score = sample.evaluate_prediction(prediction, sample.get_target())
             true_pos, false_pos, false_neg = score
             results[sample.get_task_name()][0] += true_pos
             results[sample.get_task_name()][1] += false_pos
@@ -76,5 +85,39 @@ def evaluate(
                 print(sample.get_target())
                 print(prediction)
                 print("\n")
+
+    return results
+
+
+# TODO: figure out a better way to lookup the class from the string
+TASK_SAMPLE_CLASS_MAP: dict[str, Type[TaskSample]] = {
+    "args_extraction": ArgumentsExtractionSample,
+    "frame_classification": FrameClassificationSample,
+    "trigger_identification": TriggerIdentificationSample,
+}
+
+
+def evaluate_batch(
+    model: T5ForConditionalGeneration, tokenizer: T5Tokenizer, batch: Any
+) -> dict[str, list[int]]:
+    predictions = predict_on_ids(
+        model,
+        tokenizer,
+        batch["input_ids"],
+        batch["attention_mask"],
+        skip_special_tokens=True,
+        clean_up_tokenization_spaces=True,
+    )
+    results: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
+    for pred, task, label in zip(predictions, batch["task"], batch["labels"]):
+        target_tokens = [tok_id for tok_id in label.tolist() if tok_id != -100]
+        target = tokenizer.decode(
+            target_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
+        )
+        sample_class = TASK_SAMPLE_CLASS_MAP[task]
+        true_pos, false_pos, false_neg = sample_class.evaluate_prediction(pred, target)
+        results[task][0] += true_pos
+        results[task][1] += false_pos
+        results[task][2] += false_neg
 
     return results

@@ -24,9 +24,10 @@ class ArgumentsExtractionSample(TaskSample):
             [f"{element} = {text}" for element, text in self.frame_elements]
         )
 
-    def evaluate_prediction(self, prediction: str) -> tuple[int, int, int]:
+    @staticmethod
+    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
         # TODO: improve evaluation
-        if prediction == self.get_target():
+        if prediction == target:
             return (1, 0, 0)
         else:
             return (0, 1, 0)

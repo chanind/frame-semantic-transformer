@@ -22,8 +22,9 @@ class FrameClassificationSample(TaskSample):
     def get_target(self) -> str:
         return self.frame
 
-    def evaluate_prediction(self, prediction: str) -> tuple[int, int, int]:
-        if prediction == self.frame:
+    @staticmethod
+    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
+        if prediction == target:
             return (1, 0, 0)
         else:
             # sesame treats any non-correct frame as both a false pos and false neg

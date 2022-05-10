@@ -24,7 +24,11 @@ def test_get_target() -> None:
 
 
 def test_evaluate_prediction_just_does_a_simple_string_match_for_now() -> None:
-    correct_pred = "Donor = Your | Recipient = to Goodwill"
+    target = "Donor = Your | Recipient = to Goodwill"
     incorrect_pred = "Donor = Your | Recipient = to Goodwill | meh"
-    assert sample.evaluate_prediction(correct_pred) == (1, 0, 0)
-    assert sample.evaluate_prediction(incorrect_pred) == (0, 1, 0)
+    assert ArgumentsExtractionSample.evaluate_prediction(target, target) == (1, 0, 0)
+    assert ArgumentsExtractionSample.evaluate_prediction(incorrect_pred, target) == (
+        0,
+        1,
+        0,
+    )

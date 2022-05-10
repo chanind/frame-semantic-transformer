@@ -36,7 +36,7 @@ class TaskSampleDataset(Dataset[Any]):
         self.input_ids = input_ids
         self.attention_mask = attention_mask
         self.labels = labels
-        self.samples = samples
+        self.task_names = [sample.get_task_name() for sample in samples_to_parse]
 
     def __len__(self) -> int:
         return len(self.input_ids)
@@ -46,6 +46,7 @@ class TaskSampleDataset(Dataset[Any]):
             "input_ids": self.input_ids[index],
             "attention_mask": self.attention_mask[index],
             "labels": self.labels[index],
+            "task": self.task_names[index],
         }
 
 

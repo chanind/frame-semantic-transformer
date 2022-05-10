@@ -19,7 +19,8 @@ class TaskSample(ABC):
     def get_target(self) -> str:
         pass
 
+    @staticmethod
     @abstractmethod
-    def evaluate_prediction(self, prediction: str) -> tuple[int, int, int]:
+    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
         "return a tuple indicating the number of true positives, false positives, and false negatives in the prediction"
         pass

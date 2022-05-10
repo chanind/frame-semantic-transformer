@@ -1,4 +1,5 @@
 from __future__ import annotations
+from collections import defaultdict
 import logging
 import os
 from typing import Any, Optional
@@ -17,6 +18,7 @@ from frame_semantic_transformer.data.load_framenet_samples import (
     load_sesame_test_samples,
     load_sesame_dev_samples,
 )
+from frame_semantic_transformer.evaluate import calc_eval_metrics, evaluate_batch
 
 DEFAULT_NUM_WORKERS = os.cpu_count() or 2
 logger = logging.getLogger(__name__)
@@ -128,16 +130,18 @@ class TrainingModelWrapper(pl.LightningModule):
     def validation_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
         output = self._step(batch)
         loss = output.loss
+        metrics = evaluate_batch(self.model, self.tokenizer, batch)
         self.log(
             "val_loss", loss, prog_bar=True, logger=True, on_epoch=True, on_step=True
         )
-        return loss
+        return {"loss": loss, "metrics": metrics}
 
     def test_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
         output = self._step(batch)
         loss = output.loss
+        metrics = evaluate_batch(self.model, self.tokenizer, batch)
         self.log("test_loss", loss, prog_bar=True, logger=True)
-        return loss
+        return {"loss": loss, "metrics": metrics}
 
     def configure_optimizers(self) -> AdamW:
         return AdamW(self.parameters(), lr=self.lr)
@@ -157,11 +161,30 @@ class TrainingModelWrapper(pl.LightningModule):
             self.model.save_pretrained(path)
 
     def validation_epoch_end(self, validation_step_outputs: list[Any]) -> None:
-        losses = [x.cpu() for x in validation_step_outputs]
+        losses = [out["losses"].cpu() for out in validation_step_outputs]
         self.average_validation_loss = np.round(
             torch.mean(torch.stack(losses)).item(),
             4,
         )
+
+        metrics = merge_metrics([out["metrics"] for out in validation_step_outputs])
+        for task_name, counts in metrics.items():
+            self.log(f"val_{task_name}_f1", calc_eval_metrics(*counts)["f_score"])
+
+    def test_epoch_end(self, test_step_outputs: list[Any]) -> None:
+        metrics = merge_metrics([out["metrics"] for out in test_step_outputs])
+        for task_name, counts in metrics.items():
+            self.log(f"test_{task_name}_f1", calc_eval_metrics(*counts)["f_score"])
+
+
+def merge_metrics(metrics: list[dict[str, list[int]]]) -> dict[str, list[int]]:
+    merged_metrics: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
+    for metric in metrics:
+        for task_name, counts in metric.items():
+            merged_metrics[task_name][0] += counts[0]
+            merged_metrics[task_name][1] += counts[1]
+            merged_metrics[task_name][2] += counts[2]
+    return merged_metrics
 
 
 def train(

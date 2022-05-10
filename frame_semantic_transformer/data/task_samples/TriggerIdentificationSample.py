@@ -30,13 +30,14 @@ class TriggerIdentificationSample(TaskSample):
         output += self.text[prev_trigger_loc:]
         return standardize_punct(output)
 
-    def evaluate_prediction(self, prediction: str) -> tuple[int, int, int]:
+    @staticmethod
+    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
         true_pos = 0
         false_pos = 0
         false_neg = 0
 
         prediction_parts = process_text_for_evaluation(prediction).split()
-        target_parts = process_text_for_evaluation(self.get_target()).split()
+        target_parts = process_text_for_evaluation(target).split()
 
         for i, target_part in enumerate(target_parts):
             pred_part = "" if i >= len(prediction_parts) else prediction_parts[i]
