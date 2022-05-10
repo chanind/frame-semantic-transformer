@@ -161,7 +161,7 @@ class TrainingModelWrapper(pl.LightningModule):
             self.model.save_pretrained(path)
 
     def validation_epoch_end(self, validation_step_outputs: list[Any]) -> None:
-        losses = [out["losses"].cpu() for out in validation_step_outputs]
+        losses = [out["loss"].cpu() for out in validation_step_outputs]
         self.average_validation_loss = np.round(
             torch.mean(torch.stack(losses)).item(),
             4,
