@@ -1,5 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from typing import Sequence
 
 
 class TaskSample(ABC):
@@ -21,6 +22,8 @@ class TaskSample(ABC):
 
     @staticmethod
     @abstractmethod
-    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
+    def evaluate_prediction(
+        prediction_outputs: Sequence[str], target: str
+    ) -> tuple[int, int, int]:
         "return a tuple indicating the number of true positives, false positives, and false negatives in the prediction"
         pass

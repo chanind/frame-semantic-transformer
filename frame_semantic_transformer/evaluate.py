@@ -98,7 +98,10 @@ TASK_SAMPLE_CLASS_MAP: dict[str, Type[TaskSample]] = {
 
 
 def evaluate_batch(
-    model: T5ForConditionalGeneration, tokenizer: T5Tokenizer, batch: Any
+    model: T5ForConditionalGeneration,
+    tokenizer: T5Tokenizer,
+    batch: Any,
+    predictions_per_sample: int = 5,
 ) -> dict[str, list[int]]:
     predictions = predict_on_ids(
         model,
@@ -107,15 +110,19 @@ def evaluate_batch(
         batch["attention_mask"],
         skip_special_tokens=True,
         clean_up_tokenization_spaces=True,
+        num_beams=predictions_per_sample,
+        num_return_sequences=predictions_per_sample,
     )
+    batched_predictions = chunk_list(predictions, predictions_per_sample)
     results: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
-    for pred, task, label in zip(predictions, batch["task"], batch["labels"]):
+    for preds, task, label in zip(batched_predictions, batch["task"], batch["labels"]):
+        assert len(preds) == predictions_per_sample
         target_tokens = [tok_id for tok_id in label.tolist() if tok_id != -100]
         target = tokenizer.decode(
             target_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
         sample_class = TASK_SAMPLE_CLASS_MAP[task]
-        true_pos, false_pos, false_neg = sample_class.evaluate_prediction(pred, target)
+        true_pos, false_pos, false_neg = sample_class.evaluate_prediction(preds, target)
         results[task][0] += true_pos
         results[task][1] += false_pos
         results[task][2] += false_neg

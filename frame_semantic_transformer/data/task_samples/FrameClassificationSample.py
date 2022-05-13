@@ -1,6 +1,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from typing import Sequence
 from frame_semantic_transformer.data.data_utils import standardize_punct
+from frame_semantic_transformer.data.framenet import is_valid_frame
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
@@ -23,8 +25,13 @@ class FrameClassificationSample(TaskSample):
         return self.frame
 
     @staticmethod
-    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
-        if prediction == target:
+    def evaluate_prediction(
+        prediction_outputs: Sequence[str], target: str
+    ) -> tuple[int, int, int]:
+        valid_predictions = [
+            pred for pred in prediction_outputs if is_valid_frame(pred)
+        ]
+        if len(valid_predictions) > 0 and valid_predictions[0] == target:
             return (1, 0, 0)
         else:
             # sesame treats any non-correct frame as both a false pos and false neg

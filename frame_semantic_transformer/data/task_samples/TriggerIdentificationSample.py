@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import re
+from typing import Sequence
 
 from frame_semantic_transformer.data.data_utils import standardize_punct
 
@@ -31,12 +32,14 @@ class TriggerIdentificationSample(TaskSample):
         return standardize_punct(output)
 
     @staticmethod
-    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
+    def evaluate_prediction(
+        prediction_outputs: Sequence[str], target: str
+    ) -> tuple[int, int, int]:
         true_pos = 0
         false_pos = 0
         false_neg = 0
 
-        prediction_parts = process_text_for_evaluation(prediction).split()
+        prediction_parts = process_text_for_evaluation(prediction_outputs[0]).split()
         target_parts = process_text_for_evaluation(target).split()
 
         for i, target_part in enumerate(target_parts):

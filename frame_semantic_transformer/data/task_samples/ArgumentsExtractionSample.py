@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from typing import Sequence
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
@@ -25,9 +26,11 @@ class ArgumentsExtractionSample(TaskSample):
         )
 
     @staticmethod
-    def evaluate_prediction(prediction: str, target: str) -> tuple[int, int, int]:
+    def evaluate_prediction(
+        prediction_outputs: Sequence[str], target: str
+    ) -> tuple[int, int, int]:
         # TODO: improve evaluation
-        if prediction == target:
+        if prediction_outputs[0] == target:
             return (1, 0, 0)
         else:
             return (0, 1, 0)
