@@ -27,7 +27,11 @@ def test_load_sesame_train_samples() -> None:
         for sample in samples
         if sample.get_task_name() == "trigger_identification"
     ]
+    frame_id_samples = [
+        sample for sample in samples if sample.get_task_name() == "frame_classification"
+    ]
     assert len(trigger_id_samples) == 3425
+    assert len(frame_id_samples) == 15544
     assert len(samples) == 34513
 
 

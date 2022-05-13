@@ -46,7 +46,7 @@ def evaluate(
     samples: Sequence[TaskSample],
     batch_size: int = 10,
     print_failures: bool = False,
-    num_beams: int = 5,
+    predictions_per_sample: int = 5,
     top_k: int = 50,
     top_p: float = 0.95,
     repetition_penalty: float = 2.5,
@@ -65,7 +65,8 @@ def evaluate(
             model,
             tokenizer,
             inputs,
-            num_beams=num_beams,
+            num_beams=predictions_per_sample,
+            num_return_sequences=predictions_per_sample,
             top_k=top_k,
             top_p=top_p,
             repetition_penalty=repetition_penalty,
@@ -74,8 +75,10 @@ def evaluate(
             skip_special_tokens=skip_special_tokens,
             clean_up_tokenization_spaces=clean_up_tokenization_spaces,
         )
-        for sample, prediction in zip(samples_chunk, predictions):
-            score = sample.evaluate_prediction(prediction, sample.get_target())
+        batched_predictions = chunk_list(predictions, predictions_per_sample)
+        for sample, preds in zip(samples_chunk, batched_predictions):
+            assert len(preds) == predictions_per_sample
+            score = sample.evaluate_prediction(preds, sample.get_target())
             true_pos, false_pos, false_neg = score
             results[sample.get_task_name()][0] += true_pos
             results[sample.get_task_name()][1] += false_pos
@@ -83,7 +86,7 @@ def evaluate(
             if print_failures and (false_neg > 0 or false_pos > 0):
                 print(score)
                 print(sample.get_target())
-                print(prediction)
+                print(preds)
                 print("\n")
 
     return results
