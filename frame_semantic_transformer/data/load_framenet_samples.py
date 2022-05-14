@@ -44,25 +44,6 @@ def load_sesame_dev_samples() -> list[TaskSample]:
     return load_framenet_samples(include_docs=SESAME_DEV_FILES)
 
 
-def extract_annotation_target(targets: list[tuple[int, int]]) -> tuple[int, int] | None:
-    """
-    For targets like "Ended up", where it's actually just a compount word, combine the targets together
-    Else, just return None and we can skip this target
-    """
-    target = targets[0]
-    remaining_targets = targets[1:]
-    if len(remaining_targets) == 0:
-        return target
-    subsequent_target = extract_annotation_target(remaining_targets)
-    if not subsequent_target:
-        return None
-    # until we see a counter-example, assume all multi-word targets are just compound-words with a space between
-    target_loc_diff = subsequent_target[0] - target[1]
-    if target_loc_diff < 0 or target_loc_diff > 1:
-        return None
-    return (target[0], subsequent_target[1])
-
-
 def parse_frame_samples_from_annotation_set(
     annotation_set: Iterable[Mapping[str, Any]]
 ) -> list[FrameClassificationSample | ArgumentsExtractionSample]:
@@ -74,28 +55,26 @@ def parse_frame_samples_from_annotation_set(
     sample_sentences: list[FrameClassificationSample | ArgumentsExtractionSample] = []
     for annotation in annotation_set:
         if "FE" in annotation and "Target" in annotation and "frame" in annotation:
-            if annotation["FE"][1] != {}:
-                # I don't understand what the second part of this tuple is, just ignore it for now
-                continue
-            trigger_loc = extract_annotation_target(annotation["Target"])
-            # if the trigger loc is weird for some reason just skip it for now
-            if not trigger_loc:
-                continue
-            sample_sentences.append(
-                ArgumentsExtractionSample(
-                    text=annotation["text"],
-                    trigger_loc=trigger_loc,
-                    frame=annotation["frame"]["name"],
-                    frame_element_locs=annotation["FE"][0],
+            for trigger_loc in annotation["Target"]:
+                sample_sentences.append(
+                    FrameClassificationSample(
+                        text=annotation["text"],
+                        trigger_loc=trigger_loc,
+                        frame=annotation["frame"]["name"],
+                    )
                 )
-            )
-            sample_sentences.append(
-                FrameClassificationSample(
-                    text=annotation["text"],
-                    trigger_loc=trigger_loc,
-                    frame=annotation["frame"]["name"],
+                if annotation["FE"][1] != {}:
+                    # I don't understand what the second part of this tuple is, just ignore it for now
+                    continue
+                sample_sentences.append(
+                    ArgumentsExtractionSample(
+                        text=annotation["text"],
+                        trigger_loc=trigger_loc,
+                        frame=annotation["frame"]["name"],
+                        frame_element_locs=annotation["FE"][0],
+                    )
                 )
-            )
+
     return sample_sentences
 
 

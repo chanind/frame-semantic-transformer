@@ -12,12 +12,12 @@ from frame_semantic_transformer.data.load_framenet_samples import (
 
 def test_load_sesame_test_samples() -> None:
     samples = load_sesame_test_samples()
-    assert len(samples) == 11604
+    assert len(samples) == 13510
 
 
 def test_load_sesame_dev_samples() -> None:
     samples = load_sesame_dev_samples()
-    assert len(samples) == 3816
+    assert len(samples) == 4613
 
 
 def test_load_sesame_train_samples() -> None:
@@ -31,8 +31,8 @@ def test_load_sesame_train_samples() -> None:
         sample for sample in samples if sample.get_task_name() == "frame_classification"
     ]
     assert len(trigger_id_samples) == 3425
-    assert len(frame_id_samples) == 15544
-    assert len(samples) == 34513
+    assert len(frame_id_samples) == 20597
+    assert len(samples) == 40233
 
 
 def test_parse_samples_from_fulltext_doc(snapshot: SnapshotAssertion) -> None:
