@@ -30,8 +30,8 @@ def test_TaskSampleDataset() -> None:
     dataset = TaskSampleDataset(samples, tokenizer)
 
     assert len(dataset) == 8
-    assert len(dataset[0]["input_ids"]) == 55
-    assert len(dataset[0]["attention_mask"]) == 55
+    assert len(dataset[0]["input_ids"]) == 105
+    assert len(dataset[0]["attention_mask"]) == 105
     assert len(dataset[0]["labels"]) == 30
 
 

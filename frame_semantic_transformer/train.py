@@ -123,7 +123,13 @@ class TrainingModelWrapper(pl.LightningModule):
         output = self._step(batch)
         loss = output.loss
         self.log(
-            "train_loss", loss, prog_bar=True, logger=True, on_epoch=True, on_step=True
+            "train_loss",
+            loss,
+            prog_bar=True,
+            logger=True,
+            on_epoch=True,
+            on_step=True,
+            batch_size=len(batch["input_ids"]),
         )
         return loss
 
@@ -132,7 +138,13 @@ class TrainingModelWrapper(pl.LightningModule):
         loss = output.loss
         metrics = evaluate_batch(self.model, self.tokenizer, batch)
         self.log(
-            "val_loss", loss, prog_bar=True, logger=True, on_epoch=True, on_step=True
+            "val_loss",
+            loss,
+            prog_bar=True,
+            logger=True,
+            on_epoch=True,
+            on_step=True,
+            batch_size=len(batch["input_ids"]),
         )
         return {"loss": loss, "metrics": metrics}
 
@@ -140,7 +152,13 @@ class TrainingModelWrapper(pl.LightningModule):
         output = self._step(batch)
         loss = output.loss
         metrics = evaluate_batch(self.model, self.tokenizer, batch)
-        self.log("test_loss", loss, prog_bar=True, logger=True)
+        self.log(
+            "test_loss",
+            loss,
+            prog_bar=True,
+            logger=True,
+            batch_size=len(batch["input_ids"]),
+        )
         return {"loss": loss, "metrics": metrics}
 
     def configure_optimizers(self) -> AdamW:

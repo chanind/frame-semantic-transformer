@@ -14,7 +14,8 @@ sample = ArgumentsExtractionSample(
 
 
 def test_get_input() -> None:
-    expected = "ARGS Giving: Your * contribution * to Goodwill will mean more than you may know ."
+    elements = "Donor Recipient Theme Place Explanation Time Purpose Means Manner Circumstances Imposed_purpose Depictive Period_of_iterations"
+    expected = f"ARGS Giving | {elements} : Your * contribution * to Goodwill will mean more than you may know ."
     assert sample.get_input() == expected
 
 

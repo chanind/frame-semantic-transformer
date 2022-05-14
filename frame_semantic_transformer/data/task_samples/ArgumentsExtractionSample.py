@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
+from frame_semantic_transformer.data.framenet import get_frame_element_names
 
 from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
 
@@ -18,7 +19,8 @@ class ArgumentsExtractionSample(TaskSample):
         return "args_extraction"
 
     def get_input(self) -> str:
-        return f"ARGS {self.frame}: {self.trigger_labeled_text}"
+        elements = get_frame_element_names(self.frame)
+        return f"ARGS {self.frame} | {' '.join(elements)} : {self.trigger_labeled_text}"
 
     def get_target(self) -> str:
         return " | ".join(

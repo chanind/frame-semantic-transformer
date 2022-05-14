@@ -63,9 +63,6 @@ def parse_frame_samples_from_annotation_set(
                         frame=annotation["frame"]["name"],
                     )
                 )
-                if annotation["FE"][1] != {}:
-                    # I don't understand what the second part of this tuple is, just ignore it for now
-                    continue
                 sample_sentences.append(
                     ArgumentsExtractionSample(
                         text=annotation["text"],
