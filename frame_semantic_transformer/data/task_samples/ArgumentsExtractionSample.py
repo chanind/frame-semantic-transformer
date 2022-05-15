@@ -98,7 +98,9 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
     [("Agent", "He"), ("Destination", "to the store")]
     """
     outputs: list[tuple[str, str]] = []
-    for span in output.split(" | "):
+    for span in output.split("|"):
         parts = span.strip().split("=")
+        if len(parts) == 1:
+            outputs.append((parts, "XXX"))
         outputs.append((parts[0].strip(), parts[1].strip()))
     return outputs
