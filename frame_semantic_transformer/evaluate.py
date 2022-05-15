@@ -19,7 +19,7 @@ from frame_semantic_transformer.predict import batch_predict, predict_on_ids
 
 
 def calc_eval_metrics(
-    true_pos: int, false_pos: int, false_neg: int
+    true_pos: float, false_pos: float, false_neg: float
 ) -> dict[str, float]:
     """
     Calculate precision, recall, and f score
@@ -54,8 +54,8 @@ def evaluate(
     early_stopping: bool = True,
     skip_special_tokens: bool = True,
     clean_up_tokenization_spaces: bool = True,
-) -> dict[str, list[int]]:
-    results: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
+) -> dict[str, list[float]]:
+    results: dict[str, list[float]] = defaultdict(lambda: [0, 0, 0])
     for samples_chunk in tqdm(
         chunk_list(samples, batch_size), total=len(samples) / batch_size
     ):
@@ -78,7 +78,9 @@ def evaluate(
         batched_predictions = chunk_list(predictions, predictions_per_sample)
         for sample, preds in zip(samples_chunk, batched_predictions):
             assert len(preds) == predictions_per_sample
-            score = sample.evaluate_prediction(preds, sample.get_target())
+            score = sample.evaluate_prediction(
+                preds, sample.get_target(), sample.get_input()
+            )
             true_pos, false_pos, false_neg = score
             results[sample.get_task_name()][0] += true_pos
             results[sample.get_task_name()][1] += false_pos
@@ -105,7 +107,7 @@ def evaluate_batch(
     tokenizer: T5Tokenizer,
     batch: Any,
     predictions_per_sample: int = 5,
-) -> dict[str, list[int]]:
+) -> dict[str, list[float]]:
     predictions = predict_on_ids(
         model,
         tokenizer,
@@ -117,15 +119,23 @@ def evaluate_batch(
         num_return_sequences=predictions_per_sample,
     )
     batched_predictions = chunk_list(predictions, predictions_per_sample)
-    results: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
-    for preds, task, label in zip(batched_predictions, batch["task"], batch["labels"]):
+    results: dict[str, list[float]] = defaultdict(lambda: [0, 0, 0])
+    for preds, task, label, input_ids in zip(
+        batched_predictions, batch["task"], batch["labels"], batch["input_ids"]
+    ):
         assert len(preds) == predictions_per_sample
         target_tokens = [tok_id for tok_id in label.tolist() if tok_id != -100]
+        input_tokens = [tok_id for tok_id in input_ids.tolist() if tok_id != -100]
         target = tokenizer.decode(
             target_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
+        input = tokenizer.decode(
+            input_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
+        )
         sample_class = TASK_SAMPLE_CLASS_MAP[task]
-        true_pos, false_pos, false_neg = sample_class.evaluate_prediction(preds, target)
+        true_pos, false_pos, false_neg = sample_class.evaluate_prediction(
+            preds, target, input
+        )
         results[task][0] += true_pos
         results[task][1] += false_pos
         results[task][2] += false_neg

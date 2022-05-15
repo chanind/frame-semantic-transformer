@@ -33,7 +33,7 @@ class TriggerIdentificationSample(TaskSample):
 
     @staticmethod
     def evaluate_prediction(
-        prediction_outputs: Sequence[str], target: str
+        prediction_outputs: Sequence[str], target: str, _input: str
     ) -> tuple[int, int, int]:
         true_pos = 0
         false_pos = 0

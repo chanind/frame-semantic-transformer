@@ -18,10 +18,24 @@ def is_valid_frame(frame: str) -> bool:
     return frame in get_all_valid_frame_names()
 
 
-def get_frame_element_names(frame: str) -> Iterable[str]:
+def get_core_frame_elements(frame: str) -> Iterable[str]:
     if not is_valid_frame(frame):
         raise InvalidFrameError(frame)
-    return fn.frame(frame).FE.keys()
+    return [
+        name
+        for name, element in fn.frame(frame).FE.items()
+        if element.coreType == "Core"
+    ]
+
+
+def get_non_core_frame_elements(frame: str) -> Iterable[str]:
+    if not is_valid_frame(frame):
+        raise InvalidFrameError(frame)
+    return [
+        name
+        for name, element in fn.frame(frame).FE.items()
+        if element.coreType != "Core"
+    ]
 
 
 @lru_cache(1)

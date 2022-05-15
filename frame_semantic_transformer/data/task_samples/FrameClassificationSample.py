@@ -26,17 +26,17 @@ class FrameClassificationSample(TaskSample):
 
     @staticmethod
     def evaluate_prediction(
-        prediction_outputs: Sequence[str], target: str
-    ) -> tuple[int, int, int]:
+        prediction_outputs: Sequence[str], target: str, _input: str
+    ) -> tuple[float, float, float]:
         valid_predictions = [
             pred for pred in prediction_outputs if is_valid_frame(pred)
         ]
         if len(valid_predictions) > 0 and valid_predictions[0] == target:
-            return (1, 0, 0)
+            return (1.0, 0.0, 0.0)
         else:
             # sesame treats any non-correct frame as both a false pos and false neg
             # https://github.com/swabhs/open-sesame/blob/master/sesame/evaluation.py#L67
-            return (0, 1, 1)
+            return (0.0, 1.0, 1.0)
 
     # -- helper properties --
 

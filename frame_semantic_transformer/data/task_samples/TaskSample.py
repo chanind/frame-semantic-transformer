@@ -23,7 +23,7 @@ class TaskSample(ABC):
     @staticmethod
     @abstractmethod
     def evaluate_prediction(
-        prediction_outputs: Sequence[str], target: str
-    ) -> tuple[int, int, int]:
+        prediction_outputs: Sequence[str], target: str, input: str
+    ) -> tuple[float, float, float]:
         "return a tuple indicating the number of true positives, false positives, and false negatives in the prediction"
         pass
