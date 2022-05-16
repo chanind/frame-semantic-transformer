@@ -38,7 +38,7 @@ def get_frame_elements_map_by_core_type() -> dict[str, dict[str, list[str]]]:
     results: dict[str, dict[str, list[str]]] = {}
     for frame in fn.frames():
         results[frame.name] = {"core": [], "noncore": []}
-        for element_name, element in fn.frame(frame).FE.items():
+        for element_name, element in frame.FE.items():
             element_type = "core" if element.coreType == "Core" else "noncore"
             results[frame.name][element_type].append(element_name)
     return results
