@@ -1,13 +1,18 @@
 from __future__ import annotations
 
-from frame_semantic_transformer.data.task_samples.TriggerIdentificationSample import (
+from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
     process_text_for_evaluation,
+)
+from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
+    TriggerIdentificationTask,
 )
 
 
 sample = TriggerIdentificationSample(
-    text="Your contribution to Goodwill will mean more than you may know.",
+    task=TriggerIdentificationTask(
+        text="Your contribution to Goodwill will mean more than you may know.",
+    ),
     trigger_locs=[5, 18, 35, 40, 58, 54],
 )
 

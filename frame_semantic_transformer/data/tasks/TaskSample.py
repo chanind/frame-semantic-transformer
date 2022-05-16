@@ -2,19 +2,21 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Sequence
 
+from frame_semantic_transformer.data.tasks.Task import Task
+
 
 class TaskSample(ABC):
     """
     Abstract interface for all Task Samples
     """
 
-    @abstractmethod
-    def get_task_name(self) -> str:
-        pass
+    task: Task
 
-    @abstractmethod
+    def get_task_name(self) -> str:
+        return self.task.get_task_name()
+
     def get_input(self) -> str:
-        pass
+        return self.task.get_input()
 
     @abstractmethod
     def get_target(self) -> str:

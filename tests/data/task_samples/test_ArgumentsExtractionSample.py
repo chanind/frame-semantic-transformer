@@ -1,21 +1,26 @@
 from __future__ import annotations
 
-from frame_semantic_transformer.data.task_samples.ArgumentsExtractionSample import (
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
     ArgumentsExtractionSample,
+)
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
+    ArgumentsExtractionTask,
 )
 
 
 sample = ArgumentsExtractionSample(
-    text="Your contribution to Goodwill will mean more than you may know .",
-    trigger_loc=(5, 17),
-    frame="Giving",
+    task=ArgumentsExtractionTask(
+        text="Your contribution to Goodwill will mean more than you may know .",
+        trigger_loc=5,
+        frame="Giving",
+    ),
     frame_element_locs=[(0, 4, "Donor"), (18, 29, "Recipient")],
 )
 
 
 def test_get_input() -> None:
     elements = "Donor Recipient Theme Place Explanation Time Purpose Means Manner Circumstances Imposed_purpose Depictive Period_of_iterations"
-    expected = f"ARGS Giving | {elements} : Your * contribution * to Goodwill will mean more than you may know ."
+    expected = f"ARGS Giving | {elements} : Your * contribution to Goodwill will mean more than you may know."
     assert sample.get_input() == expected
 
 

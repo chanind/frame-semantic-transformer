@@ -5,30 +5,25 @@ from typing import Sequence
 
 from frame_semantic_transformer.data.data_utils import standardize_punct
 
-from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
+from .TaskSample import TaskSample
+from .TriggerIdentificationTask import TriggerIdentificationTask
 
 
 @dataclass
 class TriggerIdentificationSample(TaskSample):
-    text: str
+    task: TriggerIdentificationTask
     trigger_locs: list[int]
 
     # -- input / target for training --
-
-    def get_task_name(self) -> str:
-        return "trigger_identification"
-
-    def get_input(self) -> str:
-        return f"TRIGGER: {self.text}"
 
     def get_target(self) -> str:
         output = ""
         prev_trigger_loc = 0
         for loc in sorted(self.trigger_locs):
             # TODO: handle these special chars better
-            output += self.text[prev_trigger_loc:loc] + "*"
+            output += self.task.text[prev_trigger_loc:loc] + "*"
             prev_trigger_loc = loc
-        output += self.text[prev_trigger_loc:]
+        output += self.task.text[prev_trigger_loc:]
         return standardize_punct(output)
 
     @staticmethod

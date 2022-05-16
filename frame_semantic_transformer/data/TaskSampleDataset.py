@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import Dataset
 from transformers import T5Tokenizer
 
-from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
+from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 
 
 MAX_SOURCE_LEN = 512

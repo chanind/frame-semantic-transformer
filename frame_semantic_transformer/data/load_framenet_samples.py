@@ -6,15 +6,24 @@ from frame_semantic_transformer.data.sesame_data_splits import (
     SESAME_DEV_FILES,
     SESAME_TEST_FILES,
 )
-from frame_semantic_transformer.data.task_samples.ArgumentsExtractionSample import (
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
     ArgumentsExtractionSample,
 )
-from frame_semantic_transformer.data.task_samples.FrameClassificationSample import (
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
+    ArgumentsExtractionTask,
+)
+from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
 )
-from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
-from frame_semantic_transformer.data.task_samples.TriggerIdentificationSample import (
+from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
+    FrameClassificationTask,
+)
+from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
+from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
+)
+from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
+    TriggerIdentificationTask,
 )
 
 
@@ -58,16 +67,20 @@ def parse_frame_samples_from_annotation_set(
             for trigger_loc in annotation["Target"]:
                 sample_sentences.append(
                     FrameClassificationSample(
-                        text=annotation["text"],
-                        trigger_loc=trigger_loc,
+                        task=FrameClassificationTask(
+                            text=annotation["text"],
+                            trigger_loc=trigger_loc[0],
+                        ),
                         frame=annotation["frame"]["name"],
                     )
                 )
                 sample_sentences.append(
                     ArgumentsExtractionSample(
-                        text=annotation["text"],
-                        trigger_loc=trigger_loc,
-                        frame=annotation["frame"]["name"],
+                        task=ArgumentsExtractionTask(
+                            text=annotation["text"],
+                            trigger_loc=trigger_loc[0],
+                            frame=annotation["frame"]["name"],
+                        ),
                         frame_element_locs=annotation["FE"][0],
                     )
                 )
@@ -93,7 +106,9 @@ def parse_trigger_sample_from_annotation_set(
 
     if not text or len(target_locs) == 0:
         return None
-    return TriggerIdentificationSample(text=text, trigger_locs=target_locs)
+    return TriggerIdentificationSample(
+        task=TriggerIdentificationTask(text=text), trigger_locs=target_locs
+    )
 
 
 def parse_samples_from_fulltext_doc(doc: Mapping[str, Any]) -> list[TaskSample]:

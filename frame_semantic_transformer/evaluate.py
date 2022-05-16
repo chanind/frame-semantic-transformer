@@ -5,14 +5,14 @@ from tqdm import tqdm
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.data.data_utils import chunk_list
-from frame_semantic_transformer.data.task_samples.ArgumentsExtractionSample import (
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
     ArgumentsExtractionSample,
 )
-from frame_semantic_transformer.data.task_samples.FrameClassificationSample import (
+from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
 )
-from frame_semantic_transformer.data.task_samples.TaskSample import TaskSample
-from frame_semantic_transformer.data.task_samples.TriggerIdentificationSample import (
+from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
+from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
 )
 from frame_semantic_transformer.predict import batch_predict, predict_on_ids

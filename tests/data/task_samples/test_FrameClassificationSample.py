@@ -1,13 +1,18 @@
 from __future__ import annotations
 
-from frame_semantic_transformer.data.task_samples.FrameClassificationSample import (
+from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
+)
+from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
+    FrameClassificationTask,
 )
 
 
 sample = FrameClassificationSample(
-    text="Your contribution to Goodwill will mean more than you may know .",
-    trigger_loc=(5, 17),
+    task=FrameClassificationTask(
+        text="Your contribution to Goodwill will mean more than you may know .",
+        trigger_loc=5,
+    ),
     frame="Giving",
 )
 

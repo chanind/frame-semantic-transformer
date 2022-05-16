@@ -9,14 +9,23 @@ from frame_semantic_transformer.data.framenet import get_fulltext_docs
 from frame_semantic_transformer.data.load_framenet_samples import (
     parse_samples_from_fulltext_doc,
 )
-from frame_semantic_transformer.data.task_samples.ArgumentsExtractionSample import (
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
     ArgumentsExtractionSample,
 )
-from frame_semantic_transformer.data.task_samples.FrameClassificationSample import (
+from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
+    ArgumentsExtractionTask,
+)
+from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
 )
-from frame_semantic_transformer.data.task_samples.TriggerIdentificationSample import (
+from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
+    FrameClassificationTask,
+)
+from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
+)
+from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
+    TriggerIdentificationTask,
 )
 
 
@@ -30,21 +39,21 @@ def test_TaskSampleDataset() -> None:
     dataset = TaskSampleDataset(samples, tokenizer)
 
     assert len(dataset) == 8
-    assert len(dataset[0]["input_ids"]) == 105
-    assert len(dataset[0]["attention_mask"]) == 105
+    assert len(dataset[0]["input_ids"]) == 99
+    assert len(dataset[0]["attention_mask"]) == 99
     assert len(dataset[0]["labels"]) == 30
 
 
 def test_balance_tasks_by_type() -> None:
     tasks = [
-        ArgumentsExtractionSample("a1", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a2", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a3", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a4", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a5", (0, 2), "Greetings", []),
-        FrameClassificationSample("f1", (0, 2), "Greetings"),
-        FrameClassificationSample("f2", (0, 2), "Greetings"),
-        TriggerIdentificationSample("t1", []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a1", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a2", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a3", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a4", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a5", 0, "Greetings"), []),
+        FrameClassificationSample(FrameClassificationTask("f1", 0), "Greetings"),
+        FrameClassificationSample(FrameClassificationTask("f2", 0), "Greetings"),
+        TriggerIdentificationSample(TriggerIdentificationTask("t1"), []),
     ]
     balanced_tasks = balance_tasks_by_type(tasks, max_duplication_factor=10)
     assert len(balanced_tasks) == 14  # 5 arg, 4 frame, 5 trigger
@@ -65,11 +74,11 @@ def test_balance_tasks_by_type() -> None:
 
 def test_balance_tasks_by_type_caps_replications() -> None:
     tasks = [
-        ArgumentsExtractionSample("a1", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a2", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a3", (0, 2), "Greetings", []),
-        ArgumentsExtractionSample("a4", (0, 2), "Greetings", []),
-        TriggerIdentificationSample("t1", []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a1", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a2", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a3", 0, "Greetings"), []),
+        ArgumentsExtractionSample(ArgumentsExtractionTask("a4", 0, "Greetings"), []),
+        TriggerIdentificationSample(TriggerIdentificationTask("t1"), []),
     ]
     capped_balanced_tasks = balance_tasks_by_type(tasks, max_duplication_factor=2)
     assert len(capped_balanced_tasks) == 6  # 4 arg, 2 trigger
