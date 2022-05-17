@@ -106,10 +106,10 @@ def predict_on_ids(
     )
     preds = [
         tokenizer.decode(
-            g,
+            generated_id,
             skip_special_tokens=skip_special_tokens,
             clean_up_tokenization_spaces=clean_up_tokenization_spaces,
         )
-        for g in generated_ids
+        for generated_id in generated_ids
     ]
     return preds

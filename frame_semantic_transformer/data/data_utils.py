@@ -31,3 +31,26 @@ def standardize_punct(sent: str) -> str:
     updated_sent = re.sub(r"\*([a-zA-Z0-9])", r"* \1", updated_sent)
 
     return updated_sent.strip()
+
+
+def marked_string_to_locs(
+    text: str, symbol: str = "*", remove_spaces: bool = True
+) -> tuple[str, list[int]]:
+    """
+    Take a string like "He * went to the * store" and return the indices of the tagged words,
+    in this case "went" and "store", and remove the tags (in this case the *'s)
+    """
+    output_str = ""
+    remaining_str = text
+    locs: list[int] = []
+    symbol_index = remaining_str.find("*")
+
+    while symbol_index != -1:
+        locs.append(symbol_index + len(output_str))
+        output_str += remaining_str[:symbol_index]
+        remaining_str = remaining_str[symbol_index + len(symbol) :]
+        if remove_spaces:
+            remaining_str = remaining_str.strip()
+        symbol_index = remaining_str.find("*")
+    output_str += remaining_str
+    return output_str, locs

@@ -1,6 +1,11 @@
 from __future__ import annotations
 
-from frame_semantic_transformer.data.data_utils import standardize_punct
+import pytest
+
+from frame_semantic_transformer.data.data_utils import (
+    marked_string_to_locs,
+    standardize_punct,
+)
 
 
 def test_standardize_punct_removes_spaces_before_punctuation() -> None:
@@ -65,3 +70,22 @@ def test_standardize_punct_removes_spaces_before_commas() -> None:
         "2- * Sheik of Albu'Ubaid ( Salah al-Dhari ), who * slaughtered * thirty sheeps"
     )
     assert standardize_punct(original) == expected
+
+
+@pytest.mark.parametrize(
+    "input,expected",
+    [
+        ("Hi * there", ("Hi there", [3])),
+        ("Hi there", ("Hi there", [])),
+        (
+            "Does Iran * intend to * become a Nuclear State?",
+            ("Does Iran intend to become a Nuclear State?", [10, 20]),
+        ),
+        (
+            "Does Iran * intend to *become a Nuclear State?",
+            ("Does Iran intend to become a Nuclear State?", [10, 20]),
+        ),
+    ],
+)
+def test_marked_string_to_locs(input: str, expected: tuple[str, list[int]]) -> None:
+    assert marked_string_to_locs(input) == expected
