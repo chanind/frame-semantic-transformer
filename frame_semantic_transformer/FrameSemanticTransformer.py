@@ -152,7 +152,8 @@ class FrameSemanticTransformer:
             frame_and_locs, frame_elements_lists
         ):
             frame_elements = [
-                FrameElement(element, text) for element, text in frame_element_tuples
+                FrameElementResult(element, text)
+                for element, text in frame_element_tuples
             ]
             frame_results.append(
                 FrameResult(
