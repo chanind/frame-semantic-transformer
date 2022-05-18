@@ -5,6 +5,7 @@ RUN pip install poetry
 WORKDIR /code
 
 COPY pyproject.toml /code/
+COPY poetry.lock /code/
 RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
 
 COPY demo/server/requirements.txt /code/
