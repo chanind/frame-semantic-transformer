@@ -144,3 +144,4 @@ cython_debug/
 .DS_Store
 
 models
+node_modules

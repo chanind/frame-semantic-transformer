@@ -16,7 +16,7 @@ from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
 from frame_semantic_transformer.predict import batch_predict
 
 
-OFFICIAL_RELEASES = ["base", "small", "large"]
+OFFICIAL_RELEASES = ["base"]  # TODO: small, large
 
 
 @dataclass

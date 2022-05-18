@@ -1,0 +1,7 @@
+demo/client
+__pycache__
+tests
+models
+.vscode
+.mypy_cache
+.github
