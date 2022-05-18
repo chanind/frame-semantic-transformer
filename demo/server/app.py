@@ -3,9 +3,11 @@ from typing import Any
 from dataclasses import asdict
 
 from flask import Flask, request, abort
+from flask_cors import CORS
 from frame_semantic_transformer import FrameSemanticTransformer
 
 app = Flask(__name__)
+CORS(app)
 
 
 transformer = FrameSemanticTransformer()
