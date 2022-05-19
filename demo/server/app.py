@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-transformer = FrameSemanticTransformer()
+transformer = FrameSemanticTransformer(max_batch_size=2)
 
 
 @app.errorhandler(400)
