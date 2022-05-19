@@ -1,0 +1,40 @@
+.SentenceWithTriggers {
+  font-family: monospace;
+  color: white;
+  font-size: 30px;
+  padding: 20px 30px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  position: relative;
+  word-break: break-all;
+  line-height: 50px;
+}
+
+.SentenceWithTriggers-mainSentence {
+  text-align: left;
+}
+
+.SentenceWithTriggers-triggerContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 30px;
+  text-align: left;
+}
+
+.SentenceWithTriggers-triggerMarker {
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #61dafb;
+  position: relative;
+  right: 20px;
+}
+.SentenceWithTriggers-frameLabel {
+  position: absolute;
+  color: black;
+  font-size: 10px;
+  left: -3px;
+  bottom: -31px;
+}

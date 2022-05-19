@@ -1,0 +1,83 @@
+.DetectFrames {
+  text-align: center;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.DetectFrames-header {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.DetectFrames-query {
+  margin-top: 30px;
+  display: flex;
+  width: 600px;
+}
+@media (max-width: 640px) {
+  .DetectFrames-query {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+}
+
+.DetectFrames-queryInput {
+  padding: 15px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  flex-grow: 1;
+}
+
+.DetectFrames-querySubmit {
+  padding: 0 30px;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  background: #61dafb;
+  font-size: 20px;
+  border-radius: 2px;
+  transition: all 300ms;
+  color: rgba(0, 0, 0, 0.9);
+}
+.DetectFrames-querySubmit:hover {
+  background: #3fd4fd;
+  color: rgba(0, 0, 0, 1);
+}
+
+.DetectFrames-querySubmit:disabled {
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.DetectFrames-loading {
+  padding: 120px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.DetectFrames-analysis {
+  margin-top: 60px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 800px) {
+  .DetectFrames-analysis {
+    width: 100%;
+  }
+}
+
+.DetectFrames-frames {
+  margin-top: 40px;
+}
+.DetectFrames-frame {
+  margin: 10px 0;
+}

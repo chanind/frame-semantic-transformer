@@ -1,0 +1,36 @@
+.Frame {
+  padding: 10px 20px 10px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  position: relative;
+}
+
+.Frame-number {
+  font-size: 20px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  color: rgba(255, 255, 255, 0.3);
+}
+.Frame-name {
+  font-size: 40px;
+}
+
+.Frame-elements {
+  display: flex;
+  margin-top: 20px;
+}
+
+.Frame-element {
+  background: rgba(97, 218, 251, 0.3);
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 2px;
+}
+.Frame-elementName {
+  font-size: 10px;
+  margin-bottom: 5px;
+}
