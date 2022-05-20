@@ -5,6 +5,18 @@ from typing import Any, Sequence
 import torch
 from torch.utils.data import Dataset
 from transformers import T5Tokenizer
+from frame_semantic_transformer.data.augmentations.LowercaseAugmentation import (
+    LowercaseAugmentation,
+)
+from frame_semantic_transformer.data.augmentations.RemoveContractionsAugmentation import (
+    RemoveContractionsAugmentation,
+)
+from frame_semantic_transformer.data.augmentations.RemoveEndPunctuationAugmentation import (
+    RemoveEndPunctuationAugmentation,
+)
+from frame_semantic_transformer.data.augmentations.chain_augmentations import (
+    chain_augmentations,
+)
 
 from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 
@@ -26,13 +38,16 @@ class TaskSampleDataset(Dataset[Any]):
         balance_tasks: bool = False,
         seed: int = 42,
         max_task_duplication_factor: int = 2,
+        augment_data: bool = False,
     ):
         samples_to_parse = samples
         if balance_tasks:
             samples_to_parse = balance_tasks_by_type(
                 samples, seed=seed, max_duplication_factor=max_task_duplication_factor
             )
-        input_ids, attention_mask, labels = parse_samples(samples_to_parse, tokenizer)
+        input_ids, attention_mask, labels = parse_samples(
+            samples_to_parse, tokenizer, augment_data
+        )
         self.input_ids = input_ids
         self.attention_mask = attention_mask
         self.labels = labels
@@ -75,13 +90,26 @@ def balance_tasks_by_type(
 
 
 def parse_samples(
-    samples: Sequence[TaskSample], tokenizer: T5Tokenizer
+    samples: Sequence[TaskSample], tokenizer: T5Tokenizer, augment_data: bool
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     input_sequences: list[str] = []
     output_sequences: list[str] = []
+
+    augmentation = chain_augmentations(
+        [
+            RemoveEndPunctuationAugmentation(0.3),
+            LowercaseAugmentation(0.2),
+            RemoveContractionsAugmentation(0.2),
+        ]
+    )
+
     for sample in samples:
-        input_sequences.append(sample.get_input())
-        output_sequences.append(sample.get_target())
+        input = sample.get_input()
+        output = sample.get_target()
+        if augment_data:
+            input, output = augmentation(input, output)
+        input_sequences.append(input)
+        output_sequences.append(output)
 
     input_encoding = tokenizer(
         input_sequences,
