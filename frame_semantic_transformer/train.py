@@ -230,6 +230,7 @@ def train(
         tokenizer,
         balance_tasks=balance_tasks,
         max_task_duplication_factor=max_task_duplication_factor,
+        augment_data=True,
     )
     val_dataset = TaskSampleDataset(
         load_sesame_dev_samples(),
