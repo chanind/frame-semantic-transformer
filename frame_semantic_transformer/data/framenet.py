@@ -11,7 +11,10 @@ class InvalidFrameError(Exception):
 
 
 def ensure_framenet_downloaded() -> None:
-    nltk.download("framenet_v17")
+    try:
+        nltk.data.find("corpora/framenet_v17")
+    except LookupError:
+        nltk.download("framenet_v17")
 
 
 def is_valid_frame(frame: str) -> bool:

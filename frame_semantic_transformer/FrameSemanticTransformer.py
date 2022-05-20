@@ -1,8 +1,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from typing import cast
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from frame_semantic_transformer.data.data_utils import chunk_list, marked_string_to_locs
+from frame_semantic_transformer.data.framenet import ensure_framenet_downloaded
 from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
     ArgumentsExtractionTask,
 )
@@ -16,7 +18,7 @@ from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
 from frame_semantic_transformer.predict import batch_predict
 
 
-OFFICIAL_RELEASES = ["base"]  # TODO: small, large
+OFFICIAL_RELEASES = ["base", "small"]  # TODO: small, large
 
 
 @dataclass
@@ -40,9 +42,9 @@ class DetectFramesResult:
 
 
 class FrameSemanticTransformer:
-
-    model: T5ForConditionalGeneration
-    tokenizer: T5Tokenizer
+    _model: T5ForConditionalGeneration | None = None
+    _tokenizer: T5Tokenizer | None = None
+    model_path: str
     device: torch.device
     max_batch_size: int
     predictions_per_sample: int
@@ -54,16 +56,35 @@ class FrameSemanticTransformer:
         max_batch_size: int = 8,
         predictions_per_sample: int = 5,
     ):
-        model_path = model_name_or_path
+        self.model_path = model_name_or_path
         if model_name_or_path in OFFICIAL_RELEASES:
-            model_path = f"chanind/frame-semantic-transformer-{model_name_or_path}"
+            self.model_path = f"chanind/frame-semantic-transformer-{model_name_or_path}"
         self.device = torch.device("cuda" if use_gpu else "cpu")
-        self.model = T5ForConditionalGeneration.from_pretrained(model_path).to(
-            self.device
-        )
-        self.tokenizer = T5Tokenizer.from_pretrained(model_path)
         self.max_batch_size = max_batch_size
         self.predictions_per_sample = predictions_per_sample
+
+    def setup(self) -> None:
+        """
+        Initialize the model and tokenizer, and download models / files as needed
+        If this is not called explicitly it will be lazily called before inference
+        """
+        self._model = T5ForConditionalGeneration.from_pretrained(self.model_path).to(
+            self.device
+        )
+        self._tokenizer = T5Tokenizer.from_pretrained(self.model_path)
+        ensure_framenet_downloaded()
+
+    @property
+    def model(self) -> T5ForConditionalGeneration:
+        if not self._model:
+            self.setup()
+        return cast(T5ForConditionalGeneration, self._model)
+
+    @property
+    def tokenizer(self) -> T5Tokenizer:
+        if not self._tokenizer:
+            self.setup()
+        return cast(T5Tokenizer, self._tokenizer)
 
     def _batch_predict(self, inputs: list[str]) -> list[str]:
         """
