@@ -6,23 +6,13 @@ from frame_semantic_transformer.data.sesame_data_splits import (
     SESAME_DEV_FILES,
     SESAME_TEST_FILES,
 )
-from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
+from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionSample,
-)
-from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
     ArgumentsExtractionTask,
-)
-from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
-)
-from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
     FrameClassificationTask,
-)
-from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
-from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
+    TaskSample,
     TriggerIdentificationSample,
-)
-from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
     TriggerIdentificationTask,
 )
 

@@ -3,22 +3,16 @@ from dataclasses import dataclass
 from typing import cast
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+
+from frame_semantic_transformer.constants import MODEL_MAX_LENGTH, OFFICIAL_RELEASES
 from frame_semantic_transformer.data.data_utils import chunk_list, marked_string_to_locs
 from frame_semantic_transformer.data.framenet import ensure_framenet_downloaded
-from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
+from frame_semantic_transformer.predict import batch_predict
+from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionTask,
-)
-from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
     FrameClassificationTask,
-)
-
-from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
     TriggerIdentificationTask,
 )
-from frame_semantic_transformer.predict import batch_predict
-
-
-OFFICIAL_RELEASES = ["base", "small"]  # TODO: small, large
 
 
 @dataclass
@@ -71,7 +65,9 @@ class FrameSemanticTransformer:
         self._model = T5ForConditionalGeneration.from_pretrained(self.model_path).to(
             self.device
         )
-        self._tokenizer = T5Tokenizer.from_pretrained(self.model_path)
+        self._tokenizer = T5Tokenizer.from_pretrained(
+            self.model_path, model_max_length=MODEL_MAX_LENGTH
+        )
         ensure_framenet_downloaded()
 
     @property

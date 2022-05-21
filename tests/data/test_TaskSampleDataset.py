@@ -9,22 +9,12 @@ from frame_semantic_transformer.data.framenet import get_fulltext_docs
 from frame_semantic_transformer.data.load_framenet_samples import (
     parse_samples_from_fulltext_doc,
 )
-from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
+from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionSample,
-)
-from frame_semantic_transformer.data.tasks.ArgumentsExtractionTask import (
     ArgumentsExtractionTask,
-)
-from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
-)
-from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
     FrameClassificationTask,
-)
-from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
-)
-from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
     TriggerIdentificationTask,
 )
 
@@ -39,9 +29,9 @@ def test_TaskSampleDataset() -> None:
     dataset = TaskSampleDataset(samples, tokenizer)
 
     assert len(dataset) == 8
-    assert len(dataset[0]["input_ids"]) == 99
-    assert len(dataset[0]["attention_mask"]) == 99
-    assert len(dataset[0]["labels"]) == 30
+    assert len(dataset[0]["input_ids"]) == 512
+    assert len(dataset[0]["attention_mask"]) == 512
+    assert len(dataset[0]["labels"]) == 512
 
 
 def test_balance_tasks_by_type() -> None:

@@ -1,29 +1,28 @@
 from __future__ import annotations
 from collections import defaultdict
 import random
-from typing import Any, Sequence
+from typing import Any, Callable, Optional, Sequence
 import torch
 from torch.utils.data import Dataset
 from transformers import T5Tokenizer
+from frame_semantic_transformer.constants import MODEL_MAX_LENGTH
+
 from frame_semantic_transformer.data.augmentations import (
     LowercaseAugmentation,
     RemoveContractionsAugmentation,
     RemoveEndPunctuationAugmentation,
     chain_augmentations,
 )
+from frame_semantic_transformer.data.tasks import TaskSample
 
-from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 
-
-MAX_SOURCE_LEN = 512
 MAX_TARGET_LEN = 512
 
 
 class TaskSampleDataset(Dataset[Any]):
-    input_ids: torch.Tensor
-    attention_mask: torch.Tensor
-    labels: torch.Tensor
     samples: Sequence[TaskSample]
+    augmentation: Optional[Callable[[str, str], tuple[str, str]]] = None
+    tokenizer: T5Tokenizer
 
     def __init__(
         self,
@@ -34,29 +33,66 @@ class TaskSampleDataset(Dataset[Any]):
         max_task_duplication_factor: int = 2,
         augment_data: bool = False,
     ):
-        samples_to_parse = samples
+        self.samples = samples
         if balance_tasks:
-            samples_to_parse = balance_tasks_by_type(
+            self.samples = balance_tasks_by_type(
                 samples, seed=seed, max_duplication_factor=max_task_duplication_factor
             )
-        input_ids, attention_mask, labels = parse_samples(
-            samples_to_parse, tokenizer, augment_data
-        )
-        self.input_ids = input_ids
-        self.attention_mask = attention_mask
-        self.labels = labels
-        self.task_names = [sample.get_task_name() for sample in samples_to_parse]
+        self.tokenizer = tokenizer
+        if augment_data:
+            self.augmentation = chain_augmentations(
+                [
+                    RemoveEndPunctuationAugmentation(0.3),
+                    LowercaseAugmentation(0.2),
+                    RemoveContractionsAugmentation(0.2),
+                ]
+            )
 
     def __len__(self) -> int:
-        return len(self.input_ids)
+        return len(self.samples)
 
     def __getitem__(self, index: int) -> dict[str, Any]:
+        sample = self.samples[index]
+
+        input_ids, attention_mask, labels = self.parse_sample(sample)
+
         return {
-            "input_ids": self.input_ids[index],
-            "attention_mask": self.attention_mask[index],
-            "labels": self.labels[index],
-            "task": self.task_names[index],
+            "input_ids": input_ids.squeeze(),
+            "attention_mask": attention_mask.squeeze(),
+            "labels": labels,
+            "task": sample.get_task_name(),
         }
+
+    def parse_sample(
+        self, sample: TaskSample
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+
+        input = sample.get_input()
+        target = sample.get_target()
+        if self.augmentation:
+            input, target = self.augmentation(input, target)
+
+        input_encoding = self.tokenizer(
+            input,
+            padding="max_length",
+            max_length=MODEL_MAX_LENGTH,
+            truncation=True,
+            return_tensors="pt",
+        )
+        input_ids, attention_mask = (
+            input_encoding.input_ids,
+            input_encoding.attention_mask,
+        )
+        output_encoding = self.tokenizer(
+            target,
+            padding="max_length",
+            max_length=MAX_TARGET_LEN,
+            truncation=True,
+        )
+        labels = torch.tensor(output_encoding.input_ids)
+        labels[labels == self.tokenizer.pad_token_id] = -100
+
+        return (input_ids, attention_mask, labels)
 
 
 def balance_tasks_by_type(
@@ -81,48 +117,3 @@ def balance_tasks_by_type(
             balanced_samples.append(sample)
     random.Random(seed).shuffle(balanced_samples)
     return balanced_samples
-
-
-def parse_samples(
-    samples: Sequence[TaskSample], tokenizer: T5Tokenizer, augment_data: bool
-) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-    input_sequences: list[str] = []
-    output_sequences: list[str] = []
-
-    augmentation = chain_augmentations(
-        [
-            RemoveEndPunctuationAugmentation(0.3),
-            LowercaseAugmentation(0.2),
-            RemoveContractionsAugmentation(0.2),
-        ]
-    )
-
-    for sample in samples:
-        input = sample.get_input()
-        output = sample.get_target()
-        if augment_data:
-            input, output = augmentation(input, output)
-        input_sequences.append(input)
-        output_sequences.append(output)
-
-    input_encoding = tokenizer(
-        input_sequences,
-        padding="longest",
-        max_length=MAX_SOURCE_LEN,
-        truncation=True,
-        return_tensors="pt",
-    )
-    input_ids, attention_mask = (
-        input_encoding.input_ids,
-        input_encoding.attention_mask,
-    )
-    output_encoding = tokenizer(
-        output_sequences,
-        padding="longest",
-        max_length=MAX_TARGET_LEN,
-        truncation=True,
-    )
-    labels = torch.tensor(output_encoding.input_ids)
-    labels[labels == tokenizer.pad_token_id] = -100
-
-    return (input_ids, attention_mask, labels)

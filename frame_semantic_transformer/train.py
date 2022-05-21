@@ -11,6 +11,7 @@ from transformers import AdamW, T5ForConditionalGeneration, T5Tokenizer
 from pytorch_lightning.callbacks.progress import TQDMProgressBar
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.base import Callback
+from frame_semantic_transformer.constants import MODEL_MAX_LENGTH
 
 from frame_semantic_transformer.data.TaskSampleDataset import TaskSampleDataset
 from frame_semantic_transformer.data.load_framenet_samples import (
@@ -222,7 +223,9 @@ def train(
     device = torch.device("cuda" if use_gpu else "cpu")
     logging.info("loading base T5 model")
     model = T5ForConditionalGeneration.from_pretrained(base_model).to(device)
-    tokenizer = T5Tokenizer.from_pretrained(base_model)
+    tokenizer = T5Tokenizer.from_pretrained(
+        base_model, model_max_length=MODEL_MAX_LENGTH
+    )
 
     logging.info("loading train/test/val datasets")
     train_dataset = TaskSampleDataset(
