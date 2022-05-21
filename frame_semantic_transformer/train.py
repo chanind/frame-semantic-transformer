@@ -2,6 +2,7 @@ from __future__ import annotations
 from collections import defaultdict
 import logging
 import os
+import argparse
 from typing import Any, Optional
 import numpy as np
 import pytorch_lightning as pl
@@ -209,7 +210,7 @@ def merge_metrics(metrics: list[dict[str, list[int]]]) -> dict[str, list[int]]:
 def train(
     base_model: str = "t5-base",
     batch_size: int = 8,
-    max_epochs: int = 5,
+    max_epochs: int = 10,
     use_gpu: bool = torch.cuda.is_available(),
     output_dir: str = "outputs",
     early_stopping_patience_epochs: int = 0,  # 0 to disable early stopping feature
@@ -221,13 +222,13 @@ def train(
     max_task_duplication_factor: int = 2,
 ) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
     device = torch.device("cuda" if use_gpu else "cpu")
-    logging.info("loading base T5 model")
+    logger.info("loading base T5 model")
     model = T5ForConditionalGeneration.from_pretrained(base_model).to(device)
     tokenizer = T5Tokenizer.from_pretrained(
         base_model, model_max_length=MODEL_MAX_LENGTH
     )
 
-    logging.info("loading train/test/val datasets")
+    logger.info("loading train/test/val datasets")
     train_dataset = TaskSampleDataset(
         load_sesame_train_samples(),
         tokenizer,
@@ -292,3 +293,35 @@ def train(
     trainer.fit(model_wrapper, data_module)
 
     return model, tokenizer
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Train a new frame semantic transformer model using FrameNet 1.7"
+    )
+    parser.add_argument(
+        "--base-model",
+        default="t5-base",
+        help="The HuggingFace T5 model to use as a starting point, default t5-base",
+    )
+    parser.add_argument("--learning-rate", default=1e-4, type=float)
+    parser.add_argument("--use-gpu", action="store_true")
+    parser.add_argument("--batch-size", type=int, default=8, help="default 8")
+    parser.add_argument("--epochs", type=int, default=10, help="default 10")
+    parser.add_argument(
+        "--output-dir",
+        default="outputs",
+        help="dir where output models will be saved after each epoch, default ./outputs",
+    )
+    args = parser.parse_args()
+
+    logger.setLevel(logging.INFO)
+
+    train(
+        base_model=args.base_model,
+        batch_size=args.batch_size,
+        lr=args.learning_rate,
+        use_gpu=args.use_gpu,
+        max_epochs=args.epochs,
+        output_dir=args.output_dir,
+    )
