@@ -65,6 +65,8 @@ python -m frame_semantic_transformer.train \
     --output-dir ./outputs
 ```
 
+Training uses [Pytorch Lightning](https://www.pytorchlightning.ai/) behind the scenes, and will place tensorboard logs into `./lightning_logs` as it trains.
+
 If you need more control, you can also directly import the `train()` method from `frame_semantic_transformer.train` and run training directly in code.
 
 ## Contributing
