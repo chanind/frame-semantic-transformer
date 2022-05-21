@@ -1,0 +1,24 @@
+name: publish
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish-website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: yarn install
+        working-directory: ./demo/client
+      - run: yarn build
+        working-directory: ./demo/client
+        env:
+          REACT_APP_API_HOST: ${{ secrets.API_HOST }}
+          PUBLIC_URL: https://chanind.github.io/frame-semantic-transformer
+          REACT_APP_ROOT_PATH: /frame-semantic-transformer
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./demo/client/build
