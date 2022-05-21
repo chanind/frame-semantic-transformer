@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "frame-semantic-transformer"
 version = "0.1.0"
-description = ""
+description = "Frame Semantic Parser based on T5 and FrameNet"
+repository = "https://github.com/chanind/frame-semantic-transformer"
 authors = ["David Chanin <chanindav@gmail.com>"]
 
 [tool.poetry.dependencies]
@@ -23,3 +24,13 @@ syrupy = "^2.0.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variable = [
+    "frame_semantic_transformer/__init__.py:__version__",
+    "pyproject.toml:version"
+]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
