@@ -32,6 +32,8 @@ jobs:
     concurrency: release
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Semantic Release
         uses: relekang/python-semantic-release@master
         with:
