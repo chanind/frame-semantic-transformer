@@ -1,9 +1,7 @@
 from __future__ import annotations
 import pytest
 
-from frame_semantic_transformer.data.augmentations.RemoveContractionsAugmentation import (
-    RemoveContractionsAugmentation,
-)
+from frame_semantic_transformer.data.augmentations import RemoveContractionsAugmentation
 
 
 @pytest.mark.parametrize(

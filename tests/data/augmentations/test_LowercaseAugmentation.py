@@ -1,9 +1,7 @@
 from __future__ import annotations
 import pytest
 
-from frame_semantic_transformer.data.augmentations.LowercaseAugmentation import (
-    LowercaseAugmentation,
-)
+from frame_semantic_transformer.data.augmentations import LowercaseAugmentation
 
 
 @pytest.mark.parametrize(

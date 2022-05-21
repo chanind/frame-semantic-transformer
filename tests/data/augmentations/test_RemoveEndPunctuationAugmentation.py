@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 
-from frame_semantic_transformer.data.augmentations.RemoveEndPunctuationAugmentation import (
+from frame_semantic_transformer.data.augmentations import (
     RemoveEndPunctuationAugmentation,
 )
 

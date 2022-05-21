@@ -5,16 +5,10 @@ from typing import Any, Sequence
 import torch
 from torch.utils.data import Dataset
 from transformers import T5Tokenizer
-from frame_semantic_transformer.data.augmentations.LowercaseAugmentation import (
+from frame_semantic_transformer.data.augmentations import (
     LowercaseAugmentation,
-)
-from frame_semantic_transformer.data.augmentations.RemoveContractionsAugmentation import (
     RemoveContractionsAugmentation,
-)
-from frame_semantic_transformer.data.augmentations.RemoveEndPunctuationAugmentation import (
     RemoveEndPunctuationAugmentation,
-)
-from frame_semantic_transformer.data.augmentations.chain_augmentations import (
     chain_augmentations,
 )
 
