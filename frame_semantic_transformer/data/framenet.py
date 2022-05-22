@@ -1,5 +1,7 @@
 from __future__ import annotations
+from collections import defaultdict
 from functools import lru_cache
+import re
 from typing import Any, Sequence, Mapping
 import nltk
 
@@ -50,6 +52,34 @@ def get_frame_elements_map_by_core_type() -> dict[str, dict[str, list[str]]]:
 @lru_cache(1)
 def get_all_valid_frame_names() -> set[str]:
     return {frame.name for frame in fn.frames()}
+
+
+def get_possible_frames_for_lexical_unit(lu: str) -> list[str]:
+    # TODO: can make this smarter, especially for lus like "up" which can have
+    # tons of possible matches. Ideally use bigrams as well
+    lookup_map = get_lexical_unit_to_frame_lookup_map()
+    return lookup_map.get(normalize_lexical_unit_text(lu), [])
+
+
+@lru_cache(1)
+def get_lexical_unit_to_frame_lookup_map() -> dict[str, list[str]]:
+    uniq_lookup_map = defaultdict(set)
+    for lu in fn.lus():
+        normalized_name = normalize_lexical_unit_text(lu.name)
+        parts = normalized_name.split()
+        for part in parts:
+            uniq_lookup_map[part.strip()].add(lu.frame.name)
+    sorted_lookup_map: dict[str, list[str]] = {}
+    for lu, frames in uniq_lookup_map.items():
+        sorted_lookup_map[lu] = sorted(list(frames))
+    return sorted_lookup_map
+
+
+def normalize_lexical_unit_text(lu: str) -> str:
+    normalized_lu = lu.lower()
+    normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
+    normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
+    return normalized_lu
 
 
 def get_fulltext_docs() -> Sequence[Mapping[str, Any]]:

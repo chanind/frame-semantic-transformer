@@ -2,7 +2,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
 from frame_semantic_transformer.data.data_utils import standardize_punct
-from frame_semantic_transformer.data.framenet import is_valid_frame
+from frame_semantic_transformer.data.framenet import (
+    get_possible_frames_for_lexical_unit,
+    is_valid_frame,
+)
 
 from .Task import Task
 
@@ -19,7 +22,8 @@ class FrameClassificationTask(Task):
         return "frame_classification"
 
     def get_input(self) -> str:
-        return f"FRAME: {self.trigger_labeled_text}"
+        potential_frames = get_possible_frames_for_lexical_unit(self.trigger)
+        return f"FRAME {' '.join(potential_frames)} : {self.trigger_labeled_text}"
 
     @staticmethod
     def parse_output(prediction_outputs: Sequence[str]) -> str | None:
@@ -29,6 +33,10 @@ class FrameClassificationTask(Task):
         return None
 
     # -- helper properties --
+
+    @property
+    def trigger(self) -> str:
+        return self.text[self.trigger_loc :].split()[0]
 
     @property
     def trigger_labeled_text(self) -> str:
