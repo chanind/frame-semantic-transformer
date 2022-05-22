@@ -143,10 +143,10 @@ class TrainingModelWrapper(pl.LightningModule):
         )
         return loss
 
-    def validation_step(self, batch: Any, batch_idx: int) -> Any:  # type: ignore
+    def validation_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
         output = self._step(batch)
         loss = output.loss
-        if batch_idx < self.skip_initial_epochs_validation:
+        if self.current_epoch < self.skip_initial_epochs_validation:
             return {"loss": loss}
         metrics = evaluate_batch(self.model, self.tokenizer, batch)
         self.log(
@@ -196,8 +196,8 @@ class TrainingModelWrapper(pl.LightningModule):
             torch.mean(torch.stack(losses)).item(),
             4,
         )
-        if "metrics" not in validation_step_outputs[0]:
-            # no metrics to calculate in this epoch, just return early
+        if self.current_epoch < self.skip_initial_epochs_validation:
+            # no validation metrics to calculate in this epoch, just return early
             return
 
         metrics = merge_metrics([out["metrics"] for out in validation_step_outputs])
