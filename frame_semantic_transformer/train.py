@@ -116,9 +116,10 @@ class TrainingModelWrapper(pl.LightningModule):
         return self.model(*args, **kwargs)
 
     def _step(self, batch: Any) -> Any:
-        input_ids, attention_mask, labels = trim_batch(
-            batch["input_ids"], batch["attention_mask"], batch["labels"]
-        )
+        with torch.no_grad():
+            input_ids, attention_mask, labels = trim_batch(
+                batch["input_ids"], batch["attention_mask"], batch["labels"]
+            )
         return self(
             input_ids=input_ids,
             attention_mask=attention_mask,
