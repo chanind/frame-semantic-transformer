@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.1 (2022-05-22)
+### Fix
+* Reverting to older lock file for mypy ([`08f0c63`](https://github.com/chanind/frame-semantic-transformer/commit/08f0c638f02d7b2dfd0589b8ace2232dfd3e9fb8))
+* Relaxing transformers version req ([`57464a1`](https://github.com/chanind/frame-semantic-transformer/commit/57464a19cb69a21f91a1477ec44cc5ee09a29be2))
+
 ## v0.2.0 (2022-05-21)
 ### Feature
 * Autopublish ([`a0900ff`](https://github.com/chanind/frame-semantic-transformer/commit/a0900ff546e99be008491b9b2446d9534e08af76))

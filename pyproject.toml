@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "frame-semantic-transformer"
-version = "0.2.0"
+version = "0.2.1"
 description = "Frame Semantic Parser based on T5 and FrameNet"
 repository = "https://github.com/chanind/frame-semantic-transformer"
 authors = ["David Chanin <chanindav@gmail.com>"]
