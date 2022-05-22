@@ -2,10 +2,14 @@ from __future__ import annotations
 from collections import defaultdict
 from functools import lru_cache
 import re
+from nltk.stem import PorterStemmer
 from typing import Any, Sequence, Mapping
 import nltk
 
 from nltk.corpus import framenet as fn
+
+
+stemmer = PorterStemmer()
 
 
 class InvalidFrameError(Exception):
@@ -65,10 +69,10 @@ def get_possible_frames_for_lexical_unit(lu: str) -> list[str]:
 def get_lexical_unit_to_frame_lookup_map() -> dict[str, list[str]]:
     uniq_lookup_map = defaultdict(set)
     for lu in fn.lus():
-        normalized_name = normalize_lexical_unit_text(lu.name)
-        parts = normalized_name.split()
+        parts = lu.name.split()
         for part in parts:
-            uniq_lookup_map[part.strip()].add(lu.frame.name)
+            normalized_part = normalize_lexical_unit_text(part)
+            uniq_lookup_map[normalized_part].add(lu.frame.name)
     sorted_lookup_map: dict[str, list[str]] = {}
     for lu, frames in uniq_lookup_map.items():
         sorted_lookup_map[lu] = sorted(list(frames))
@@ -79,7 +83,7 @@ def normalize_lexical_unit_text(lu: str) -> str:
     normalized_lu = lu.lower()
     normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
     normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
-    return normalized_lu
+    return stemmer.stem(normalized_lu.strip())
 
 
 def get_fulltext_docs() -> Sequence[Mapping[str, Any]]:
