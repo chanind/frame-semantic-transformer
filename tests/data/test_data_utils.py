@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import pytest
+import torch
 
 from frame_semantic_transformer.data.data_utils import (
     marked_string_to_locs,
     standardize_punct,
+    trim_batch,
 )
 
 
@@ -89,3 +91,60 @@ def test_standardize_punct_removes_spaces_before_commas() -> None:
 )
 def test_marked_string_to_locs(input: str, expected: tuple[str, list[int]]) -> None:
     assert marked_string_to_locs(input) == expected
+
+
+def test_trim_batch() -> None:
+    input_ids = torch.tensor(
+        [
+            [1, 2, 3, 2, 0, 0, 0, 0],
+            [1, 2, 3, 4, 5, 0, 0, 0],
+            [2, 1, 0, 0, 0, 0, 0, 0],
+        ]
+    )
+    attention_mask = torch.tensor(
+        [
+            [1, 1, 1, 1, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+        ]
+    )
+    labels = torch.tensor(
+        [
+            [1, 2, 3, -100, -100, -100],
+            [17, -100, -100, -100, -100, -100],
+            [2, 1, -100, -100, -100, -100],
+        ]
+    )
+    trimmed_input_ids, trimmed_attention_mask, trimmed_labels = trim_batch(
+        input_ids, attention_mask, labels
+    )
+    assert torch.equal(
+        trimmed_input_ids,
+        torch.tensor(
+            [
+                [1, 2, 3, 2, 0],
+                [1, 2, 3, 4, 5],
+                [2, 1, 0, 0, 0],
+            ]
+        ),
+    )
+    assert torch.equal(
+        trimmed_attention_mask,
+        torch.tensor(
+            [
+                [1, 1, 1, 1, 0],
+                [1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0],
+            ]
+        ),
+    )
+    assert torch.equal(
+        trimmed_labels,
+        torch.tensor(
+            [
+                [1, 2, 3],
+                [17, -100, -100],
+                [2, 1, -100],
+            ]
+        ),
+    )

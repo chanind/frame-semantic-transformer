@@ -5,7 +5,7 @@ from typing import Any, Callable, Optional, Sequence
 import torch
 from torch.utils.data import Dataset
 from transformers import T5Tokenizer
-from frame_semantic_transformer.constants import MODEL_MAX_LENGTH
+from frame_semantic_transformer.constants import MODEL_MAX_LENGTH, PADDING_LABEL_ID
 
 from frame_semantic_transformer.data.augmentations import (
     LowercaseAugmentation,
@@ -90,7 +90,7 @@ class TaskSampleDataset(Dataset[Any]):
             truncation=True,
         )
         labels = torch.tensor(output_encoding.input_ids)
-        labels[labels == self.tokenizer.pad_token_id] = -100
+        labels[labels == self.tokenizer.pad_token_id] = PADDING_LABEL_ID
 
         return (input_ids, attention_mask, labels)
 

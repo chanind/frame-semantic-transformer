@@ -15,6 +15,7 @@ from pytorch_lightning.callbacks.base import Callback
 from frame_semantic_transformer.constants import MODEL_MAX_LENGTH
 
 from frame_semantic_transformer.data.TaskSampleDataset import TaskSampleDataset
+from frame_semantic_transformer.data.data_utils import trim_batch
 from frame_semantic_transformer.data.load_framenet_samples import (
     load_sesame_train_samples,
     load_sesame_test_samples,
@@ -115,10 +116,13 @@ class TrainingModelWrapper(pl.LightningModule):
         return self.model(*args, **kwargs)
 
     def _step(self, batch: Any) -> Any:
+        input_ids, attention_mask, labels = trim_batch(
+            batch["input_ids"], batch["attention_mask"], batch["labels"]
+        )
         return self(
-            input_ids=batch["input_ids"],
-            attention_mask=batch["attention_mask"],
-            labels=batch["labels"],
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            labels=labels,
         )
 
     def training_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore

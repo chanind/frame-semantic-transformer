@@ -1,8 +1,11 @@
 from __future__ import annotations
 import re
 from typing import Iterator, Sequence, TypeVar
+from torch import Tensor
 
 from transformers import T5Tokenizer
+
+from frame_semantic_transformer.constants import PADDING_LABEL_ID
 
 T = TypeVar("T")
 
@@ -54,3 +57,21 @@ def marked_string_to_locs(
         symbol_index = remaining_str.find("*")
     output_str += remaining_str
     return output_str, locs
+
+
+def trim_batch(
+    input_ids: Tensor, attention_mask: Tensor, labels: Tensor
+) -> tuple[Tensor, Tensor, Tensor]:
+    """
+    Helper to trim a batch of inputs / labels to strip padding down to the length of the longest item in the batch
+    This helps the model run faster by avoiding needing to generate up to 512 characters of padding when the meaningful
+    content is much shorter.
+    """
+    longest_inputs = int(attention_mask.sum(dim=1).max().item())
+    longest_labels = int((labels != PADDING_LABEL_ID).sum(dim=1).max().item())
+
+    truncated_input_ids = input_ids[:, :longest_inputs]
+    truncated_attention_mask = attention_mask[:, :longest_inputs]
+    truncated_labels = labels[:, :longest_labels]
+
+    return (truncated_input_ids, truncated_attention_mask, truncated_labels)
