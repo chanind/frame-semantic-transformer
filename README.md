@@ -1,4 +1,7 @@
 # Frame Semantic Transformer
+[![ci](https://img.shields.io/github/workflow/status/chanind/frame-semantic-transformer/CI/main)](https://github.com/chanind/frame-semantic-transformer)
+[![PyPI](https://img.shields.io/pypi/v/frame-semantic-transformer?color=blue)](https://pypi.org/project/frame-semantic-transformer/)
+
 
 Frame-based semantic parsing library trained on [FrameNet](https://framenet2.icsi.berkeley.edu/) and built on HuggingFace's [T5 Transformer](https://huggingface.co/docs/transformers/model_doc/t5). This library is designed to be easy to use, yet powerful.
 
