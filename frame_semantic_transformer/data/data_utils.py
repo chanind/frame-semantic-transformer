@@ -70,8 +70,8 @@ def trim_batch(
     longest_inputs = int(attention_mask.sum(dim=1).max().item())
     longest_labels = int((labels != PADDING_LABEL_ID).sum(dim=1).max().item())
 
-    truncated_input_ids = input_ids[:, :longest_inputs]
-    truncated_attention_mask = attention_mask[:, :longest_inputs]
-    truncated_labels = labels[:, :longest_labels]
+    truncated_input_ids = input_ids[:, :longest_inputs].contiguous()
+    truncated_attention_mask = attention_mask[:, :longest_inputs].contiguous()
+    truncated_labels = labels[:, :longest_labels].contiguous()
 
     return (truncated_input_ids, truncated_attention_mask, truncated_labels)
