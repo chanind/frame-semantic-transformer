@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ClapSpinner } from 'react-spinners-kit';
 import ErrorBox from './components/ErrorBox';
 import Frame from './components/Frame';
@@ -46,7 +46,9 @@ function DetectFrames() {
   return (
     <div className="DetectFrames">
       <header className="DetectFrames-header">
-        <h1>Frame Semantic Transformer Demo</h1>
+        <Link className="DetectFrames-titleLink" to="/">
+          <h1>Frame Semantic Transformer Demo</h1>
+        </Link>
 
         <form
           className="DetectFrames-searchForm"
@@ -79,27 +81,30 @@ function DetectFrames() {
       {isLoading && (
         <div className="DetectFrames-loading">
           <ClapSpinner size={40} frontColor="#61dafb" loading={isLoading} />
+          <p className="DetectFrames-loadingNotice">
+            May take up to a minute on first load
+          </p>
         </div>
       )}
       {data && (
         <>
-          <div className="DetectFrames-analysis">
+          <div className="DetectFrames-sentenceWithTriggers">
             <SentenceWithTriggers
               sentence={data.sentence}
               triggers={data.trigger_locations}
               triggerFrameIndices={triggerFrameIndices}
             />
-            <div className="DetectFrames-frames">
-              {data.frames.map((frame, i) => (
-                <div className="DetectFrames-frame" key={i}>
-                  <Frame
-                    name={frame.name}
-                    index={i}
-                    elements={frame.frame_elements}
-                  />
-                </div>
-              ))}
-            </div>
+          </div>
+          <div className="DetectFrames-analysis">
+            {data.frames.map((frame, i) => (
+              <div className="DetectFrames-frame" key={i}>
+                <Frame
+                  name={frame.name}
+                  index={i}
+                  elements={frame.frame_elements}
+                />
+              </div>
+            ))}
           </div>
         </>
       )}

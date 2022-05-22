@@ -12,6 +12,10 @@
   align-items: center;
   justify-content: center;
 }
+.DetectFrames-titleLink {
+  color: white;
+  text-decoration: none;
+}
 
 .DetectFrames-query {
   margin-top: 30px;
@@ -62,11 +66,20 @@
   flex-direction: column;
   align-items: center;
 }
+.DetectFrames-loadingNotice {
+  margin-top: 60px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.DetectFrames-sentenceWithTriggers {
+  margin-top: 60px;
+}
 
 .DetectFrames-analysis {
-  margin-top: 60px;
+  margin-top: 40px;
   padding: 0 20px;
   box-sizing: border-box;
+  width: 800px;
 }
 
 @media (max-width: 800px) {
@@ -75,9 +88,6 @@
   }
 }
 
-.DetectFrames-frames {
-  margin-top: 40px;
-}
 .DetectFrames-frame {
   margin: 10px 0;
 }

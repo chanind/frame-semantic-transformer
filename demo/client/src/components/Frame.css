@@ -18,6 +18,10 @@
 .Frame-name {
   font-size: 40px;
 }
+.Frame-extLinkIcon {
+  width: 30px;
+  margin-left: 10px;
+}
 
 .Frame-elements {
   display: flex;

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import './Frame.css';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 interface FrameProps {
   name: string;
@@ -14,7 +15,16 @@ const Frame: FC<FrameProps> = ({ name, index, elements }) => {
   return (
     <div className="Frame">
       <div className="Frame-number">{index + 1}</div>
-      <div className="Frame-name">{name}</div>
+      <div className="Frame-name">
+        {name}
+        <a
+          href={`https://framenet2.icsi.berkeley.edu/fnReports/data/frame/${name}.xml`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <ExternalLinkIcon className="Frame-extLinkIcon" />
+        </a>
+      </div>
       <div className="Frame-elements">
         {elements.map((element, i) => (
           <div key={i} className="Frame-element">

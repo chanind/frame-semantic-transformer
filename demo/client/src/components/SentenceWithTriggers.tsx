@@ -19,12 +19,14 @@ const SentenceWithTriggers: FC<SentenceWithTriggersProps> = ({
         <div className="SentenceWithTriggers-triggerContainer" key={trigger}>
           <span className="SentenceWithTriggers-triggerSentence">
             {sentence.slice(0, trigger + 1)}
-            <span className="SentenceWithTriggers-triggerMarker">
-              {triggerFrameIndices[trigger] !== undefined && (
-                <span className="SentenceWithTriggers-frameLabel">
-                  {triggerFrameIndices[trigger] + 1}
-                </span>
-              )}
+            <span className="SentenceWithTriggers-triggerMarkerContainer">
+              <span className="SentenceWithTriggers-triggerMarker">
+                {triggerFrameIndices[trigger] !== undefined && (
+                  <span className="SentenceWithTriggers-frameLabel">
+                    {triggerFrameIndices[trigger] + 1}
+                  </span>
+                )}
+              </span>
             </span>
           </span>
         </div>

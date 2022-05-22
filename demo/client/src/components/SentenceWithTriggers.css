@@ -23,6 +23,10 @@
   padding: 20px 30px;
   text-align: left;
 }
+.SentenceWithTriggers-triggerMarkerContainer {
+  display: inline-block;
+  width: 0px;
+}
 
 .SentenceWithTriggers-triggerMarker {
   border-left: 10px solid transparent;
