@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2022-05-22)
+### Feature
+* Adding a helper to trim unnecessary padding chars for faster training / generation ([#1](https://github.com/chanind/frame-semantic-transformer/issues/1)) ([`58e58a8`](https://github.com/chanind/frame-semantic-transformer/commit/58e58a8ee19da5a57b24d6aa8ab0a440fc9e1c93))
+
 ## v0.2.1 (2022-05-22)
 ### Fix
 * Reverting to older lock file for mypy ([`08f0c63`](https://github.com/chanind/frame-semantic-transformer/commit/08f0c638f02d7b2dfd0589b8ace2232dfd3e9fb8))
