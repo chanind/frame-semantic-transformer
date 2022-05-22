@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "https://chanind.github.io/frame-semantic-transformer/static/css/main.490a5f85.css",
-    "main.js": "https://chanind.github.io/frame-semantic-transformer/static/js/main.38f313ba.js",
+    "main.css": "https://chanind.github.io/frame-semantic-transformer/static/css/main.38aef7df.css",
+    "main.js": "https://chanind.github.io/frame-semantic-transformer/static/js/main.ec68e87e.js",
     "static/js/787.1587588d.chunk.js": "https://chanind.github.io/frame-semantic-transformer/static/js/787.1587588d.chunk.js",
     "index.html": "https://chanind.github.io/frame-semantic-transformer/index.html",
-    "main.490a5f85.css.map": "https://chanind.github.io/frame-semantic-transformer/static/css/main.490a5f85.css.map",
-    "main.38f313ba.js.map": "https://chanind.github.io/frame-semantic-transformer/static/js/main.38f313ba.js.map",
+    "main.38aef7df.css.map": "https://chanind.github.io/frame-semantic-transformer/static/css/main.38aef7df.css.map",
+    "main.ec68e87e.js.map": "https://chanind.github.io/frame-semantic-transformer/static/js/main.ec68e87e.js.map",
     "787.1587588d.chunk.js.map": "https://chanind.github.io/frame-semantic-transformer/static/js/787.1587588d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.490a5f85.css",
-    "static/js/main.38f313ba.js"
+    "static/css/main.38aef7df.css",
+    "static/js/main.ec68e87e.js"
   ]
 }
