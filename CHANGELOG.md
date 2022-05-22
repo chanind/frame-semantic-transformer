@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.3 (2022-05-22)
+### Fix
+* Make trimmed batch contiguous ([#2](https://github.com/chanind/frame-semantic-transformer/issues/2)) ([`21aee70`](https://github.com/chanind/frame-semantic-transformer/commit/21aee707b25a96139f19c84c176fe692323e6b48))
+
 ## v0.3.2 (2022-05-22)
 ### Fix
 * Add torch.no_grad() to batch trimming step ([`8b8a401`](https://github.com/chanind/frame-semantic-transformer/commit/8b8a401b339b674abeca300408d613472f6fa197))
