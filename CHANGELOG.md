@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.2 (2022-05-22)
+### Fix
+* Add torch.no_grad() to batch trimming step ([`8b8a401`](https://github.com/chanind/frame-semantic-transformer/commit/8b8a401b339b674abeca300408d613472f6fa197))
+
 ## v0.3.1 (2022-05-22)
 ### Fix
 * Adding LICENSE into pypi description ([`c6e0a42`](https://github.com/chanind/frame-semantic-transformer/commit/c6e0a42fc606cc06399f67966338ebbd8bc0e5d9))
