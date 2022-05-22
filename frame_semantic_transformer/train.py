@@ -253,14 +253,12 @@ def train(
     val_dataset = TaskSampleDataset(
         load_sesame_dev_samples(),
         tokenizer,
-        balance_tasks=balance_tasks,
-        max_task_duplication_factor=max_task_duplication_factor,
+        balance_tasks=False,
     )
     test_dataset = TaskSampleDataset(
         load_sesame_test_samples(),
         tokenizer,
-        balance_tasks=balance_tasks,
-        max_task_duplication_factor=max_task_duplication_factor,
+        balance_tasks=False,
     )
 
     data_module = TrainDataModule(

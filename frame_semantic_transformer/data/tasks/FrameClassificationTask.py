@@ -22,7 +22,7 @@ class FrameClassificationTask(Task):
         return "frame_classification"
 
     def get_input(self) -> str:
-        potential_frames = get_possible_frames_for_lexical_unit(self.trigger)
+        potential_frames = get_possible_frames_for_lexical_unit(self.trigger_bigrams)
         return f"FRAME {' '.join(potential_frames)} : {self.trigger_labeled_text}"
 
     @staticmethod
@@ -35,8 +35,22 @@ class FrameClassificationTask(Task):
     # -- helper properties --
 
     @property
-    def trigger(self) -> str:
-        return self.text[self.trigger_loc :].split()[0]
+    def trigger_bigrams(self) -> list[list[str]]:
+        """
+        return bigrams of the trigger, trigger + next work, and prev word + trigger
+        """
+        pre_trigger_tokens = self.text[: self.trigger_loc].split()
+        trigger_and_after_tokens = self.text[self.trigger_loc :].split()
+        trigger = trigger_and_after_tokens[0]
+        post_trigger_tokens = trigger_and_after_tokens[1:]
+        bigrams: list[list[str]] = []
+        if len(pre_trigger_tokens) > 0:
+            bigrams.append([pre_trigger_tokens[-1], trigger])
+        if len(post_trigger_tokens) > 0:
+            bigrams.append([trigger, post_trigger_tokens[-1]])
+        # add the monogram last
+        bigrams.append([trigger])
+        return bigrams
 
     @property
     def trigger_labeled_text(self) -> str:

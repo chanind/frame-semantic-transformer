@@ -18,7 +18,7 @@ sample = FrameClassificationSample(
 
 
 def test_get_input() -> None:
-    expected = "FRAME Giving : Your * contribution to Goodwill will mean more than you may know."
+    expected = "FRAME Condition_symptom_relation Giving : Your * contribution to Goodwill will mean more than you may know."
     assert sample.get_input() == expected
 
 
