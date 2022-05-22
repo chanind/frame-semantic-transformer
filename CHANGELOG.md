@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.1 (2022-05-22)
+### Fix
+* Adding LICENSE into pypi description ([`c6e0a42`](https://github.com/chanind/frame-semantic-transformer/commit/c6e0a42fc606cc06399f67966338ebbd8bc0e5d9))
+* Adding README into pypi description ([`1b99551`](https://github.com/chanind/frame-semantic-transformer/commit/1b9955136ff6f4679aa093fd7a05765c035f03f4))
+
 ## v0.3.0 (2022-05-22)
 ### Feature
 * Adding a helper to trim unnecessary padding chars for faster training / generation ([#1](https://github.com/chanind/frame-semantic-transformer/issues/1)) ([`58e58a8`](https://github.com/chanind/frame-semantic-transformer/commit/58e58a8ee19da5a57b24d6aa8ab0a440fc9e1c93))
