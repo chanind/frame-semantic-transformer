@@ -49,7 +49,7 @@ class FrameClassificationTask(Task):
         if len(pre_trigger_tokens) > 0:
             bigrams.append([pre_trigger_tokens[-1], trigger])
         if len(post_trigger_tokens) > 0:
-            bigrams.append([trigger, post_trigger_tokens[-1]])
+            bigrams.append([trigger, post_trigger_tokens[0]])
         # add the monogram last
         bigrams.append([trigger])
         return bigrams

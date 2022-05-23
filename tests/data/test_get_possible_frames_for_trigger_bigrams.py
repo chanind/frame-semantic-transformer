@@ -26,3 +26,9 @@ def test_get_possible_frames_for_trigger_bigrams() -> None:
     assert get_possible_frames_for_trigger_bigrams([["can't", "help"]]) == [
         "Self_control"
     ]
+
+
+def test_get_possible_frames_for_trigger_bigrams_stems_bigrams() -> None:
+    assert get_possible_frames_for_trigger_bigrams([["can't", "helps"]]) == [
+        "Self_control"
+    ]
