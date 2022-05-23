@@ -3,8 +3,10 @@ from dataclasses import dataclass
 from typing import Sequence
 from frame_semantic_transformer.data.data_utils import standardize_punct
 from frame_semantic_transformer.data.framenet import (
-    get_possible_frames_for_lexical_unit,
     is_valid_frame,
+)
+from frame_semantic_transformer.data.get_possible_frames_for_trigger_bigrams import (
+    get_possible_frames_for_trigger_bigrams,
 )
 
 from .Task import Task
@@ -22,7 +24,7 @@ class FrameClassificationTask(Task):
         return "frame_classification"
 
     def get_input(self) -> str:
-        potential_frames = get_possible_frames_for_lexical_unit(self.trigger_bigrams)
+        potential_frames = get_possible_frames_for_trigger_bigrams(self.trigger_bigrams)
         return f"FRAME {' '.join(potential_frames)} : {self.trigger_labeled_text}"
 
     @staticmethod
