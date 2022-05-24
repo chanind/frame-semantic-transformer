@@ -28,13 +28,14 @@ interface DetectFramesResponse {
 function DetectFrames() {
   const urlParams = useUrlParams();
   const sentenceQuery = urlParams.get('sentence') || '';
+  const model = urlParams.get('model') || 'base';
   const [sentence, setSentence] = useState(sentenceQuery);
   const { isLoading, error, data } = useQuery<DetectFramesResponse, any>(
-    `detect-frames/${sentenceQuery}`,
+    `detect-frames/${model}/${sentenceQuery}`,
     () =>
       fetch(
         API_HOST +
-          '/detect-frames?sentence=' +
+          `/detect-frames?model=${model}&sentence=` +
           encodeURIComponent(sentenceQuery),
       ).then(res => res.json()),
   );
