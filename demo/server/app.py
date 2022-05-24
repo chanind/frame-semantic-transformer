@@ -10,7 +10,10 @@ app = Flask(__name__)
 CORS(app)
 
 
-transformer = FrameSemanticTransformer(max_batch_size=2)
+transformers = {
+    "base": FrameSemanticTransformer("base", max_batch_size=2),
+    "small": FrameSemanticTransformer("small", max_batch_size=2),
+}
 
 
 @app.errorhandler(400)
@@ -34,6 +37,7 @@ def detect_frames() -> dict[str, Any]:
                 "message": 'You must provide a "sentence" query param',
             },
         )
-
+    model_size = request.args.get("model", type="str")
+    transformer = transformers.get(model_size, transformers["base"])
     detect_frames_result = transformer.detect_frames(sentence)
     return asdict(detect_frames_result)

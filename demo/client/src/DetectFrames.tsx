@@ -28,13 +28,14 @@ interface DetectFramesResponse {
 function DetectFrames() {
   const urlParams = useUrlParams();
   const sentenceQuery = urlParams.get('sentence') || '';
+  const model = urlParams.get('model') || 'base';
   const [sentence, setSentence] = useState(sentenceQuery);
   const { isLoading, error, data } = useQuery<DetectFramesResponse, any>(
-    `detect-frames/${sentenceQuery}`,
+    `detect-frames/${model}/${sentenceQuery}`,
     () =>
       fetch(
         API_HOST +
-          '/detect-frames?sentence=' +
+          `/detect-frames?model=${model}&sentence=` +
           encodeURIComponent(sentenceQuery),
       ).then(res => res.json()),
   );
@@ -68,6 +69,7 @@ function DetectFrames() {
               placeholder="Enter a sentence"
               value={sentence}
               onChange={evt => setSentence(evt.target.value)}
+              maxLength={140}
             />
             <button
               className="DetectFrames-querySubmit"
@@ -82,7 +84,7 @@ function DetectFrames() {
         <div className="DetectFrames-loading">
           <ClapSpinner size={40} frontColor="#61dafb" loading={isLoading} />
           <p className="DetectFrames-loadingNotice">
-            May take up to a minute on first load
+            May take a few minutes on first load
           </p>
         </div>
       )}
