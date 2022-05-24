@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2022-05-24)
+### Feature
+* Frame classification hints ([#3](https://github.com/chanind/frame-semantic-transformer/issues/3)) ([`201ed51`](https://github.com/chanind/frame-semantic-transformer/commit/201ed517c7a78b32d659150dadf11fcd7b4fea6d))
+
 ## v0.3.3 (2022-05-22)
 ### Fix
 * Make trimmed batch contiguous ([#2](https://github.com/chanind/frame-semantic-transformer/issues/2)) ([`21aee70`](https://github.com/chanind/frame-semantic-transformer/commit/21aee707b25a96139f19c84c176fe692323e6b48))
