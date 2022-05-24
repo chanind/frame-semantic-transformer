@@ -52,5 +52,9 @@ def get_all_valid_frame_names() -> set[str]:
     return {frame.name for frame in fn.frames()}
 
 
+def get_lexical_units() -> Sequence[Mapping[str, Any]]:
+    return fn.lus()
+
+
 def get_fulltext_docs() -> Sequence[Mapping[str, Any]]:
     return fn.docs()

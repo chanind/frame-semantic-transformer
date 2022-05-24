@@ -1,4 +1,4 @@
 MODEL_MAX_LENGTH = 512
 OFFICIAL_RELEASES = ["base", "small"]  # TODO: small, large
-MODEL_REVISION = "v0.0.1"
+MODEL_REVISION = "v0.1.0"
 PADDING_LABEL_ID = -100

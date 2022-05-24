@@ -92,6 +92,7 @@ class TrainingModelWrapper(pl.LightningModule):
     trainer: pl.Trainer
     output_dir: str
     save_only_last_epoch: bool
+    skip_initial_epochs_validation: int
 
     def __init__(
         self,
@@ -100,6 +101,7 @@ class TrainingModelWrapper(pl.LightningModule):
         lr: float = 1e-4,
         output_dir: str = "outputs",
         save_only_last_epoch: bool = False,
+        skip_initial_epochs_validation: int = 0,
     ):
         super().__init__()
         self.lr = lr
@@ -107,6 +109,7 @@ class TrainingModelWrapper(pl.LightningModule):
         self.tokenizer = tokenizer
         self.output_dir = output_dir
         self.save_only_last_epoch = save_only_last_epoch
+        self.skip_initial_epochs_validation = skip_initial_epochs_validation
 
     def forward(
         self,
@@ -143,6 +146,8 @@ class TrainingModelWrapper(pl.LightningModule):
     def validation_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
         output = self._step(batch)
         loss = output.loss
+        if self.current_epoch < self.skip_initial_epochs_validation:
+            return {"loss": loss}
         metrics = evaluate_batch(self.model, self.tokenizer, batch)
         self.log(
             "val_loss",
@@ -191,6 +196,9 @@ class TrainingModelWrapper(pl.LightningModule):
             torch.mean(torch.stack(losses)).item(),
             4,
         )
+        if self.current_epoch < self.skip_initial_epochs_validation:
+            # no validation metrics to calculate in this epoch, just return early
+            return
 
         metrics = merge_metrics([out["metrics"] for out in validation_step_outputs])
         for task_name, counts in metrics.items():
@@ -225,6 +233,7 @@ def train(
     save_only_last_epoch: bool = False,
     balance_tasks: bool = True,
     max_task_duplication_factor: int = 2,
+    skip_initial_epochs_validation: int = 0,
 ) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -244,14 +253,12 @@ def train(
     val_dataset = TaskSampleDataset(
         load_sesame_dev_samples(),
         tokenizer,
-        balance_tasks=balance_tasks,
-        max_task_duplication_factor=max_task_duplication_factor,
+        balance_tasks=False,
     )
     test_dataset = TaskSampleDataset(
         load_sesame_test_samples(),
         tokenizer,
-        balance_tasks=balance_tasks,
-        max_task_duplication_factor=max_task_duplication_factor,
+        balance_tasks=False,
     )
 
     data_module = TrainDataModule(
@@ -268,6 +275,7 @@ def train(
         lr=lr,
         output_dir=output_dir,
         save_only_last_epoch=save_only_last_epoch,
+        skip_initial_epochs_validation=skip_initial_epochs_validation,
     )
 
     # add callbacks
