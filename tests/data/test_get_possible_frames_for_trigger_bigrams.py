@@ -14,9 +14,10 @@ def test_get_lexical_unit_bigram_to_frame_lookup_map() -> None:
 
 
 def test_normalize_lexical_unit_ngram() -> None:
-    assert normalize_lexical_unit_ngram(["can't", "stop"]) == "cant_stop"
+    assert normalize_lexical_unit_ngram(["can't", "stop"]) == "can_stop"
     assert normalize_lexical_unit_ngram(["he", "eats"]) == "he_eat"
     assert normalize_lexical_unit_ngram(["eats"]) == "eat"
+    assert normalize_lexical_unit_ngram(["ate"]) == "eat"
 
 
 def test_get_possible_frames_for_trigger_bigrams() -> None:

@@ -13,8 +13,10 @@ nltk = "^3.7"
 torch = "^1.11.0"
 transformers = "^4.18.0"
 sentencepiece = "^0.1.96"
-pytorch-lightning = "^1.6.2"
+pytorch-lightning = "^1.5.0"
 tqdm = "^4.64.0"
+spacy = "^3.3.0"
+en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.3.0/en_core_web_sm-3.3.0.tar.gz#egg=en_core_web_sm"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

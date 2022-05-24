@@ -10,7 +10,7 @@ from frame_semantic_transformer.constants import (
     OFFICIAL_RELEASES,
 )
 from frame_semantic_transformer.data.data_utils import chunk_list, marked_string_to_locs
-from frame_semantic_transformer.data.framenet import ensure_framenet_downloaded
+from frame_semantic_transformer.data.download_nlp_data import ensure_nlp_data_downloaded
 from frame_semantic_transformer.predict import batch_predict
 from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionTask,
@@ -76,7 +76,7 @@ class FrameSemanticTransformer:
             revision=self.model_revision,
             model_max_length=MODEL_MAX_LENGTH,
         )
-        ensure_framenet_downloaded()
+        ensure_nlp_data_downloaded()
 
     @property
     def model(self) -> T5ForConditionalGeneration:

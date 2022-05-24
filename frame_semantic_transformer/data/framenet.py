@@ -3,18 +3,35 @@ from functools import lru_cache
 from typing import Any, Sequence, Mapping
 import nltk
 
-from nltk.corpus import framenet as fn
+from nltk.corpus.util import LazyCorpusLoader
+from nltk.corpus.reader.framenet import FramenetCorpusReader
+
+
+class FullFramenetCorpusReader(FramenetCorpusReader):
+    """
+    Hacky class to get nltk to stop skipping "Problem" lus
+    """
+
+    _bad_statuses: list[str] = []
+
+
+# copied from https://github.com/nltk/nltk/blob/34ee17b395b1bb18cf307bdafb3feea99bf54243/nltk/corpus/__init__.py#L152
+# but using the modified corpus reader above, to avoid missing "Problem" lexical units
+fn = LazyCorpusLoader(
+    "framenet_v17",
+    FullFramenetCorpusReader,
+    [
+        "frRelation.xml",
+        "frameIndex.xml",
+        "fulltextIndex.xml",
+        "luIndex.xml",
+        "semTypes.xml",
+    ],
+)
 
 
 class InvalidFrameError(Exception):
     pass
-
-
-def ensure_framenet_downloaded() -> None:
-    try:
-        nltk.data.find("corpora/framenet_v17")
-    except LookupError:
-        nltk.download("framenet_v17")
 
 
 def is_valid_frame(frame: str) -> bool:
@@ -49,11 +66,15 @@ def get_frame_elements_map_by_core_type() -> dict[str, dict[str, list[str]]]:
 
 @lru_cache(1)
 def get_all_valid_frame_names() -> set[str]:
-    return {frame.name for frame in fn.frames()}
+    return {frame.name for frame in get_frames()}
 
 
 def get_lexical_units() -> Sequence[Mapping[str, Any]]:
     return fn.lus()
+
+
+def get_frames() -> Sequence[Mapping[str, Any]]:
+    return fn.frames()
 
 
 def get_fulltext_docs() -> Sequence[Mapping[str, Any]]:

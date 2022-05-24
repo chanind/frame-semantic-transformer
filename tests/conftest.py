@@ -1,3 +1,3 @@
-from frame_semantic_transformer.data.framenet import ensure_framenet_downloaded
+from frame_semantic_transformer.data.download_nlp_data import ensure_nlp_data_downloaded
 
-ensure_framenet_downloaded()
+ensure_nlp_data_downloaded()

@@ -30,6 +30,13 @@ def test_load_sesame_train_samples() -> None:
     frame_id_samples = [
         sample for sample in samples if sample.get_task_name() == "frame_classification"
     ]
+    messed_up_samples = []
+    for sample in frame_id_samples:
+        if sample.frame not in sample.get_input():
+            messed_up_samples.append(sample)
+            print(f"{sample.frame} :: {sample.get_input()}")
+    print(f"{len(messed_up_samples)} of {len(frame_id_samples)} are messed up!")
+    assert False
     assert len(trigger_id_samples) == 3425
     assert len(frame_id_samples) == 20597
     assert len(samples) == 44619
