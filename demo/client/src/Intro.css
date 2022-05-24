@@ -4,7 +4,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -30,7 +29,7 @@
   border-radius: 2px;
   outline: none;
   border: none;
-  font-size: calc(10px + 2vmin);
+  font-size: 20px;
   flex-grow: 1;
 }
 
@@ -40,7 +39,7 @@
   border: none;
   cursor: pointer;
   background: #61dafb;
-  font-size: calc(10px + 2vmin);
+  font-size: 25px;
   border-radius: 2px;
   transition: all 300ms;
   color: rgba(0, 0, 0, 0.9);
@@ -53,4 +52,9 @@
 .Intro-querySubmit:disabled {
   color: rgba(0, 0, 0, 0.9);
   background: rgba(255, 255, 255, 0.7);
+}
+
+.Intro-demoSentences {
+  line-height: 30px;
+  margin-top: 50px;
 }

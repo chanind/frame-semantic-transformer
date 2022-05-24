@@ -68,6 +68,7 @@ function DetectFrames() {
               placeholder="Enter a sentence"
               value={sentence}
               onChange={evt => setSentence(evt.target.value)}
+              maxLength={140}
             />
             <button
               className="DetectFrames-querySubmit"
@@ -82,7 +83,7 @@ function DetectFrames() {
         <div className="DetectFrames-loading">
           <ClapSpinner size={40} frontColor="#61dafb" loading={isLoading} />
           <p className="DetectFrames-loadingNotice">
-            May take up to a minute on first load
+            May take a few minutes on first load
           </p>
         </div>
       )}
