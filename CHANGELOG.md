@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.1 (2022-05-25)
+### Fix
+* Updating README stats ([`76e4e75`](https://github.com/chanind/frame-semantic-transformer/commit/76e4e754b534389de9c86caced762461ae884e88))
+
 ## v0.4.0 (2022-05-24)
 ### Feature
 * Frame classification hints ([#3](https://github.com/chanind/frame-semantic-transformer/issues/3)) ([`201ed51`](https://github.com/chanind/frame-semantic-transformer/commit/201ed517c7a78b32d659150dadf11fcd7b4fea6d))
