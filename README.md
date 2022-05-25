@@ -19,7 +19,7 @@ This library uses the same train/dev/test documents and evaluation methodology a
 | Frame classification   | 0.90 / 0.87          | 0.83 / 0.81               | 0.89 / 0.87              |
 | Argument extraction    | 0.61 / 0.61          | 0.68 / 0.70               | 0.74 / 0.72              |
 
-The base model performs similarly to Open-Sesame on trigger identification and frame classification tasks, but outperforms it by a significant margin on argument extraction. The small pretrained model has lower F1 than base across the board, but is 1/4 the size and is still comparable to Open-Sesame at argument extraction.
+The base model performs similarly to Open-Sesame on trigger identification and frame classification tasks, but outperforms it by a significant margin on argument extraction. The small pretrained model has lower F1 than base across the board, but is 1/4 the size and still outperforms Open-Sesame at argument extraction.
 
 ## Installation
 
