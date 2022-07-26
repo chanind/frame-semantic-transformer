@@ -45,7 +45,7 @@ frame_transformer = FrameSemanticTransformer()
 result = frame_transformer.detect_frames("The hallway smelt of boiled cabbage and old rag mats.")
 
 print(f"Results found in: {result.sentence}")
-for frames in result.frames:
+for frame in result.frames:
     print(f"FRAME: {frame.name}")
     for element in frame.frame_elements:
         print(f"{element.name}: {element.text}")
