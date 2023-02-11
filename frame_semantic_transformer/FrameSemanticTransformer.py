@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import cast
+from typing import Optional, cast
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
@@ -9,8 +9,10 @@ from frame_semantic_transformer.constants import (
     MODEL_REVISION,
     OFFICIAL_RELEASES,
 )
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import chunk_list, marked_string_to_locs
-from frame_semantic_transformer.data.framenet import ensure_framenet_downloaded
+from frame_semantic_transformer.data.loaders.loader import InferenceLoader
+from frame_semantic_transformer.data.loaders.framenet17 import Framenet17InferenceLoader
 from frame_semantic_transformer.predict import batch_predict
 from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionTask,
@@ -47,6 +49,7 @@ class FrameSemanticTransformer:
     device: torch.device
     max_batch_size: int
     predictions_per_sample: int
+    loader_cache: LoaderDataCache
 
     def __init__(
         self,
@@ -54,6 +57,7 @@ class FrameSemanticTransformer:
         use_gpu: bool = torch.cuda.is_available(),
         max_batch_size: int = 8,
         predictions_per_sample: int = 5,
+        inference_loader: Optional[InferenceLoader] = None,
     ):
         self.model_path = model_name_or_path
         if model_name_or_path in OFFICIAL_RELEASES:
@@ -62,6 +66,8 @@ class FrameSemanticTransformer:
         self.device = torch.device("cuda" if use_gpu else "cpu")
         self.max_batch_size = max_batch_size
         self.predictions_per_sample = predictions_per_sample
+        loader = inference_loader or Framenet17InferenceLoader()
+        self.loader_cache = LoaderDataCache(loader)
 
     def setup(self) -> None:
         """
@@ -76,7 +82,7 @@ class FrameSemanticTransformer:
             revision=self.model_revision,
             model_max_length=MODEL_MAX_LENGTH,
         )
-        ensure_framenet_downloaded()
+        self.loader_cache.setup()
 
     @property
     def model(self) -> T5ForConditionalGeneration:
@@ -105,7 +111,7 @@ class FrameSemanticTransformer:
     def _identify_triggers(self, sentence: str) -> tuple[str, list[int]]:
         task = TriggerIdentificationTask(text=sentence)
         outputs = self._batch_predict([task.get_input()])
-        result = task.parse_output(outputs)
+        result = task.parse_output(outputs, self.loader_cache)
         return marked_string_to_locs(result)
 
     def _classify_frames(
@@ -120,7 +126,11 @@ class FrameSemanticTransformer:
 
         for trigger_loc in trigger_locs:
             frame_classification_tasks.append(
-                FrameClassificationTask(text=sentence, trigger_loc=trigger_loc)
+                FrameClassificationTask(
+                    text=sentence,
+                    trigger_loc=trigger_loc,
+                    loader_cache=self.loader_cache,
+                )
             )
         for batch in chunk_list(
             frame_classification_tasks, chunk_size=self.max_batch_size
@@ -130,7 +140,7 @@ class FrameSemanticTransformer:
                 chunk_list(batch_results, self.predictions_per_sample),
                 batch,
             ):
-                frames.append(frame_task.parse_output(preds))
+                frames.append(frame_task.parse_output(preds, self.loader_cache))
         return frames
 
     def _extract_frame_args(
@@ -147,6 +157,7 @@ class FrameSemanticTransformer:
                 text=sentence,
                 trigger_loc=trigger_loc,
                 frame=frame,
+                loader_cache=self.loader_cache,
             )
             for frame, trigger_loc in frame_with_trigger_locs
         ]
@@ -159,7 +170,9 @@ class FrameSemanticTransformer:
             for preds, args_task in zip(
                 chunk_list(batch_results, self.predictions_per_sample), args_tasks_batch
             ):
-                frame_element_results.append(args_task.parse_output(preds))
+                frame_element_results.append(
+                    args_task.parse_output(preds, self.loader_cache)
+                )
         return frame_element_results
 
     def detect_frames(self, sentence: str) -> DetectFramesResult:

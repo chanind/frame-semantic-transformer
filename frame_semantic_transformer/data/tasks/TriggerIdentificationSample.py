@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import re
 from typing import Sequence
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
 from frame_semantic_transformer.data.data_utils import standardize_punct
 
@@ -28,7 +29,10 @@ class TriggerIdentificationSample(TaskSample):
 
     @staticmethod
     def evaluate_prediction(
-        prediction_outputs: Sequence[str], target: str, _input: str
+        prediction_outputs: Sequence[str],
+        target: str,
+        _input: str,
+        _loader_cache: LoaderDataCache,
     ) -> tuple[int, int, int]:
         true_pos = 0
         false_pos = 0

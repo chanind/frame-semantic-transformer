@@ -2,9 +2,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 import re
 from typing import Sequence
-from frame_semantic_transformer.data.framenet import (
-    get_non_core_frame_elements,
-)
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+
+from frame_semantic_transformer.data.frame_types import FrameElementAnnotation
 
 from .ArgumentsExtractionTask import ArgumentsExtractionTask, split_output_fe_spans
 from .TaskSample import TaskSample
@@ -13,13 +13,13 @@ from .TaskSample import TaskSample
 @dataclass
 class ArgumentsExtractionSample(TaskSample):
     task: ArgumentsExtractionTask
-    frame_element_locs: list[tuple[int, int, str]]
+    frame_elements: list[FrameElementAnnotation]
 
     # -- input / target / eval for training --
 
     def get_target(self) -> str:
         return " | ".join(
-            [f"{element} = {text}" for element, text in self.frame_elements]
+            [f"{element} = {text}" for element, text in self.labeled_frame_elements]
         )
 
     @staticmethod
@@ -27,6 +27,7 @@ class ArgumentsExtractionSample(TaskSample):
         prediction_outputs: Sequence[str],
         target: str,
         input: str,
+        loader_cache: LoaderDataCache,
     ) -> tuple[float, float, float]:
         # based on argid eval in sesame (labeled_eval)
         # from https://github.com/swabhs/open-sesame/blob/master/sesame/evaluation.py
@@ -37,10 +38,12 @@ class ArgumentsExtractionSample(TaskSample):
         false_pos = 0.0
         false_neg = 0.0
         target_spans = split_output_fe_spans(target)
-        prediction_spans = ArgumentsExtractionTask.parse_output(prediction_outputs)
+        prediction_spans = ArgumentsExtractionTask.parse_output(
+            prediction_outputs, loader_cache
+        )
 
         for target_span in target_spans:
-            score = get_eval_score(frame, target_span[0])
+            score = get_eval_score(frame, target_span[0], loader_cache)
             if target_span in prediction_spans:
                 true_pos += score
             else:
@@ -48,7 +51,7 @@ class ArgumentsExtractionSample(TaskSample):
 
         for prediction_span in prediction_spans:
             if prediction_span not in target_spans:
-                score = get_eval_score(frame, prediction_span[0])
+                score = get_eval_score(frame, prediction_span[0], loader_cache)
                 false_pos += score
 
         return (true_pos, false_pos, false_neg)
@@ -56,14 +59,17 @@ class ArgumentsExtractionSample(TaskSample):
     # -- helper properties --
 
     @property
-    def frame_elements(self) -> list[tuple[str, str]]:
+    def labeled_frame_elements(self) -> list[tuple[str, str]]:
+        """
+        Return a list of tuples of the form (frame_element, text) for all frame elements, instead of indices
+        """
         return [
-            (element, self.task.text[loc_start:loc_end])
-            for (loc_start, loc_end, element) in self.frame_element_locs
+            (fe.name, self.task.text[fe.start_loc : fe.end_loc])
+            for fe in self.frame_elements
         ]
 
 
-def get_eval_score(frame: str, element: str) -> float:
-    if element in get_non_core_frame_elements(frame):
+def get_eval_score(frame: str, element: str, loader_cache: LoaderDataCache) -> float:
+    if element in loader_cache.get_frame(frame).non_core_elements:
         return 0.5
     return 1.0

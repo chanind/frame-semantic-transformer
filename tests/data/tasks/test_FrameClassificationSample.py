@@ -1,4 +1,6 @@
 from __future__ import annotations
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+from frame_semantic_transformer.data.loaders.framenet17 import Framenet17InferenceLoader
 
 from frame_semantic_transformer.data.tasks.FrameClassificationSample import (
     FrameClassificationSample,
@@ -7,11 +9,13 @@ from frame_semantic_transformer.data.tasks.FrameClassificationTask import (
     FrameClassificationTask,
 )
 
+loader_cache = LoaderDataCache(Framenet17InferenceLoader())
 
 sample = FrameClassificationSample(
     task=FrameClassificationTask(
         text="Your contribution to Goodwill will mean more than you may know .",
         trigger_loc=5,
+        loader_cache=loader_cache,
     ),
     frame="Giving",
 )
@@ -33,6 +37,7 @@ def test_evaluate_prediction_correct_prediction() -> None:
         [correct_pred],
         correct_pred,
         "FRAME: Your * contribution to Goodwill will mean more than you may know.",
+        loader_cache,
     ) == (1, 0, 0)
 
 
@@ -43,6 +48,7 @@ def test_evaluate_prediction_increments_fp_and_fn_on_incorrect_pred() -> None:
         [incorrect_pred],
         "Giving",
         "FRAME: Your * contribution to Goodwill will mean more than you may know.",
+        loader_cache,
     ) == (
         0,
         1,
@@ -52,6 +58,7 @@ def test_evaluate_prediction_increments_fp_and_fn_on_incorrect_pred() -> None:
         [nonsense_pred],
         "Giving",
         "FRAME: Your * contribution to Goodwill will mean more than you may know.",
+        loader_cache,
     ) == (
         0,
         1,

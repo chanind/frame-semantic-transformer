@@ -1,6 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Sequence
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
 from frame_semantic_transformer.data.tasks.Task import Task
 
@@ -25,7 +26,10 @@ class TaskSample(ABC):
     @staticmethod
     @abstractmethod
     def evaluate_prediction(
-        prediction_outputs: Sequence[str], target: str, input: str
+        prediction_outputs: Sequence[str],
+        target: str,
+        input: str,
+        loader_cache: LoaderDataCache,
     ) -> tuple[float, float, float]:
         "return a tuple indicating the number of true positives, false positives, and false negatives in the prediction"
         pass

@@ -1,8 +1,9 @@
 from __future__ import annotations
 from collections import defaultdict
-from typing import Any, Sequence, Type
+from typing import Any, Optional, Sequence, Type
 from tqdm import tqdm
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
 from frame_semantic_transformer.data.data_utils import chunk_list
 from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
@@ -44,6 +45,7 @@ def evaluate(
     model: T5ForConditionalGeneration,
     tokenizer: T5Tokenizer,
     samples: Sequence[TaskSample],
+    loader_cache: LoaderDataCache,
     batch_size: int = 10,
     print_failures: bool = False,
     predictions_per_sample: int = 5,
@@ -79,7 +81,7 @@ def evaluate(
         for sample, preds in zip(samples_chunk, batched_predictions):
             assert len(preds) == predictions_per_sample
             score = sample.evaluate_prediction(
-                preds, sample.get_target(), sample.get_input()
+                preds, sample.get_target(), sample.get_input(), loader_cache
             )
             true_pos, false_pos, false_neg = score
             results[sample.get_task_name()][0] += true_pos
@@ -106,6 +108,7 @@ def evaluate_batch(
     model: T5ForConditionalGeneration,
     tokenizer: T5Tokenizer,
     batch: Any,
+    loader_cache: LoaderDataCache,
     predictions_per_sample: int = 5,
 ) -> dict[str, list[float]]:
     predictions = predict_on_ids(
@@ -134,7 +137,7 @@ def evaluate_batch(
         )
         sample_class = TASK_SAMPLE_CLASS_MAP[task]
         true_pos, false_pos, false_neg = sample_class.evaluate_prediction(
-            preds, target, input
+            preds, target, input, loader_cache
         )
         results[task][0] += true_pos
         results[task][1] += false_pos

@@ -8,9 +8,7 @@ from transformers import T5Tokenizer
 from frame_semantic_transformer.constants import MODEL_MAX_LENGTH, PADDING_LABEL_ID
 
 from frame_semantic_transformer.data.augmentations import (
-    LowercaseAugmentation,
-    RemoveContractionsAugmentation,
-    RemoveEndPunctuationAugmentation,
+    DataAugmentation,
     chain_augmentations,
 )
 from frame_semantic_transformer.data.tasks import TaskSample
@@ -31,7 +29,7 @@ class TaskSampleDataset(Dataset[Any]):
         balance_tasks: bool = False,
         seed: int = 42,
         max_task_duplication_factor: int = 2,
-        augment_data: bool = False,
+        augmentations: Optional[list[DataAugmentation]] = None,
     ):
         self.samples = samples
         if balance_tasks:
@@ -39,14 +37,8 @@ class TaskSampleDataset(Dataset[Any]):
                 samples, seed=seed, max_duplication_factor=max_task_duplication_factor
             )
         self.tokenizer = tokenizer
-        if augment_data:
-            self.augmentation = chain_augmentations(
-                [
-                    RemoveEndPunctuationAugmentation(0.3),
-                    LowercaseAugmentation(0.2),
-                    RemoveContractionsAugmentation(0.2),
-                ]
-            )
+        if augmentations:
+            self.augmentation = chain_augmentations(augmentations)
 
     def __len__(self) -> int:
         return len(self.samples)

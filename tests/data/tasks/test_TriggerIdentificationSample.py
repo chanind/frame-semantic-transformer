@@ -1,4 +1,6 @@
 from __future__ import annotations
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+from frame_semantic_transformer.data.loaders.framenet17 import Framenet17InferenceLoader
 
 from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
@@ -7,6 +9,9 @@ from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
 from frame_semantic_transformer.data.tasks.TriggerIdentificationTask import (
     TriggerIdentificationTask,
 )
+
+
+loader_cache = LoaderDataCache(Framenet17InferenceLoader())
 
 
 sample = TriggerIdentificationSample(
@@ -36,28 +41,28 @@ def test_get_target() -> None:
 def test_evaluate_prediction() -> None:
     pred = "Your contribution * to Goodwill * will * mean * more than you may * know."
     assert TriggerIdentificationSample.evaluate_prediction(
-        [pred], target, sample.get_input()
+        [pred], target, sample.get_input(), loader_cache
     ) == (4, 1, 2)
 
 
 def test_evaluate_prediction_fails_for_elements_whose_content_doesnt_match() -> None:
     pred = "Your AHAHAHAHA * to BADWILL will * PSYCH * more than you may * know."
     assert TriggerIdentificationSample.evaluate_prediction(
-        [pred], target, sample.get_input()
+        [pred], target, sample.get_input(), loader_cache
     ) == (3, 1, 3)
 
 
 def test_evaluate_prediction_treats_missing_words_as_wrong() -> None:
     pred = "Your * contribution * to Goodwill will * mean"
     assert TriggerIdentificationSample.evaluate_prediction(
-        [pred], target, sample.get_input()
+        [pred], target, sample.get_input(), loader_cache
     ) == (3, 2, 3)
 
 
 def test_evaluate_prediction_treats_excess_words_as_false_positives() -> None:
     pred = "Your * contribution * to Goodwill will * mean * more than you * may * know. ha ha ha ha!"
     assert TriggerIdentificationSample.evaluate_prediction(
-        [pred], target, sample.get_input()
+        [pred], target, sample.get_input(), loader_cache
     ) == (6, 4, 0)
 
 

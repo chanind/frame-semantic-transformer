@@ -1,11 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import standardize_punct
-from frame_semantic_transformer.data.framenet import (
-    get_core_frame_elements,
-    get_non_core_frame_elements,
-)
+
 
 from .Task import Task
 
@@ -15,20 +13,24 @@ class ArgumentsExtractionTask(Task):
     text: str
     trigger_loc: int
     frame: str
+    loader_cache: LoaderDataCache
 
     @staticmethod
     def get_task_name() -> str:
         return "args_extraction"
 
     def get_input(self) -> str:
-        core_elements = get_core_frame_elements(self.frame)
-        non_core_elements = get_non_core_frame_elements(self.frame)
+        frame = self.loader_cache.get_frame(self.frame)
+        core_elements = frame.core_elements
+        non_core_elements = frame.non_core_elements
         # put core elements in front
         elements = [*core_elements, *non_core_elements]
         return f"ARGS {self.frame} | {' '.join(elements)} : {self.trigger_labeled_text}"
 
     @staticmethod
-    def parse_output(prediction_outputs: Sequence[str]) -> list[tuple[str, str]]:
+    def parse_output(
+        prediction_outputs: Sequence[str], _loader_cache: LoaderDataCache
+    ) -> list[tuple[str, str]]:
         return split_output_fe_spans(prediction_outputs[0])
 
     @property

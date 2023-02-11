@@ -13,13 +13,20 @@ from pytorch_lightning.callbacks.progress import TQDMProgressBar
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.base import Callback
 from frame_semantic_transformer.constants import MODEL_MAX_LENGTH
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
 from frame_semantic_transformer.data.TaskSampleDataset import TaskSampleDataset
 from frame_semantic_transformer.data.data_utils import trim_batch
-from frame_semantic_transformer.data.load_framenet_samples import (
-    load_sesame_train_samples,
-    load_sesame_test_samples,
-    load_sesame_dev_samples,
+from frame_semantic_transformer.data.loaders.framenet17 import (
+    Framenet17InferenceLoader,
+    Framenet17TrainingLoader,
+)
+from frame_semantic_transformer.data.loaders.loader import (
+    InferenceLoader,
+    TrainingLoader,
+)
+from frame_semantic_transformer.data.tasks_from_annotated_sentences import (
+    tasks_from_annotated_sentences,
 )
 from frame_semantic_transformer.evaluate import calc_eval_metrics, evaluate_batch
 
@@ -93,11 +100,13 @@ class TrainingModelWrapper(pl.LightningModule):
     output_dir: str
     save_only_last_epoch: bool
     skip_initial_epochs_validation: int
+    loader_cache: LoaderDataCache
 
     def __init__(
         self,
         model: T5ForConditionalGeneration,
         tokenizer: T5Tokenizer,
+        loader_cache: LoaderDataCache,
         lr: float = 1e-4,
         output_dir: str = "outputs",
         save_only_last_epoch: bool = False,
@@ -107,6 +116,7 @@ class TrainingModelWrapper(pl.LightningModule):
         self.lr = lr
         self.model = model
         self.tokenizer = tokenizer
+        self.loader_cache = loader_cache
         self.output_dir = output_dir
         self.save_only_last_epoch = save_only_last_epoch
         self.skip_initial_epochs_validation = skip_initial_epochs_validation
@@ -148,7 +158,7 @@ class TrainingModelWrapper(pl.LightningModule):
         loss = output.loss
         if self.current_epoch < self.skip_initial_epochs_validation:
             return {"loss": loss}
-        metrics = evaluate_batch(self.model, self.tokenizer, batch)
+        metrics = evaluate_batch(self.model, self.tokenizer, batch, self.loader_cache)
         self.log(
             "val_loss",
             loss,
@@ -163,7 +173,7 @@ class TrainingModelWrapper(pl.LightningModule):
     def test_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
         output = self._step(batch)
         loss = output.loss
-        metrics = evaluate_batch(self.model, self.tokenizer, batch)
+        metrics = evaluate_batch(self.model, self.tokenizer, batch, self.loader_cache)
         self.log(
             "test_loss",
             loss,
@@ -234,6 +244,8 @@ def train(
     balance_tasks: bool = True,
     max_task_duplication_factor: int = 2,
     skip_initial_epochs_validation: int = 0,
+    inference_loader: Optional[InferenceLoader] = None,
+    training_loader: Optional[TrainingLoader] = None,
 ) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -241,22 +253,31 @@ def train(
     tokenizer = T5Tokenizer.from_pretrained(
         base_model, model_max_length=MODEL_MAX_LENGTH
     )
+    if not inference_loader:
+        inference_loader = Framenet17InferenceLoader()
+    loader_cache = LoaderDataCache(inference_loader)
+    if not training_loader:
+        training_loader = Framenet17TrainingLoader()
 
     logger.info("loading train/test/val datasets")
+    training_data = training_loader.load_training_data()
+    validation_data = training_loader.load_validation_data()
+    test_data = training_loader.load_test_data()
+
     train_dataset = TaskSampleDataset(
-        load_sesame_train_samples(),
+        tasks_from_annotated_sentences(training_data, loader_cache),
         tokenizer,
         balance_tasks=balance_tasks,
         max_task_duplication_factor=max_task_duplication_factor,
-        augment_data=True,
+        augmentations=training_loader.get_augmentations(),
     )
     val_dataset = TaskSampleDataset(
-        load_sesame_dev_samples(),
+        tasks_from_annotated_sentences(validation_data, loader_cache),
         tokenizer,
         balance_tasks=False,
     )
     test_dataset = TaskSampleDataset(
-        load_sesame_test_samples(),
+        tasks_from_annotated_sentences(test_data, loader_cache),
         tokenizer,
         balance_tasks=False,
     )
@@ -276,6 +297,7 @@ def train(
         output_dir=output_dir,
         save_only_last_epoch=save_only_last_epoch,
         skip_initial_epochs_validation=skip_initial_epochs_validation,
+        loader_cache=loader_cache,
     )
 
     # add callbacks
