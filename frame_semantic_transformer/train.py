@@ -8,7 +8,7 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader, Dataset
-from transformers import AdamW, T5ForConditionalGeneration, T5Tokenizer
+from transformers import AdamW, T5ForConditionalGeneration, T5TokenizerFast
 from pytorch_lightning.callbacks.progress import TQDMProgressBar
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.base import Callback
@@ -95,7 +95,7 @@ class TrainingModelWrapper(pl.LightningModule):
 
     lr: float
     model: T5ForConditionalGeneration
-    tokenizer: T5Tokenizer
+    tokenizer: T5TokenizerFast
     trainer: pl.Trainer
     output_dir: str
     save_only_last_epoch: bool
@@ -105,7 +105,7 @@ class TrainingModelWrapper(pl.LightningModule):
     def __init__(
         self,
         model: T5ForConditionalGeneration,
-        tokenizer: T5Tokenizer,
+        tokenizer: T5TokenizerFast,
         loader_cache: LoaderDataCache,
         lr: float = 1e-4,
         output_dir: str = "outputs",
@@ -246,11 +246,11 @@ def train(
     skip_initial_epochs_validation: int = 0,
     inference_loader: Optional[InferenceLoader] = None,
     training_loader: Optional[TrainingLoader] = None,
-) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
+) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
     model = T5ForConditionalGeneration.from_pretrained(base_model).to(device)
-    tokenizer = T5Tokenizer.from_pretrained(
+    tokenizer = T5TokenizerFast.from_pretrained(
         base_model, model_max_length=MODEL_MAX_LENGTH
     )
     if not inference_loader:

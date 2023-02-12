@@ -1,11 +1,19 @@
 from __future__ import annotations
+import argparse
 from collections import defaultdict
-from typing import Any, Optional, Sequence, Type
+import logging
+from typing import Any, Sequence, Type
 from tqdm import tqdm
-from transformers import T5ForConditionalGeneration, T5Tokenizer
-from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+from transformers import T5ForConditionalGeneration, T5TokenizerFast
+import torch
 
+from frame_semantic_transformer.constants import PADDING_LABEL_ID
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import chunk_list
+from frame_semantic_transformer.data.loaders.framenet17 import (
+    Framenet17InferenceLoader,
+    Framenet17TrainingLoader,
+)
 from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
     ArgumentsExtractionSample,
 )
@@ -16,7 +24,12 @@ from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
 )
+from frame_semantic_transformer.data.tasks_from_annotated_sentences import (
+    tasks_from_annotated_sentences,
+)
 from frame_semantic_transformer.predict import batch_predict, predict_on_ids
+
+logger = logging.getLogger(__name__)
 
 
 def calc_eval_metrics(
@@ -43,7 +56,7 @@ def calc_eval_metrics(
 
 def evaluate(
     model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
+    tokenizer: T5TokenizerFast,
     samples: Sequence[TaskSample],
     loader_cache: LoaderDataCache,
     batch_size: int = 10,
@@ -106,7 +119,7 @@ TASK_SAMPLE_CLASS_MAP: dict[str, Type[TaskSample]] = {
 
 def evaluate_batch(
     model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
+    tokenizer: T5TokenizerFast,
     batch: Any,
     loader_cache: LoaderDataCache,
     predictions_per_sample: int = 5,
@@ -127,8 +140,12 @@ def evaluate_batch(
         batched_predictions, batch["task"], batch["labels"], batch["input_ids"]
     ):
         assert len(preds) == predictions_per_sample
-        target_tokens = [tok_id for tok_id in label.tolist() if tok_id != -100]
-        input_tokens = [tok_id for tok_id in input_ids.tolist() if tok_id != -100]
+        target_tokens = [
+            tok_id for tok_id in label.tolist() if tok_id != PADDING_LABEL_ID
+        ]
+        input_tokens = [
+            tok_id for tok_id in input_ids.tolist() if tok_id != PADDING_LABEL_ID
+        ]
         target = tokenizer.decode(
             target_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
@@ -144,3 +161,61 @@ def evaluate_batch(
         results[task][2] += false_neg
 
     return results
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Evaluate a semantic transformer model using FrameNet 1.7"
+    )
+    parser.add_argument(
+        "--base-model",
+        default="t5-base",
+        help="The HuggingFace T5 model to use as a starting point, default t5-base",
+    )
+    parser.add_argument("--use-gpu", action="store_true")
+    parser.add_argument("--batch-size", type=int, default=8, help="default 8")
+    args = parser.parse_args()
+
+    logger.setLevel(logging.INFO)
+
+    training_loader = Framenet17TrainingLoader()
+    inference_loader = Framenet17InferenceLoader()
+    loader_cache = LoaderDataCache(inference_loader)
+
+    inference_loader.setup()
+    training_loader.setup()
+
+    device = torch.device("cuda" if args.use_gpu else "cpu")
+    model = T5ForConditionalGeneration.from_pretrained(args.base_model).to(device)
+    tokenizer = T5TokenizerFast.from_pretrained(args.base_model)
+
+    with torch.no_grad():
+        print("Evaluating on validation set")
+        validation_samples = tasks_from_annotated_sentences(
+            training_loader.load_validation_data(), loader_cache
+        )
+        validation_results = evaluate(
+            model,
+            tokenizer,
+            validation_samples,
+            loader_cache,
+            batch_size=args.batch_size,
+        )
+        for task, metrics in validation_results.items():
+            scores = calc_eval_metrics(*metrics)
+            print(f"{task}: {scores}")
+
+        print("Evaluating on test set")
+        test_samples = tasks_from_annotated_sentences(
+            training_loader.load_test_data(), loader_cache
+        )
+        test_results = evaluate(
+            model,
+            tokenizer,
+            test_samples,
+            loader_cache,
+            batch_size=args.batch_size,
+        )
+        for task, metrics in test_results.items():
+            scores = calc_eval_metrics(*metrics)
+            print(f"{task}: {scores}")
