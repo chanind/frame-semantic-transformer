@@ -1,5 +1,4 @@
 from __future__ import annotations
-from syrupy.assertion import SnapshotAssertion
 
 from frame_semantic_transformer.data.loaders.framenet17 import (
     Framenet17TrainingLoader,

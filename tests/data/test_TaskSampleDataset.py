@@ -6,13 +6,11 @@ from frame_semantic_transformer.data.TaskSampleDataset import (
     TaskSampleDataset,
     balance_tasks_by_type,
 )
+from frame_semantic_transformer.data.loaders.loader import TrainingLoader
 from frame_semantic_transformer.data.tasks_from_annotated_sentences import (
     tasks_from_annotated_sentences,
 )
-from frame_semantic_transformer.data.loaders.framenet17 import (
-    Framenet17InferenceLoader,
-    Framenet17TrainingLoader,
-)
+
 from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionSample,
     ArgumentsExtractionTask,
@@ -22,11 +20,10 @@ from frame_semantic_transformer.data.tasks import (
     TriggerIdentificationTask,
 )
 
-training_loader = Framenet17TrainingLoader()
-loader_cache = LoaderDataCache(Framenet17InferenceLoader())
 
-
-def test_TaskSampleDataset() -> None:
+def test_TaskSampleDataset(
+    loader_cache: LoaderDataCache, training_loader: TrainingLoader
+) -> None:
     tokenizer = T5Tokenizer.from_pretrained("t5-small")
 
     sentences = training_loader.load_training_data()
@@ -41,7 +38,7 @@ def test_TaskSampleDataset() -> None:
     assert len(dataset[0]["labels"]) == 512
 
 
-def test_balance_tasks_by_type() -> None:
+def test_balance_tasks_by_type(loader_cache: LoaderDataCache) -> None:
     tasks = [
         ArgumentsExtractionSample(
             ArgumentsExtractionTask("a1", 0, "Greetings", loader_cache), []
@@ -83,7 +80,7 @@ def test_balance_tasks_by_type() -> None:
     )
 
 
-def test_balance_tasks_by_type_caps_replications() -> None:
+def test_balance_tasks_by_type_caps_replications(loader_cache: LoaderDataCache) -> None:
     tasks = [
         ArgumentsExtractionSample(
             ArgumentsExtractionTask("a1", 0, "Greetings", loader_cache), []

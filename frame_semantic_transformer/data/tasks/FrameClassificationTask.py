@@ -40,7 +40,7 @@ class FrameClassificationTask(Task):
     @property
     def trigger_bigrams(self) -> list[list[str]]:
         """
-        return bigrams of the trigger, trigger + next work, and prev word + trigger
+        return bigrams of the trigger, trigger + next word, and prev word + trigger
         """
         pre_trigger_tokens = self.text[: self.trigger_loc].split()
         trigger_and_after_tokens = self.text[self.trigger_loc :].split()

@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, cast
 import torch
-from transformers import T5ForConditionalGeneration, T5Tokenizer
+from transformers import T5ForConditionalGeneration, T5TokenizerFast
 
 from frame_semantic_transformer.constants import (
     MODEL_MAX_LENGTH,
@@ -43,7 +43,7 @@ class DetectFramesResult:
 
 class FrameSemanticTransformer:
     _model: T5ForConditionalGeneration | None = None
-    _tokenizer: T5Tokenizer | None = None
+    _tokenizer: T5TokenizerFast | None = None
     model_path: str
     model_revision: str | None = None
     device: torch.device
@@ -77,7 +77,7 @@ class FrameSemanticTransformer:
         self._model = T5ForConditionalGeneration.from_pretrained(
             self.model_path, revision=self.model_revision
         ).to(self.device)
-        self._tokenizer = T5Tokenizer.from_pretrained(
+        self._tokenizer = T5TokenizerFast.from_pretrained(
             self.model_path,
             revision=self.model_revision,
             model_max_length=MODEL_MAX_LENGTH,
@@ -91,10 +91,10 @@ class FrameSemanticTransformer:
         return cast(T5ForConditionalGeneration, self._model)
 
     @property
-    def tokenizer(self) -> T5Tokenizer:
+    def tokenizer(self) -> T5TokenizerFast:
         if not self._tokenizer:
             self.setup()
-        return cast(T5Tokenizer, self._tokenizer)
+        return cast(T5TokenizerFast, self._tokenizer)
 
     def _batch_predict(self, inputs: list[str]) -> list[str]:
         """
