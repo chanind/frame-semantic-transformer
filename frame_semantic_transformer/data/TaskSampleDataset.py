@@ -4,7 +4,7 @@ import random
 from typing import Any, Callable, Optional, Sequence
 import torch
 from torch.utils.data import Dataset
-from transformers import T5Tokenizer
+from transformers import T5TokenizerFast
 from frame_semantic_transformer.constants import MODEL_MAX_LENGTH, PADDING_LABEL_ID
 
 from frame_semantic_transformer.data.augmentations import (
@@ -20,12 +20,12 @@ MAX_TARGET_LEN = 512
 class TaskSampleDataset(Dataset[Any]):
     samples: Sequence[TaskSample]
     augmentation: Optional[Callable[[str, str], tuple[str, str]]] = None
-    tokenizer: T5Tokenizer
+    tokenizer: T5TokenizerFast
 
     def __init__(
         self,
         samples: Sequence[TaskSample],
-        tokenizer: T5Tokenizer,
+        tokenizer: T5TokenizerFast,
         balance_tasks: bool = False,
         seed: int = 42,
         max_task_duplication_factor: int = 2,
