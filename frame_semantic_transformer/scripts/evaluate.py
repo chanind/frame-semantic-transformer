@@ -43,6 +43,27 @@ if __name__ == "__main__":
     model = T5ForConditionalGeneration.from_pretrained(args.model_path)
     tokenizer = T5TokenizerFast.from_pretrained(args.model_path)
 
+    config = model.config
+    expected_inference_loader = (
+        config.inference_loader
+        if hasattr(config, "inference_loader")
+        else inference_loader.name()
+    )
+    expected_training_loader = (
+        config.training_loader
+        if hasattr(config, "training_loader")
+        else training_loader.name()
+    )
+
+    if expected_inference_loader != inference_loader.name():
+        raise ValueError(
+            f"Model was trained with inference loader {expected_inference_loader} but is being evaluated with {inference_loader.name()}"
+        )
+    if expected_training_loader != training_loader.name():
+        raise ValueError(
+            f"Model was trained with training loader {expected_training_loader} but is being evaluated with {training_loader.name()}"
+        )
+
     model_wrapper = TrainingModelWrapper(model, tokenizer, loader_cache)
     trainer = Trainer(gpus=1, precision=32, max_epochs=1)
 

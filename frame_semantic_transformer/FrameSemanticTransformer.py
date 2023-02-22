@@ -83,6 +83,26 @@ class FrameSemanticTransformer:
             model_max_length=MODEL_MAX_LENGTH,
         )
         self.loader_cache.setup()
+        self._validate_loader()
+
+    def _validate_loader(self) -> None:
+        """
+        Helper to ensure that the loader being used matches the one used to train the model
+        otherwise results will be potentially nonsensical
+        """
+        loader = self.loader_cache.loader
+        config = self.model.config
+        expected_loader_name = (
+            config.inference_loader
+            if hasattr(config, "inference_loader")
+            else loader.name()
+        )
+        if expected_loader_name != loader.name():
+            raise ValueError(
+                f"Model {self.model_path} was trained with inference loader {expected_loader_name} "
+                f"but you are using {loader.name()}. Please pass in the correct loader as 'inference_loader' "
+                f"when initializing FrameSemanticTransfomer."
+            )
 
     @property
     def model(self) -> T5ForConditionalGeneration:

@@ -59,6 +59,9 @@ def train(
     if not training_loader:
         training_loader = Framenet17TrainingLoader()
 
+    model.config.training_loader = training_loader.name()
+    model.config.inference_loader = inference_loader.name()
+
     logger.info("loading train/test/val datasets")
     training_data = training_loader.load_training_data()
     validation_data = training_loader.load_validation_data()

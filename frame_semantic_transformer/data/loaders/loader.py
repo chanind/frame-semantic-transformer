@@ -12,6 +12,13 @@ class InferenceLoader(ABC):
     Base class for all inference loaders
     """
 
+    def name(self) -> str:
+        """
+        Return a name for this loader.
+        Frame-Semantic-Transformer will enforce that a loader with this name is used at inference time.
+        """
+        return self.__class__.__name__
+
     def setup(self) -> None:
         """
         Perform any setup required, e.g. downloading needed data
@@ -43,6 +50,13 @@ class TrainingLoader(ABC):
     """
     Base class for all training loaders
     """
+
+    def name(self) -> str:
+        """
+        Return a name for this loader.
+        Frame-Semantic-Transformer will enforce that a loader with this name is used at eval time.
+        """
+        return self.__class__.__name__
 
     def setup(self) -> None:
         """
