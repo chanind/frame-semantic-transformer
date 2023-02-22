@@ -121,7 +121,7 @@ class TrainingModelWrapper(pl.LightningModule):
         path = f"{self.output_dir}/epoch-{self.current_epoch}-train-loss-{str(self.average_training_loss)}-val-loss-{str(self.average_validation_loss)}"
         if (
             not self.save_only_last_epoch
-            or self.current_epoch == self.trainer.max_epochs - 1
+            or self.current_epoch == (self.trainer.max_epochs or 0) - 1
         ):
             self.tokenizer.save_pretrained(path)
             self.model.save_pretrained(path)

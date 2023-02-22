@@ -1,12 +1,12 @@
 from __future__ import annotations
 import logging
-from typing import Optional
+from typing import Literal, Optional, Union
 import pytorch_lightning as pl
 import torch
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
 from pytorch_lightning.callbacks.progress import TQDMProgressBar
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks.base import Callback
+from pytorch_lightning.callbacks import Callback
 from frame_semantic_transformer.constants import DEFAULT_NUM_WORKERS, MODEL_MAX_LENGTH
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
@@ -37,7 +37,7 @@ def train(
     use_gpu: bool = torch.cuda.is_available(),
     output_dir: str = "outputs",
     early_stopping_patience_epochs: int = 0,  # 0 to disable early stopping feature
-    precision: int = 32,
+    precision: Union[Literal[64, 32, 16], Literal["64", "32", "16", "bf16"]] = 32,
     lr: float = 1e-4,
     num_workers: int = DEFAULT_NUM_WORKERS,
     save_only_last_epoch: bool = False,
