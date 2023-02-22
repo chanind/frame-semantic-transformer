@@ -2,6 +2,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, Sequence
 
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+
 
 class Task(ABC):
     """
@@ -15,7 +17,10 @@ class Task(ABC):
 
     @staticmethod
     @abstractmethod
-    def parse_output(prediction_outputs: Sequence[str]) -> Any:
+    def parse_output(
+        prediction_outputs: Sequence[str],
+        loader_cache: LoaderDataCache,
+    ) -> Any:
         pass
 
     @abstractmethod

@@ -1,13 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import standardize_punct
-from frame_semantic_transformer.data.framenet import (
-    is_valid_frame,
-)
-from frame_semantic_transformer.data.get_possible_frames_for_trigger_bigrams import (
-    get_possible_frames_for_trigger_bigrams,
-)
+
 
 from .Task import Task
 
@@ -16,6 +12,7 @@ from .Task import Task
 class FrameClassificationTask(Task):
     text: str
     trigger_loc: int
+    loader_cache: LoaderDataCache
 
     # -- input / target for training --
 
@@ -24,13 +21,17 @@ class FrameClassificationTask(Task):
         return "frame_classification"
 
     def get_input(self) -> str:
-        potential_frames = get_possible_frames_for_trigger_bigrams(self.trigger_bigrams)
+        potential_frames = self.loader_cache.get_possible_frames_for_trigger_bigrams(
+            self.trigger_bigrams
+        )
         return f"FRAME {' '.join(potential_frames)} : {self.trigger_labeled_text}"
 
     @staticmethod
-    def parse_output(prediction_outputs: Sequence[str]) -> str | None:
+    def parse_output(
+        prediction_outputs: Sequence[str], loader_cache: LoaderDataCache
+    ) -> str | None:
         for pred in prediction_outputs:
-            if is_valid_frame(pred):
+            if loader_cache.is_valid_frame(pred):
                 return pred
         return None
 
@@ -39,7 +40,7 @@ class FrameClassificationTask(Task):
     @property
     def trigger_bigrams(self) -> list[list[str]]:
         """
-        return bigrams of the trigger, trigger + next work, and prev word + trigger
+        return bigrams of the trigger, trigger + next word, and prev word + trigger
         """
         pre_trigger_tokens = self.text[: self.trigger_loc].split()
         trigger_and_after_tokens = self.text[self.trigger_loc :].split()

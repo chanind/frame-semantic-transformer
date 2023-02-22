@@ -74,6 +74,18 @@ def test_standardize_punct_removes_spaces_before_commas() -> None:
     assert standardize_punct(original) == expected
 
 
+def test_standardize_punct_with_accented_letters() -> None:
+    original = "C'est *très *bien."
+    expected = "C'est * très * bien."
+    assert standardize_punct(original) == expected
+
+
+def test_standardize_punct_with_swedish() -> None:
+    original = "Axel fick parkerade på Odengatan , detta gjorde honom pepp ."
+    expected = "Axel fick parkerade på Odengatan, detta gjorde honom pepp."
+    assert standardize_punct(original) == expected
+
+
 @pytest.mark.parametrize(
     "input,expected",
     [

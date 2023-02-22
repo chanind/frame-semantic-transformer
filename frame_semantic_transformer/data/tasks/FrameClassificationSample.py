@@ -2,6 +2,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
 
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+
 from .FrameClassificationTask import FrameClassificationTask
 from .TaskSample import TaskSample
 
@@ -18,9 +20,14 @@ class FrameClassificationSample(TaskSample):
 
     @staticmethod
     def evaluate_prediction(
-        prediction_outputs: Sequence[str], target: str, _input: str
+        prediction_outputs: Sequence[str],
+        target: str,
+        _input: str,
+        loader_cache: LoaderDataCache,
     ) -> tuple[float, float, float]:
-        prediction = FrameClassificationTask.parse_output(prediction_outputs)
+        prediction = FrameClassificationTask.parse_output(
+            prediction_outputs, loader_cache
+        )
         if prediction and prediction == target:
             return (1.0, 0.0, 0.0)
         else:

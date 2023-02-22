@@ -1,12 +1,12 @@
 from __future__ import annotations
 from typing import Iterable
 import torch
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import T5TokenizerFast, T5ForConditionalGeneration
 
 
 def predict(
     model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
+    tokenizer: T5TokenizerFast,
     source_text: str,
     max_length: int = 512,
     num_return_sequences: int = 1,
@@ -38,7 +38,7 @@ def predict(
 
 def batch_predict(
     model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
+    tokenizer: T5TokenizerFast,
     source_texts: Iterable[str],
     max_length: int = 512,
     num_return_sequences: int = 1,
@@ -78,7 +78,7 @@ def batch_predict(
 
 def predict_on_ids(
     model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
+    tokenizer: T5TokenizerFast,
     input_ids: torch.Tensor,
     attention_mask: torch.Tensor,
     max_length: int = 512,

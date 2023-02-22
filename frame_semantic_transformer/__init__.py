@@ -6,10 +6,23 @@ from .FrameSemanticTransformer import (
     FrameElementResult,
     FrameResult,
 )
+from .data.loaders.loader import InferenceLoader, TrainingLoader
+from .data.frame_types import (
+    FrameAnnotatedSentence,
+    FrameAnnotation,
+    FrameElementAnnotation,
+    Frame,
+)
 
 __all__ = (
     "FrameSemanticTransformer",
     "DetectFramesResult",
     "FrameElementResult",
     "FrameResult",
+    "InferenceLoader",
+    "TrainingLoader",
+    "FrameAnnotatedSentence",
+    "FrameAnnotation",
+    "FrameElementAnnotation",
+    "Frame",
 )

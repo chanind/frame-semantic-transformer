@@ -1,14 +1,16 @@
 from __future__ import annotations
 from transformers import T5Tokenizer
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+
 from frame_semantic_transformer.data.TaskSampleDataset import (
     TaskSampleDataset,
     balance_tasks_by_type,
 )
-from frame_semantic_transformer.data.framenet import get_fulltext_docs
-
-from frame_semantic_transformer.data.load_framenet_samples import (
-    parse_samples_from_fulltext_doc,
+from frame_semantic_transformer.data.loaders.loader import TrainingLoader
+from frame_semantic_transformer.data.tasks_from_annotated_sentences import (
+    tasks_from_annotated_sentences,
 )
+
 from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionSample,
     ArgumentsExtractionTask,
@@ -19,12 +21,14 @@ from frame_semantic_transformer.data.tasks import (
 )
 
 
-def test_TaskSampleDataset() -> None:
+def test_TaskSampleDataset(
+    loader_cache: LoaderDataCache, training_loader: TrainingLoader
+) -> None:
     tokenizer = T5Tokenizer.from_pretrained("t5-small")
 
-    doc = get_fulltext_docs()[1]
+    sentences = training_loader.load_training_data()
     # use the first 8 samples
-    samples = parse_samples_from_fulltext_doc(doc)[0:8]
+    samples = tasks_from_annotated_sentences(sentences, loader_cache)[0:8]
 
     dataset = TaskSampleDataset(samples, tokenizer)
 
@@ -34,15 +38,29 @@ def test_TaskSampleDataset() -> None:
     assert len(dataset[0]["labels"]) == 512
 
 
-def test_balance_tasks_by_type() -> None:
+def test_balance_tasks_by_type(loader_cache: LoaderDataCache) -> None:
     tasks = [
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a1", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a2", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a3", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a4", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a5", 0, "Greetings"), []),
-        FrameClassificationSample(FrameClassificationTask("f1", 0), "Greetings"),
-        FrameClassificationSample(FrameClassificationTask("f2", 0), "Greetings"),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a1", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a2", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a3", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a4", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a5", 0, "Greetings", loader_cache), []
+        ),
+        FrameClassificationSample(
+            FrameClassificationTask("f1", 0, loader_cache), "Greetings"
+        ),
+        FrameClassificationSample(
+            FrameClassificationTask("f2", 0, loader_cache), "Greetings"
+        ),
         TriggerIdentificationSample(TriggerIdentificationTask("t1"), []),
     ]
     balanced_tasks = balance_tasks_by_type(tasks, max_duplication_factor=10)
@@ -62,12 +80,20 @@ def test_balance_tasks_by_type() -> None:
     )
 
 
-def test_balance_tasks_by_type_caps_replications() -> None:
+def test_balance_tasks_by_type_caps_replications(loader_cache: LoaderDataCache) -> None:
     tasks = [
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a1", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a2", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a3", 0, "Greetings"), []),
-        ArgumentsExtractionSample(ArgumentsExtractionTask("a4", 0, "Greetings"), []),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a1", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a2", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a3", 0, "Greetings", loader_cache), []
+        ),
+        ArgumentsExtractionSample(
+            ArgumentsExtractionTask("a4", 0, "Greetings", loader_cache), []
+        ),
         TriggerIdentificationSample(TriggerIdentificationTask("t1"), []),
     ]
     capped_balanced_tasks = balance_tasks_by_type(tasks, max_duplication_factor=2)

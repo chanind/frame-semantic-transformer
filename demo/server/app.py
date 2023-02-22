@@ -37,7 +37,7 @@ def detect_frames() -> dict[str, Any]:
                 "message": 'You must provide a "sentence" query param',
             },
         )
-    model_size = request.args.get("model", type=str)
+    model_size = request.args.get("model", type=str, default="base")
     transformer = transformers.get(model_size, transformers["base"])
     detect_frames_result = transformer.detect_frames(sentence)
     return asdict(detect_frames_result)

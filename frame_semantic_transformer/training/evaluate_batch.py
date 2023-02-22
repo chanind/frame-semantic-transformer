@@ -1,9 +1,11 @@
 from __future__ import annotations
 from collections import defaultdict
-from typing import Any, Sequence, Type
-from tqdm import tqdm
-from transformers import T5ForConditionalGeneration, T5Tokenizer
+import logging
+from typing import Any, Type
+from transformers import T5ForConditionalGeneration, T5TokenizerFast
 
+from frame_semantic_transformer.constants import PADDING_LABEL_ID
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import chunk_list
 from frame_semantic_transformer.data.tasks.ArgumentsExtractionSample import (
     ArgumentsExtractionSample,
@@ -15,7 +17,9 @@ from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 from frame_semantic_transformer.data.tasks.TriggerIdentificationSample import (
     TriggerIdentificationSample,
 )
-from frame_semantic_transformer.predict import batch_predict, predict_on_ids
+from frame_semantic_transformer.predict import predict_on_ids
+
+logger = logging.getLogger(__name__)
 
 
 def calc_eval_metrics(
@@ -40,60 +44,6 @@ def calc_eval_metrics(
     return {"precision": precision, "recall": recall, "f_score": f_score}
 
 
-def evaluate(
-    model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
-    samples: Sequence[TaskSample],
-    batch_size: int = 10,
-    print_failures: bool = False,
-    predictions_per_sample: int = 5,
-    top_k: int = 50,
-    top_p: float = 0.95,
-    repetition_penalty: float = 2.5,
-    length_penalty: float = 1.0,
-    early_stopping: bool = True,
-    skip_special_tokens: bool = True,
-    clean_up_tokenization_spaces: bool = True,
-) -> dict[str, list[float]]:
-    results: dict[str, list[float]] = defaultdict(lambda: [0, 0, 0])
-    for samples_chunk in tqdm(
-        chunk_list(samples, batch_size), total=len(samples) / batch_size
-    ):
-        inputs = [sample.get_input() for sample in samples_chunk]
-
-        predictions = batch_predict(
-            model,
-            tokenizer,
-            inputs,
-            num_beams=predictions_per_sample,
-            num_return_sequences=predictions_per_sample,
-            top_k=top_k,
-            top_p=top_p,
-            repetition_penalty=repetition_penalty,
-            length_penalty=length_penalty,
-            early_stopping=early_stopping,
-            skip_special_tokens=skip_special_tokens,
-            clean_up_tokenization_spaces=clean_up_tokenization_spaces,
-        )
-        batched_predictions = chunk_list(predictions, predictions_per_sample)
-        for sample, preds in zip(samples_chunk, batched_predictions):
-            assert len(preds) == predictions_per_sample
-            score = sample.evaluate_prediction(
-                preds, sample.get_target(), sample.get_input()
-            )
-            true_pos, false_pos, false_neg = score
-            results[sample.get_task_name()][0] += true_pos
-            results[sample.get_task_name()][1] += false_pos
-            results[sample.get_task_name()][2] += false_neg
-            if print_failures and (false_neg > 0 or false_pos > 0):
-                print(score)
-                print(sample.get_target())
-                print(preds)
-                print("\n")
-
-    return results
-
-
 # TODO: figure out a better way to lookup the class from the string
 TASK_SAMPLE_CLASS_MAP: dict[str, Type[TaskSample]] = {
     "args_extraction": ArgumentsExtractionSample,
@@ -104,8 +54,9 @@ TASK_SAMPLE_CLASS_MAP: dict[str, Type[TaskSample]] = {
 
 def evaluate_batch(
     model: T5ForConditionalGeneration,
-    tokenizer: T5Tokenizer,
+    tokenizer: T5TokenizerFast,
     batch: Any,
+    loader_cache: LoaderDataCache,
     predictions_per_sample: int = 5,
 ) -> dict[str, list[float]]:
     predictions = predict_on_ids(
@@ -124,8 +75,12 @@ def evaluate_batch(
         batched_predictions, batch["task"], batch["labels"], batch["input_ids"]
     ):
         assert len(preds) == predictions_per_sample
-        target_tokens = [tok_id for tok_id in label.tolist() if tok_id != -100]
-        input_tokens = [tok_id for tok_id in input_ids.tolist() if tok_id != -100]
+        target_tokens = [
+            tok_id for tok_id in label.tolist() if tok_id != PADDING_LABEL_ID
+        ]
+        input_tokens = [
+            tok_id for tok_id in input_ids.tolist() if tok_id != PADDING_LABEL_ID
+        ]
         target = tokenizer.decode(
             target_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
@@ -134,7 +89,7 @@ def evaluate_batch(
         )
         sample_class = TASK_SAMPLE_CLASS_MAP[task]
         true_pos, false_pos, false_neg = sample_class.evaluate_prediction(
-            preds, target, input
+            preds, target, input, loader_cache
         )
         results[task][0] += true_pos
         results[task][1] += false_pos

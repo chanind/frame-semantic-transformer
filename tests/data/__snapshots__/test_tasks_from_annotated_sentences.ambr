@@ -1,0 +1,1504 @@
+# name: test_tasks_from_annotated_sentences
+  list([
+    tuple(
+      'frame_classification',
+      'FRAME Causation : * Because turning welfare recipients into tax payers just makes sense.',
+      'Causation',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Causation | Affected Actor Cause Effect Place Time Circumstances Manner Explanation Means Frequency Concessive : * Because turning welfare recipients into tax payers just makes sense.',
+      'Cause = turning welfare recipients into tax payers just makes sense',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Becoming Biological_urge Cause_change Cause_to_move_in_place Change_direction Change_operational_state Contingency Moving_in_place Respond_to_proposal Submitting_documents Surrendering Temporal_subregion Turning_out Undergo_change : Because * turning welfare recipients into tax payers just makes sense.',
+      'Cause_change',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Cause_change | Agent Initial_category Final_category Final_value Initial_value Entity Time Degree Manner Explanation Attribute Cause Purpose Means Containing_event Place Duration Circumstances Role Event_description Period_of_iterations Re-encoding : Because * turning welfare recipients into tax payers just makes sense.',
+      'Initial_category = welfare recipients | Final_category = into tax payers',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Because turning welfare recipients into tax payers just makes sense .',
+      '* Because * turning welfare recipients into tax payers just makes sense.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Temporal_collocation : * When I first came to Goodwill I was a single parent with little or no self-esteem.',
+      'Temporal_collocation',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Temporal_collocation | Trajector_entity Landmark_event Trajector_period Landmark_period Trajector_event Landmark_entity Event_description : * When I first came to Goodwill I was a single parent with little or no self-esteem.',
+      'Landmark_event = I first came to Goodwill | Trajector_event = I was a single parent with little or no self-esteem',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_named First_experience Ordinal_numbers : When I * first came to Goodwill I was a single parent with little or no self-esteem.',
+      'First_experience',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS First_experience | Experience Context : When I * first came to Goodwill I was a single parent with little or no self-esteem.',
+      'Experience = I | Experience = came to Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME  : When I first * came to Goodwill I was a single parent with little or no self-esteem.',
+      'Arriving',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Arriving | Theme Goal Source Path Manner Means Mode_of_transportation Cotheme Time New_situation Depictive Period_of_iterations Circumstances Purpose Degree Event_description Re-encoding Frequency Place : When I first * came to Goodwill I was a single parent with little or no self-esteem.',
+      'Theme = I | Goal = to Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Personal_relationship Sole_instance : When I first came to Goodwill I was a * single parent with little or no self-esteem.',
+      'Personal_relationship',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Personal_relationship | Partner_1 Partner_2 Partners Degree Depictive Manner Means Relationship Duration Source_of_relationship : When I first came to Goodwill I was a * single parent with little or no self-esteem.',
+      'Partner_1 = parent',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Kinship : When I first came to Goodwill I was a single * parent with little or no self-esteem.',
+      'Kinship',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Kinship | Alter Ego Relatives Degree Descriptor : When I first came to Goodwill I was a single * parent with little or no self-esteem.',
+      'Alter = I',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Negation Quantified_mass : When I first came to Goodwill I was a single parent with little or * no self-esteem.',
+      'Quantified_mass',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Quantified_mass | Quantity Mass Individuals Q_prop Degree : When I first came to Goodwill I was a single parent with little or * no self-esteem.',
+      'Quantity = no | Mass = self-esteem',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Goal Locative_relation : When I first came * to Goodwill I was a single parent with little or no self-esteem.',
+      'Goal',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Goal | Landmark Trajector Profiled_region Time : When I first came * to Goodwill I was a single parent with little or no self-esteem.',
+      'Trajector = I | Landmark = Goodwill',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: `` When I first came to Goodwill I was a single parent with little or no self-esteem .',
+      '* When I * first * came * to Goodwill I was a * single * parent with little or * no self-esteem.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Documents : I was on welfare and without my * diploma.',
+      'Documents',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Documents | Bearer Issuer Obligation Right Status Document Specification Medium Descriptor : I was on welfare and without my * diploma.',
+      'Bearer = my | Document = diploma',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: I was on welfare and without my diploma .',
+      'I was on welfare and without my * diploma.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Coming_to_be Process_end Waking_up Arriving Motion Relative_time Transition_to_a_situation : * Coming to Goodwill was the first step toward my becoming totally independent.',
+      'Arriving',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Arriving | Theme Goal Source Path Manner Means Mode_of_transportation Cotheme Time New_situation Depictive Period_of_iterations Circumstances Purpose Degree Event_description Re-encoding Frequency Place : * Coming to Goodwill was the first step toward my becoming totally independent.',
+      'Goal = to Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Coming_to_be Process_end Waking_up Goal Locative_relation : Coming * to Goodwill was the first step toward my becoming totally independent.',
+      'Goal',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Goal | Landmark Trajector Profiled_region Time : Coming * to Goodwill was the first step toward my becoming totally independent.',
+      'Landmark = Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_named First_experience Ordinal_numbers : Coming to Goodwill was the * first step toward my becoming totally independent.',
+      'Ordinal_numbers',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Ordinal_numbers | Type Starting_point Basis_of_order Item Comparison_set : Coming to Goodwill was the * first step toward my becoming totally independent.',
+      'Type = step | Basis_of_order = toward my becoming totally independent',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Cause_change_of_position_on_a_scale Connecting_architecture Cotheme Intentionally_act Quitting Self_motion : Coming to Goodwill was the first * step toward my becoming totally independent.',
+      'Intentionally_act',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Intentionally_act | Agent Act Place Purpose Time Means Manner Domain Frequency Period_of_iterations Result Particular_iteration Explanation Event_description Apparent_conclusion : Coming to Goodwill was the first * step toward my becoming totally independent.',
+      'Act = Coming to Goodwill | Particular_iteration = first | Purpose = toward my becoming totally independent',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Becoming Eventive_affecting Suitability : Coming to Goodwill was the first step toward my * becoming totally independent.',
+      'Becoming',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Becoming | Entity Place Time Duration_of_final_state Manner Final_quality Final_category Transitional_period Initial_state Circumstances Initial_category Group Explanation : Coming to Goodwill was the first step toward my * becoming totally independent.',
+      'Entity = my | Final_quality = totally independent',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Adding_up Amounting_to Completeness Degree Render_nonfunctional : Coming to Goodwill was the first step toward my becoming * totally independent.',
+      'Degree',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Degree | Gradable_attribute : Coming to Goodwill was the first step toward my becoming * totally independent.',
+      'Gradable_attribute = independent',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Coming to Goodwill was the first step toward my becoming totally independent .',
+      '* Coming * to Goodwill was the * first * step toward my * becoming * totally independent.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Temporal_collocation : I am * now... totally off of welfare.',
+      'Temporal_collocation',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Temporal_collocation | Trajector_entity Landmark_event Trajector_period Landmark_period Trajector_event Landmark_entity Event_description : I am * now... totally off of welfare.',
+      'Trajector_event = I am | Trajector_event = totally off of welfare',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Adding_up Amounting_to Completeness Degree Render_nonfunctional : I am now... * totally off of welfare.',
+      'Degree',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Degree | Gradable_attribute : I am now... * totally off of welfare.',
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: I am now ... totally off of welfare .',
+      'I am * now... * totally off of welfare.',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Being_employed Being_obligated : I really like my * job. '' -- Sherry",
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : I really like my * job. '' -- Sherry",
+      'Employee = my',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Desiring Difficulty Experiencer_focus Hedging Likelihood Similarity Sleep Statement : I really * like my job. '' -- Sherry",
+      'Experiencer_focus',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Experiencer_focus | Experiencer Content Topic Event Explanation Degree Manner Expressor Parameter State Circumstances Time : I really * like my job. '' -- Sherry",
+      'Experiencer = I | Degree = really | Content = my job',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: I really like my job. '' -- Sherry",
+      "I really * like my * job. '' -- Sherry",
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Causation : * Because people want to work.',
+      'Causation',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Causation | Affected Actor Cause Effect Place Time Circumstances Manner Explanation Means Frequency Concessive : * Because people want to work.',
+      'Cause = people want to work',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Colonization Kinship People : Because * people want to work.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : Because * people want to work.',
+      'Person = people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Desiring Possession Want_suspect : Because people * want to work.',
+      'Desiring',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Desiring | Experiencer Event Focal_participant Location_of_event Degree Manner Explanation Purpose_of_event Time_of_event Time Place Duration Role_of_focal_participant : Because people * want to work.',
+      'Experiencer = people | Event = to work',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_operational Collaboration Coming_to_believe Dimension Exercising Experiencer_focus Labor_product Locale_by_use Resolve_problem Usefulness Version_sequence Work Working_a_post : Because people want to * work.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : Because people want to * work.',
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Because people want to work .',
+      '* Because * people * want to * work.',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Frequency Negation : I'd * never finished high school.",
+      'Frequency',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Frequency | Event Degree Interval Time_span Rate Salient_entity Attribute Time Group : I'd * never finished high school.",
+      "Event = I 'd | Event = finished high school",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Activity_done_state Activity_finish Process_completed_state : I'd never * finished high school.",
+      'Activity_finish',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Activity_finish | Agent Activity Depictive Manner Result Co-timed_event Place Time Means Purpose Degree Explanation Circumstances Containing_event : I'd never * finished high school.",
+      'Agent = I | Activity = high school',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: `` I 'd never finished high school .",
+      "I'd * never * finished high school.",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I * had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I * had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Owner = I | Possession = no experience or skills',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Negation Quantified_mass : I had * no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Quantified_mass',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Quantified_mass | Quantity Mass Individuals Q_prop Degree : I had * no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Mass = experience or skills',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Experimentation Expertise Feeling Perception_experience Undergoing : I had no * experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Expertise',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Expertise | Protagonist Skill Knowledge Behavior_product Focal_participant Role Degree Manner Judge Time : I had no * experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Expertise : I had no experience or * skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Expertise',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Expertise | Protagonist Skill Knowledge Behavior_product Focal_participant Role Degree Manner Judge Time : I had no experience or * skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Sole_instance : I had no experience or skills... The * only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Sole_instance',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Sole_instance | Item Type : I had no experience or skills... The * only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Awareness Certainty Differentiation Familiarity Telling : I had no experience or skills... The only thing I did * know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Awareness',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Awareness | Cognizer Content Topic Expressor Evidence Degree Manner Role Paradigm Time Explanation : I had no experience or skills... The only thing I did * know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Alternatives Becoming_aware Coincidence Daring Likelihood Opportunity Probability : I had no experience or skills... The only thing I did know for sure was here's a * chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Likelihood',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Likelihood | Hypothetical_event Explanation Degree Place Time Circumstances : I had no experience or skills... The only thing I did know for sure was here's a * chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Cause_change Change_post-state Change_tool Exchange Exchange_currency Replacing Undergo_change : I had no experience or skills... The only thing I did know for sure was here's a chance to * change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      'Cause_change',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Cause_change | Agent Initial_category Final_category Final_value Initial_value Entity Time Degree Manner Explanation Attribute Cause Purpose Means Containing_event Place Duration Circumstances Role Event_description Period_of_iterations Re-encoding : I had no experience or skills... The only thing I did know for sure was here's a chance to * change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my * children... I rode a bike to Goodwill in the rain and snow.",
+      'Kinship',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Kinship | Alter Ego Relatives Degree Descriptor : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my * children... I rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I * rode a bike to Goodwill in the rain and snow.",
+      'Operate_vehicle',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Operate_vehicle | Driver Vehicle Source Path Goal Area Manner Distance Depictive Event Means Result Cotheme Speed Route Circumstances Place Duration Time Degree Purpose Particular_iteration Explanation Frequency : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I * rode a bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Bringing Operate_vehicle Vehicle : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a * bike to Goodwill in the rain and snow.",
+      'Vehicle',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Vehicle | Vehicle Descriptor Possessor Itinerary Means_of_propulsion Use : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a * bike to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Goal Locative_relation : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike * to Goodwill in the rain and snow.",
+      'Goal',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Goal | Landmark Trajector Profiled_region Time : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike * to Goodwill in the rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Mass_motion Precipitation : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the * rain and snow.",
+      'Precipitation',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Precipitation | Precipitation Place Time Rate Quantity Duration Explanation Manner Temperature Frequency : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the * rain and snow.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Precipitation : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and * snow.",
+      'Precipitation',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Precipitation | Precipitation Place Time Rate Quantity Duration Explanation Manner Temperature Frequency : I had no experience or skills... The only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and * snow.",
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: I had no experience or skills ... The only thing I did know for sure was here 's a chance to change things for me and my children ... I rode a bike to Goodwill in the rain and snow .",
+      "I * had * no * experience or * skills... The * only thing I did * know for sure was here's a * chance to * change things for me and my * children... I * rode a * bike * to Goodwill in the * rain and * snow.",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Desiring Possession Want_suspect : I * wanted to be there... I had my second chance to change my life. '' -- Donna",
+      'Desiring',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Desiring | Experiencer Event Focal_participant Location_of_event Degree Manner Explanation Purpose_of_event Time_of_event Time Place Duration Role_of_focal_participant : I * wanted to be there... I had my second chance to change my life. '' -- Donna",
+      'Experiencer = I | Event = to be there',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Attention_getting Existence Locative_relation Spatial_co-location Success_or_failure : I wanted to be * there... I had my second chance to change my life. '' -- Donna",
+      'Locative_relation',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Locative_relation | Ground Figure Profiled_region Distance Direction Time Figures Deixis Accessibility Directness Temporal_profile Region_quantification : I wanted to be * there... I had my second chance to change my life. '' -- Donna",
+      'Figure = I | Ground = there',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I wanted to be there... I * had my second chance to change my life. '' -- Donna",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I wanted to be there... I * had my second chance to change my life. '' -- Donna",
+      'Owner = I | Possession = my second chance to change my life',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Calendric_unit Measure_duration Ordinal_numbers : I wanted to be there... I had my * second chance to change my life. '' -- Donna",
+      'Ordinal_numbers',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Ordinal_numbers | Type Starting_point Basis_of_order Item Comparison_set : I wanted to be there... I had my * second chance to change my life. '' -- Donna",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Cause_change Change_post-state Change_tool Exchange Exchange_currency Replacing Undergo_change : I wanted to be there... I had my second chance to * change my life. '' -- Donna",
+      'Cause_change',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Cause_change | Agent Initial_category Final_category Final_value Initial_value Entity Time Degree Manner Explanation Attribute Cause Purpose Means Containing_event Place Duration Circumstances Role Event_description Period_of_iterations Re-encoding : I wanted to be there... I had my second chance to * change my life. '' -- Donna",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Alternatives Becoming_aware Coincidence Daring Likelihood Opportunity Probability : I wanted to be there... I had my second * chance to change my life. '' -- Donna",
+      'Opportunity',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Opportunity | Opportunity Agent Desirable_situation : I wanted to be there... I had my second * chance to change my life. '' -- Donna",
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: I wanted to be there ... I had my second chance to change my life. '' -- Donna",
+      "I * wanted to be * there... I * had my * second * chance to * change my life. '' -- Donna",
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Education_teaching : Because * teaching a man to fish will keep him fed for his entire life.',
+      'Education_teaching',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Education_teaching | Teacher Student Institution Subject Qualification Skill Precept Fact Material Role Course Level Degree Depictive Manner Means Result Time Place Duration Purpose : Because * teaching a man to fish will keep him fed for his entire life.',
+      'Student = a man | Skill = to fish',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME People Working_a_post : Because teaching a * man to fish will keep him fed for his entire life.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : Because teaching a * man to fish will keep him fed for his entire life.',
+      'Person = man',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Food Hunting : Because teaching a man to * fish will keep him fed for his entire life.',
+      'Hunting',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Hunting | Hunter Food Ground Instrument Duration Manner Means Outcome Place Time Purpose Frequency Degree Particular_iteration Co-participant : Because teaching a man to * fish will keep him fed for his entire life.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME  : Because teaching a man to fish will keep him * fed for his entire life.',
+      'Ingestion',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Ingestion | Ingestor Ingestibles Place Time Instrument Manner Source Means Degree Purpose Duration : Because teaching a man to fish will keep him * fed for his entire life.',
+      'Ingestor = him',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Ranked_expectation : Because teaching a man to fish will keep him fed for his * entire life.',
+      'Ranked_expectation',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Ranked_expectation | Entity : Because teaching a man to fish will keep him fed for his * entire life.',
+      'Entity = life',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Activity_ongoing Attention Avoiding Cause_to_continue Compliance Preventing_or_letting Retaining Storing : Because teaching a man to fish will * keep him fed for his entire life.',
+      'Cause_to_continue',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Cause_to_continue | Agent Process State Cause Duration Means Purpose Instrument Time Manner Place : Because teaching a man to fish will * keep him fed for his entire life.',
+      'Cause = teaching a man to fish | State = him | State = fed | Duration = for his entire life',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Because teaching a man to fish will keep him fed for his entire life .',
+      'Because * teaching a * man to * fish will * keep him * fed for his * entire life.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Time_vector : * Before I got to Goodwill, I was on a mission.',
+      'Time_vector',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Time_vector | Landmark_event Distance Direction Event : * Before I got to Goodwill, I was on a mission.',
+      'Event = I got to Goodwill | Landmark_event = I was on a mission',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Required_event Possession : Before I * got to Goodwill, I was on a mission.',
+      'Arriving',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Arriving | Theme Goal Source Path Manner Means Mode_of_transportation Cotheme Time New_situation Depictive Period_of_iterations Circumstances Purpose Degree Event_description Re-encoding Frequency Place : Before I * got to Goodwill, I was on a mission.',
+      'Theme = I | Goal = to Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Required_event Goal Locative_relation : Before I got * to Goodwill, I was on a mission.',
+      'Goal',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Goal | Landmark Trajector Profiled_region Time : Before I got * to Goodwill, I was on a mission.',
+      'Trajector = I | Landmark = Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_obligated : Before I got to Goodwill, I was on a * mission.',
+      'Being_obligated',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_obligated | Responsible_party Duty Condition Consequence Time Place Frequency : Before I got to Goodwill, I was on a * mission.',
+      'Responsible_party = I',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: `` Before I got to Goodwill , I was on a mission .',
+      '* Before I * got * to Goodwill, I was on a * mission.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Desiring Possession Want_suspect : I just * wanted a job.',
+      'Desiring',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Desiring | Experiencer Event Focal_participant Location_of_event Degree Manner Explanation Purpose_of_event Time_of_event Time Place Duration Role_of_focal_participant : I just * wanted a job.',
+      'Experiencer = I | Degree = just | Event = a job',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_obligated : I just wanted a * job.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : I just wanted a * job.',
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: I just wanted a job .',
+      'I just * wanted a * job.',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Being_employed Being_obligated : It didn't matter what the * job was, I just wanted one.",
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : It didn't matter what the * job was, I just wanted one.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Desiring Possession Want_suspect : It didn't matter what the job was, I just * wanted one.",
+      'Desiring',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Desiring | Experiencer Event Focal_participant Location_of_event Degree Manner Explanation Purpose_of_event Time_of_event Time Place Duration Role_of_focal_participant : It didn't matter what the job was, I just * wanted one.",
+      'Experiencer = I | Event = one',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: It did n't matter what the job was , I just wanted one .",
+      "It didn't matter what the * job was, I just * wanted one.",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Travel : Now, I'm on a * journey.",
+      'Travel',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Travel | Area Goal Path Traveler Source Mode_of_transportation Direction Co-participant Distance Duration Manner Means Speed Time Explanation Baggage Frequency Purpose Iterations Period_of_iterations Travel_means Depictive Result Place Descriptor : Now, I'm on a * journey.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Temporal_collocation : * Now, I'm on a journey.",
+      'Temporal_collocation',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Temporal_collocation | Trajector_entity Landmark_event Trajector_period Landmark_period Trajector_event Landmark_entity Event_description : * Now, I'm on a journey.",
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: Now , I 'm on a journey .",
+      "* Now, I'm on a * journey.",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I*'ve got more than a job ; I've got a career.",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I*'ve got more than a job ; I've got a career.",
+      'Owner = I | Possession = more than a job',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Possession : I've * got more than a job ; I've got a career.",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I've * got more than a job ; I've got a career.",
+      'Owner = I | Possession = more than a job',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Being_employed Being_obligated : I've got more than a * job ; I've got a career.",
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : I've got more than a * job ; I've got a career.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I've got more than a job ; I*'ve got a career.",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I've got more than a job ; I*'ve got a career.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Possession : I've got more than a job ; I've * got a career.",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I've got more than a job ; I've * got a career.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : I've got more than a job ; I*'ve got a career.",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : I've got more than a job ; I*'ve got a career.",
+      'Owner = I | Possession = a career',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: I 've got more than a job ; I 've got a career .",
+      "I*'ve * got more than a * job ; I *'ve * got a career.",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Desiring Difficulty Experiencer_focus Hedging Likelihood Similarity Sleep Statement : My instructor played a role * like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Similarity',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Similarity | Entities Entity_1 Entity_2 Dimension Differentiating_fact Degree Time Place Manner Explanation Depictive Circumstances : My instructor played a role * like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "Differentiating_fact = a role | Entity_2 = no other instructor I 've ever had",
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Increment Personal_relationship : My instructor played a role like no * other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Increment',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Increment | Class Added_set Initial_set Increment : My instructor played a role like no * other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Added_set = no other instructor',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME  : My instructor played a role like no other instructor I've ever * had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : My instructor played a role like no other instructor I've ever * had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Owner = I | Depictive = ever',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Judgment Regard : My instructor played a role like no other instructor I've ever had I * appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Judgment',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Judgment | Cognizer Evaluee Reason Expressor Role Degree Depictive Manner Means Topic Extent_of_acclaim Result : My instructor played a role like no other instructor I've ever had I * appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Cognizer = I | Evaluee = everything that Goodwill has done for me',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Activity_done_state Process_completed_state : My instructor played a role like no other instructor I've ever had I appreciate everything that Goodwill has * done for me. '' -- Cornell",
+      'Intentionally_affect',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Intentionally_affect | Agent Patient Means Event Instrument Place Purpose Time Manner Explanation Degree Event_description : My instructor played a role like no other instructor I've ever had I appreciate everything that Goodwill has * done for me. '' -- Cornell",
+      'Agent = Goodwill | Patient = for me',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Performers_and_roles : My instructor played a * role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Performers_and_roles',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Performers_and_roles | Audience Medium Performance Performer Score Script Type Role Performer1 Performer2 Time Place Manner Duration Event_description : My instructor played a * role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Role = role',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Being_relevant Cause_to_make_noise Competition Compliance Difficulty Make_noise Performers_and_roles Performing_arts : My instructor * played a role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      'Performers_and_roles',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Performers_and_roles | Audience Medium Performance Performer Score Script Type Role Performer1 Performer2 Time Place Manner Duration Event_description : My instructor * played a role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "Performer = My instructor | Role = a role | Event_description = like no other instructor I 've ever had",
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: My instructor played a role like no other instructor I 've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "My instructor * played a * role * like no * other instructor I've ever * had I * appreciate everything that Goodwill has * done for me. '' -- Cornell",
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Calendric_unit Measure_duration : Each * year, we help thousands of people who face tremendous obstacles.',
+      'Calendric_unit',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Calendric_unit | Relative_time Whole Unit Name Count Salient_event Landmark_period Trajector_event : Each * year, we help thousands of people who face tremendous obstacles.',
+      'Whole = Each year',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : Each year, we * help thousands of people who face tremendous obstacles.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : Each year, we * help thousands of people who face tremendous obstacles.',
+      'Helper = we | Benefited_party = thousands of people who face tremendous obstacles',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Cardinal_numbers Quantified_mass : Each year, we help * thousands of people who face tremendous obstacles.',
+      'Quantified_mass',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Quantified_mass | Quantity Mass Individuals Q_prop Degree : Each year, we help * thousands of people who face tremendous obstacles.',
+      'Quantity = thousands of people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Age Origin Partitive : Each year, we help thousands * of people who face tremendous obstacles.',
+      'Partitive',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Partitive | Subset Group : Each year, we help thousands * of people who face tremendous obstacles.',
+      'Subset = thousands | Group = people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Colonization Kinship People : Each year, we help thousands of * people who face tremendous obstacles.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : Each year, we help thousands of * people who face tremendous obstacles.',
+      'Person = people | Persistent_characteristic = who face tremendous obstacles',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Body_parts Compatibility Confronting_problem Contrary_circumstances Facial_expression Part_orientational : Each year, we help thousands of people who * face tremendous obstacles.',
+      'Confronting_problem',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Confronting_problem | Issue Agent Place Purpose Time Means Manner Domain Frequency Period_of_iterations Result Particular_iteration Explanation Event_description : Each year, we help thousands of people who * face tremendous obstacles.',
+      'Agent = who | Issue = tremendous obstacles',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Each year , we help thousands of people who face tremendous obstacles .',
+      'Each * year, we * help * thousands * of * people who * face tremendous obstacles.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Cardinal_numbers : Their * one common goal: they all want to work.',
+      'Cardinal_numbers',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Cardinal_numbers | Number Entity Unit Precision Multiplier Composite_number : Their * one common goal: they all want to work.',
+      'Number = one | Entity = common goal',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Purpose : Their one common * goal: they all want to work.',
+      'Purpose',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Purpose | Agent Goal Means Attribute Value Domain Time Restrictor : Their one common * goal: they all want to work.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Desiring Possession Want_suspect : Their one common goal: they all * want to work.',
+      'Desiring',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Desiring | Experiencer Event Focal_participant Location_of_event Degree Manner Explanation Purpose_of_event Time_of_event Time Place Duration Role_of_focal_participant : Their one common goal: they all * want to work.',
+      'Experiencer = they all | Event = to work',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_operational Collaboration Coming_to_believe Dimension Exercising Experiencer_focus Labor_product Locale_by_use Resolve_problem Usefulness Version_sequence Work Working_a_post : Their one common goal: they all want to * work.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : Their one common goal: they all want to * work.',
+      'Employee = they',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Their one common goal : they all want to work .',
+      'Their * one common * goal: they all * want to * work.',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Economy Frugality : A robust * economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Economy',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Economy | Political_region Economy Domain Market_type Descriptor : A robust * economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Descriptor = robust | Economy = economy',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Assistance Self_control : A robust economy * helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : A robust economy * helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Helper = A robust economy | Goal = by providing job opportunities',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Conditional_occurrence Supply : A robust economy helps by * providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Supply',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Supply | Supplier Recipient Theme Imposed_purpose Place Explanation Time Purpose Means Manner Circumstances Period_of_iterations Cotheme Source : A robust economy helps by * providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Theme = job opportunities',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Being_employed Being_obligated : A robust economy helps by providing * job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : A robust economy helps by providing * job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Position = opportunities',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Opportunity : A robust economy helps by providing job * opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Opportunity',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Opportunity | Opportunity Agent Desirable_situation : A robust economy helps by providing job * opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Desirable_situation = job | Opportunity = opportunities',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Candidness : A robust economy helps by providing job opportunities, but to be * honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Candidness',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Candidness | Speaker Message Topic Medium Addressee Degree Manner : A robust economy helps by providing job opportunities, but to be * honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Colonization Kinship People : A robust economy helps by providing job opportunities, but to be honest, most of the * people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : A robust economy helps by providing job opportunities, but to be honest, most of the * people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      'Person = people',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Being_employed Being_operational Collaboration Coming_to_believe Dimension Exercising Experiencer_focus Labor_product Locale_by_use Resolve_problem Usefulness Version_sequence Work Working_a_post : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't * working today are quite simply the ones who face the greatest obstacles.",
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't * working today are quite simply the ones who face the greatest obstacles.",
+      'Employee = people | Employee = who | Time = today',
+    ),
+    tuple(
+      'frame_classification',
+      "FRAME Body_parts Compatibility Confronting_problem Contrary_circumstances Facial_expression Part_orientational : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who * face the greatest obstacles.",
+      'Confronting_problem',
+    ),
+    tuple(
+      'args_extraction',
+      "ARGS Confronting_problem | Issue Agent Place Purpose Time Means Manner Domain Frequency Period_of_iterations Result Particular_iteration Explanation Event_description : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who * face the greatest obstacles.",
+      'Agent = the ones | Agent = who | Issue = the greatest obstacles',
+    ),
+    tuple(
+      'trigger_identification',
+      "TRIGGER: A robust economy helps by providing job opportunities , but to be honest , most of the people who are n't working today are quite simply the ones who face the greatest obstacles .",
+      "A robust * economy * helps by * providing * job * opportunities, but to be * honest, most of the * people who aren't * working today are quite simply the ones who * face the greatest obstacles.",
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Degree Hedging Social_interaction_evaluation Type : The * kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Type',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Type | Subtype Category Type_property Item_property : The * kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Subtype = kinds | Category = of services',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Member_of_military Public_services Rite : The kinds of * services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Public_services',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Public_services | Institution Domain Target_group Service_action : The kinds of * services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Conditional_occurrence Supply : The kinds of services we * provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Supply',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Supply | Supplier Recipient Theme Imposed_purpose Place Explanation Time Purpose Means Manner Circumstances Period_of_iterations Cotheme Source : The kinds of services we * provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Supplier = we | Imposed_purpose = help people deal with obstacles like health care , transportation and child care',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : The kinds of services we provide * help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : The kinds of services we provide * help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Benefited_party = people | Goal = deal with obstacles like health care , transportation and child care',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Colonization Kinship People : The kinds of services we provide help * people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : The kinds of services we provide help * people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Person = people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Be_in_agreement_on_action Make_agreement_on_action Quantified_mass Resolve_problem : The kinds of services we provide help people * deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Resolve_problem',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Resolve_problem | Agent Problem Cause Means Time Place Degree Manner Resultant_situation Outcome Containing_event Circumstances Instrument Beneficiary Duration Role Frequency Medium Co-participant Purpose : The kinds of services we provide help people * deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Agent = people | Problem = with obstacles like health care , transportation and child care',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Appellations Difficulty Kinship Offenses People_by_age : The kinds of services we provide help people deal with obstacles like health care, transportation and * child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'People_by_age',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People_by_age | Person Age Origin Persistent_characteristic Descriptor Ethnicity Context_of_acquaintance : The kinds of services we provide help people deal with obstacles like health care, transportation and * child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Person = child',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Predicament : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - * problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Predicament',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Predicament | Experiencer Situation Explanation Time Place Domain : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - * problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Sufficiency : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big * enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Sufficiency',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Sufficiency | Item Scale Enabled_situation Degree Circumstances : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big * enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Item = problems | Item = that | Degree = big | Circumstances = on their own without being compounded by factors like physical and mental disabilities , illiteracy and lack of job skills',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Cause_to_amalgamate Locale_by_use : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being * compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Cause_to_amalgamate',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Cause_to_amalgamate | Agent Whole Parts Part_1 Part_2 Manner Degree Means Result Depictive Purpose Place Time : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being * compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Agent = by factors like physical and mental disabilities , illiteracy and lack of job skills',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Contingency : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by * factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'Contingency',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Contingency | Outcome Determinant Degree Circumstances : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by * factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Position_on_a_scale Possession : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and * lack of job skills.',
+      'Possession',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Possession | Owner Possession Depictive Manner Duration Time Explanation : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and * lack of job skills.',
+      'Possession = of job skills',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_obligated : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of * job skills.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of * job skills.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Expertise : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job * skills.',
+      'Expertise',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Expertise | Protagonist Skill Knowledge Behavior_product Focal_participant Role Degree Manner Judge Time : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job * skills.',
+      'Knowledge = job | Behavior_product = skills',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: The kinds of services we provide help people deal with obstacles like health care , transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities , illiteracy and lack of job skills .',
+      'The * kinds of * services we * provide * help * people * deal with obstacles like health care, transportation and * child care - * problems that are big * enough on their own without being * compounded by * factors like physical and mental disabilities, illiteracy and * lack of * job * skills.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_named Duration_description Duration_relation Ordinal_numbers Relative_time : * Last year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
+      'Relative_time',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Relative_time | Focal_occasion Landmark_occasion Focal_participant Interval Degree Manner Explanation : * Last year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
+      'Landmark_occasion = Last | Focal_occasion = year',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Calendric_unit Measure_duration : Last * year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
+      'Calendric_unit',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Calendric_unit | Relative_time Whole Unit Name Count Salient_event Landmark_period Trajector_event : Last * year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
+      'Relative_time = Last | Unit = year',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : Last year, Goodwill * helped 3,300 people find jobs that increased their self - sufficiency.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : Last year, Goodwill * helped 3,300 people find jobs that increased their self - sufficiency.',
+      'Helper = Goodwill | Benefited_party = 3,300 people | Goal = find jobs that increased their self - sufficiency',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Colonization Kinship People : Last year, Goodwill helped 3,300 * people find jobs that increased their self - sufficiency.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : Last year, Goodwill helped 3,300 * people find jobs that increased their self - sufficiency.',
+      'Person = people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_obligated : Last year, Goodwill helped 3,300 people find * jobs that increased their self - sufficiency.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : Last year, Goodwill helped 3,300 people find * jobs that increased their self - sufficiency.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Biological_mechanisms Cause_change_of_position_on_a_scale Change_position_on_a_scale : Last year, Goodwill helped 3,300 people find jobs that * increased their self - sufficiency.',
+      'Cause_change_of_position_on_a_scale',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Cause_change_of_position_on_a_scale | Agent Attribute Item Cause Difference Value_1 Value_2 Co-variable Path Speed Means Purpose Time Manner Place : Last year, Goodwill helped 3,300 people find jobs that * increased their self - sufficiency.',
+      'Agent = jobs | Agent = that | Attribute = their self - sufficiency',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Achieving_first Arriving Becoming_aware Being_located Coming_to_believe Coming_up_with Documents Locating Regard Verdict : Last year, Goodwill helped 3,300 people * find jobs that increased their self - sufficiency.',
+      'Locating',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Locating | Perceiver Sought_entity Location Ground Time : Last year, Goodwill helped 3,300 people * find jobs that increased their self - sufficiency.',
+      'Perceiver = 3,300 people | Sought_entity = jobs that increased their self - sufficiency',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Last year , Goodwill helped 3,300 people find jobs that increased their self - sufficiency .',
+      '* Last * year, Goodwill * helped 3,300 * people * find * jobs that * increased their self - sufficiency.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Giving : Your * gift to Goodwill will be used directly to support services that will help even more find jobs.',
+      'Giving',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Giving | Donor Recipient Theme Place Explanation Time Purpose Means Manner Circumstances Imposed_purpose Depictive Period_of_iterations : Your * gift to Goodwill will be used directly to support services that will help even more find jobs.',
+      'Donor = Your | Theme = gift | Recipient = to Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Evidence Funding Supporting Taking_sides : Your gift to Goodwill will be used directly to * support services that will help even more find jobs.',
+      'Supporting',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Supporting | Supporter Supported Degree Duration Instrument Manner Means Place Time Purpose Explanation Event_description : Your gift to Goodwill will be used directly to * support services that will help even more find jobs.',
+      'Supported = services that will help even more find jobs',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Member_of_military Public_services Rite : Your gift to Goodwill will be used directly to support * services that will help even more find jobs.',
+      'Public_services',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Public_services | Institution Domain Target_group Service_action : Your gift to Goodwill will be used directly to support * services that will help even more find jobs.',
+      'Service_action = that will help even more find jobs',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : Your gift to Goodwill will be used directly to support services that will * help even more find jobs.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : Your gift to Goodwill will be used directly to support services that will * help even more find jobs.',
+      'Helper = services | Helper = that | Benefited_party = even more | Goal = find jobs',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_obligated : Your gift to Goodwill will be used directly to support services that will help even more find * jobs.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : Your gift to Goodwill will be used directly to support services that will help even more find * jobs.',
+      '',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Your gift to Goodwill will be used directly to support services that will help even more find jobs .',
+      'Your * gift to Goodwill will be used directly to * support * services that will * help even more find * jobs.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Temporal_collocation : Right * now, there are thousands of people who do not know what it feels like to support themselves.',
+      'Temporal_collocation',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Temporal_collocation | Trajector_entity Landmark_event Trajector_period Landmark_period Trajector_event Landmark_entity Event_description : Right * now, there are thousands of people who do not know what it feels like to support themselves.',
+      'Landmark_period = Right now | Trajector_entity = there are thousands of people who do not know what it feels like to support themselves',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Attention_getting Existence Locative_relation Spatial_co-location Success_or_failure : Right now, * there are thousands of people who do not know what it feels like to support themselves.',
+      'Existence',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Existence | Entity Time Duration Inherent_purpose State Explanation Place Circumstances Viewpoint Concessive Depictive : Right now, * there are thousands of people who do not know what it feels like to support themselves.',
+      'Entity = thousands of people who do not know what it feels like to support themselves',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME  : Right now, there * are thousands of people who do not know what it feels like to support themselves.',
+      'Existence',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Existence | Entity Time Duration Inherent_purpose State Explanation Place Circumstances Viewpoint Concessive Depictive : Right now, there * are thousands of people who do not know what it feels like to support themselves.',
+      'Entity = thousands of people who do not know what it feels like to support themselves',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Cardinal_numbers Quantified_mass : Right now, there are * thousands of people who do not know what it feels like to support themselves.',
+      'Quantified_mass',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Quantified_mass | Quantity Mass Individuals Q_prop Degree : Right now, there are * thousands of people who do not know what it feels like to support themselves.',
+      'Quantity = thousands | Individuals = of people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Age Origin Partitive : Right now, there are thousands * of people who do not know what it feels like to support themselves.',
+      'Partitive',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Partitive | Subset Group : Right now, there are thousands * of people who do not know what it feels like to support themselves.',
+      'Subset = thousands | Group = people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Colonization Kinship People : Right now, there are thousands of * people who do not know what it feels like to support themselves.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : Right now, there are thousands of * people who do not know what it feels like to support themselves.',
+      'Person = people | Person = who do not know what it feels like to support themselves',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Awareness Certainty Differentiation Familiarity Telling : Right now, there are thousands of people who do not * know what it feels like to support themselves.',
+      'Awareness',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Awareness | Cognizer Content Topic Expressor Evidence Degree Manner Role Paradigm Time Explanation : Right now, there are thousands of people who do not * know what it feels like to support themselves.',
+      'Cognizer = who | Content = what it feels like to support themselves',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Desiring Feeling Give_impression Opinion Others_situation_as_stimulus Perception_active Perception_experience Seeking Sensation : Right now, there are thousands of people who do not know what it * feels like to support themselves.',
+      'Feeling',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Feeling | Experiencer Emotion Emotional_state Evaluation Explanation : Right now, there are thousands of people who do not know what it * feels like to support themselves.',
+      'Evaluation = to support themselves',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Evidence Funding Supporting Taking_sides : Right now, there are thousands of people who do not know what it feels like to * support themselves.',
+      'Supporting',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Supporting | Supporter Supported Degree Duration Instrument Manner Means Place Time Purpose Explanation Event_description : Right now, there are thousands of people who do not know what it feels like to * support themselves.',
+      'Supported = themselves',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Right now , there are thousands of people who do not know what it feels like to support themselves .',
+      'Right * now, * there * are * thousands * of * people who do not * know what it * feels like to * support themselves.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Capability Containers Firing Likelihood Measure_volume Possibility Preserving : You * can help them to know that feeling.',
+      'Capability',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Capability | Entity Event Degree Circumstances Explanation Relevant_feature Status Role Time Frequency : You * can help them to know that feeling.',
+      'Entity = You | Event = help them to know that feeling',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : You can * help them to know that feeling.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : You can * help them to know that feeling.',
+      'Helper = You | Benefited_party = them | Goal = to know that feeling',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Awareness Certainty Differentiation Familiarity Telling : You can help them to * know that feeling.',
+      'Awareness',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Awareness | Cognizer Content Topic Expressor Evidence Degree Manner Role Paradigm Time Explanation : You can help them to * know that feeling.',
+      'Content = that feeling',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: You can help them to know that feeling .',
+      'You * can * help them to * know that feeling.',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : Please * help Goodwill and help people find jobs.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : Please * help Goodwill and help people find jobs.',
+      'Benefited_party = Goodwill',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Colonization Kinship People : Please help Goodwill and help * people find jobs.',
+      'People',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS People | Person Origin Persistent_characteristic Descriptor Age Ethnicity Context_of_acquaintance : Please help Goodwill and help * people find jobs.',
+      'Person = people',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Achieving_first Arriving Becoming_aware Being_located Coming_to_believe Coming_up_with Documents Locating Regard Verdict : Please help Goodwill and help people * find jobs.',
+      'Locating',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Locating | Perceiver Sought_entity Location Ground Time : Please help Goodwill and help people * find jobs.',
+      'Perceiver = people | Sought_entity = jobs',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Being_employed Being_obligated : Please help Goodwill and help people find * jobs.',
+      'Being_employed',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Being_employed | Employee Employer Place_of_employment Position Task Field Compensation Manner Purpose Time Duration Rank Type Contract_basis Place Frequency Event_description Circumstances Particular_iteration : Please help Goodwill and help people find * jobs.',
+      '',
+    ),
+    tuple(
+      'frame_classification',
+      'FRAME Assistance Self_control : Please help Goodwill and * help people find jobs.',
+      'Assistance',
+    ),
+    tuple(
+      'args_extraction',
+      'ARGS Assistance | Benefited_party Helper Goal Focal_entity Time Place Manner Means Instrument Domain Degree Duration Purpose Frequency Explanation : Please help Goodwill and * help people find jobs.',
+      'Benefited_party = people | Goal = find jobs',
+    ),
+    tuple(
+      'trigger_identification',
+      'TRIGGER: Please help Goodwill and help people find jobs .',
+      'Please * help Goodwill and * help * people * find * jobs.',
+    ),
+  ])
+# ---
