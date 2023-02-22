@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0 (2023-02-22)
+### Feature
+* Multilingual training refactor ([#10](https://github.com/chanind/frame-semantic-transformer/issues/10)) ([`7bf7ae5`](https://github.com/chanind/frame-semantic-transformer/commit/7bf7ae5474cc586739f1ad77848e45db09ff5a0d))
+
 ## v0.4.1 (2022-05-25)
 ### Fix
 * Updating README stats ([`76e4e75`](https://github.com/chanind/frame-semantic-transformer/commit/76e4e754b534389de9c86caced762461ae884e88))
