@@ -11,8 +11,8 @@ CORS(app)
 
 
 transformers = {
-    "base": FrameSemanticTransformer("base", max_batch_size=2),
-    "small": FrameSemanticTransformer("small", max_batch_size=2),
+    "base": FrameSemanticTransformer("base", batch_size=2),
+    "small": FrameSemanticTransformer("small", batch_size=2),
 }
 
 
