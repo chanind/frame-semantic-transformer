@@ -1,6 +1,8 @@
 from __future__ import annotations
+
+from collections import defaultdict
 from dataclasses import dataclass
-from typing import Optional, cast
+from typing import Dict, Iterable, Optional, Tuple, cast
 import torch
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
 
@@ -17,8 +19,12 @@ from frame_semantic_transformer.predict import batch_predict
 from frame_semantic_transformer.data.tasks import (
     ArgumentsExtractionTask,
     FrameClassificationTask,
+    Task,
     TriggerIdentificationTask,
 )
+
+# has the form {sentence: {trigger_loc: (frame, {frame_element: text})}}
+ResultsAccumulator = Dict[str, Dict[int, Tuple[str, Dict[str, str]]]]
 
 
 @dataclass
@@ -47,7 +53,7 @@ class FrameSemanticTransformer:
     model_path: str
     model_revision: str | None = None
     device: torch.device
-    max_batch_size: int
+    batch_size: int
     predictions_per_sample: int
     loader_cache: LoaderDataCache
 
@@ -55,7 +61,7 @@ class FrameSemanticTransformer:
         self,
         model_name_or_path: str = "base",
         use_gpu: bool = torch.cuda.is_available(),
-        max_batch_size: int = 8,
+        batch_size: int = 8,
         predictions_per_sample: int = 5,
         inference_loader: Optional[InferenceLoader] = None,
     ):
@@ -64,7 +70,7 @@ class FrameSemanticTransformer:
             self.model_path = f"chanind/frame-semantic-transformer-{model_name_or_path}"
             self.model_revision = MODEL_REVISION
         self.device = torch.device("cuda" if use_gpu else "cpu")
-        self.max_batch_size = max_batch_size
+        self.batch_size = batch_size
         self.predictions_per_sample = predictions_per_sample
         loader = inference_loader or Framenet17InferenceLoader()
         self.loader_cache = LoaderDataCache(loader)
@@ -128,100 +134,83 @@ class FrameSemanticTransformer:
             num_return_sequences=self.predictions_per_sample,
         )
 
-    def _identify_triggers(self, sentence: str) -> tuple[str, list[int]]:
-        task = TriggerIdentificationTask(text=sentence)
-        outputs = self._batch_predict([task.get_input()])
-        result = task.parse_output(outputs, self.loader_cache)
-        return marked_string_to_locs(result)
-
-    def _classify_frames(
-        self, sentence: str, trigger_locs: list[int]
-    ) -> list[str | None]:
-        """
-        Return a list containing a frame for each trigger_loc passed in.
-        If no frame can be found, None is returned for the frame instead.
-        """
-        frame_classification_tasks: list[FrameClassificationTask] = []
-        frames: list[str | None] = []
-
-        for trigger_loc in trigger_locs:
-            frame_classification_tasks.append(
-                FrameClassificationTask(
-                    text=sentence,
-                    trigger_loc=trigger_loc,
-                    loader_cache=self.loader_cache,
-                )
-            )
-        for batch in chunk_list(
-            frame_classification_tasks, chunk_size=self.max_batch_size
-        ):
-            batch_results = self._batch_predict([task.get_input() for task in batch])
-            for preds, frame_task in zip(
-                chunk_list(batch_results, self.predictions_per_sample),
-                batch,
-            ):
-                frames.append(frame_task.parse_output(preds, self.loader_cache))
-        return frames
-
-    def _extract_frame_args(
-        self, sentence: str, frame_with_trigger_locs: list[tuple[str, int]]
-    ) -> list[list[tuple[str, str]]]:
-        """
-        return a list of tuples of (frame_element, text) for each frame/trigger loc passed in.
-        The returned list will have the same length as the frame_with_trigger_locs list,
-        with each element corresponding to a frame/loc in the input list
-        """
-        frame_element_results: list[list[tuple[str, str]]] = []
-        arg_extraction_tasks = [
-            ArgumentsExtractionTask(
-                text=sentence,
-                trigger_loc=trigger_loc,
-                frame=frame,
-                loader_cache=self.loader_cache,
-            )
-            for frame, trigger_loc in frame_with_trigger_locs
-        ]
-        for args_tasks_batch in chunk_list(
-            arg_extraction_tasks, chunk_size=self.max_batch_size
-        ):
-            batch_results = self._batch_predict(
-                [task.get_input() for task in args_tasks_batch],
-            )
-            for preds, args_task in zip(
-                chunk_list(batch_results, self.predictions_per_sample), args_tasks_batch
-            ):
-                frame_element_results.append(
-                    args_task.parse_output(preds, self.loader_cache)
-                )
-        return frame_element_results
-
     def detect_frames(self, sentence: str) -> DetectFramesResult:
-        # first detect trigger locations
-        base_sentence, trigger_locs = self._identify_triggers(sentence)
-        # next detect frames for each trigger
-        frames = self._classify_frames(base_sentence, trigger_locs)
+        return self.detect_frames_bulk([sentence])[0]
 
-        frame_and_locs = [
-            (frame, loc) for frame, loc in zip(frames, trigger_locs) if frame
-        ]
-        frame_elements_lists = self._extract_frame_args(base_sentence, frame_and_locs)
-        frame_results: list[FrameResult] = []
-        for ((frame, loc), frame_element_tuples) in zip(
-            frame_and_locs, frame_elements_lists
-        ):
-            frame_elements = [
-                FrameElementResult(element, text)
-                for element, text in frame_element_tuples
-            ]
-            frame_results.append(
-                FrameResult(
-                    name=frame,
-                    trigger_location=loc,
-                    frame_elements=frame_elements,
+    def _collate_results(
+        self, results_acc: ResultsAccumulator
+    ) -> dict[str, DetectFramesResult]:
+        """
+        helper to turn the results accumulator into DetectFramesResults
+        """
+        results: dict[str, DetectFramesResult] = {}
+        for sentence, frame_data in results_acc.items():
+            frame_results: list[FrameResult] = []
+            for trigger_loc, (frame, elements) in frame_data.items():
+                frame_results.append(
+                    FrameResult(
+                        name=frame,
+                        trigger_location=trigger_loc,
+                        frame_elements=[
+                            FrameElementResult(element, text)
+                            for element, text in elements.items()
+                        ],
+                    )
                 )
+            results[sentence] = DetectFramesResult(
+                sentence,
+                trigger_locations=list(frame_data.keys()),
+                frames=frame_results,
             )
-        return DetectFramesResult(
-            base_sentence,
-            trigger_locations=trigger_locs,
-            frames=frame_results,
-        )
+        return results
+
+    def detect_frames_bulk(self, sentences: Iterable[str]) -> list[DetectFramesResult]:
+        tasks_queue: list[Task] = []
+        # slowly build up results from each task as they complete
+        results_acc: ResultsAccumulator = defaultdict(dict)
+        # T5 doesn't necessarily have to output the original sentence, even though it's supposed to
+        # This map just keeps track of the original sentence for each output sentence so we can match them up
+        parsed_sentences_map: dict[str, str] = {}
+        for sentence in sentences:
+            tasks_queue.append(TriggerIdentificationTask(text=sentence))
+        while len(tasks_queue) > 0:
+            batch = tasks_queue[: self.batch_size]
+            tasks_queue = tasks_queue[self.batch_size :]
+            batch_results = self._batch_predict([task.get_input() for task in batch])
+            for task, preds in zip(
+                batch, chunk_list(batch_results, self.predictions_per_sample)
+            ):
+                if isinstance(task, TriggerIdentificationTask):
+                    # first identify triggers
+                    result = task.parse_output(preds, self.loader_cache)
+                    parsed_sent, trigger_locs = marked_string_to_locs(result)
+                    parsed_sentences_map[task.text] = parsed_sent
+                    for trigger_loc in trigger_locs:
+                        tasks_queue.append(
+                            FrameClassificationTask(
+                                text=task.text,
+                                trigger_loc=trigger_loc,
+                                loader_cache=self.loader_cache,
+                            )
+                        )
+                elif isinstance(task, FrameClassificationTask):
+                    # then identify frames
+                    frame = task.parse_output(preds, self.loader_cache)
+                    if frame:
+                        results_acc[task.text][task.trigger_loc] = (frame, {})
+                        tasks_queue.append(
+                            ArgumentsExtractionTask(
+                                text=task.text,
+                                trigger_loc=task.trigger_loc,
+                                frame=frame,
+                                loader_cache=self.loader_cache,
+                            )
+                        )
+                elif isinstance(task, ArgumentsExtractionTask):
+                    # finally identify frame elements
+                    frame_element_tuples = task.parse_output(preds, self.loader_cache)
+                    results_acc[task.text][task.trigger_loc][1].update(
+                        frame_element_tuples
+                    )
+        results_map = self._collate_results(results_acc)
+        return [results_map[parsed_sentences_map[sentence]] for sentence in sentences]
