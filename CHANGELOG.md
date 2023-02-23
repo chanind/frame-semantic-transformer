@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2023-02-23)
+### Feature
+* Adding support for running inference on multiple sentences in batches ([#11](https://github.com/chanind/frame-semantic-transformer/issues/11)) ([`e6423e5`](https://github.com/chanind/frame-semantic-transformer/commit/e6423e594de22850d9ea6369f80ca9a0e81ac8e0))
+
 ## v0.5.0 (2023-02-22)
 ### Feature
 * Multilingual training refactor ([#10](https://github.com/chanind/frame-semantic-transformer/issues/10)) ([`7bf7ae5`](https://github.com/chanind/frame-semantic-transformer/commit/7bf7ae5474cc586739f1ad77848e45db09ff5a0d))
