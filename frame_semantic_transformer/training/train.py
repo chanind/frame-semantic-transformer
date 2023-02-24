@@ -65,6 +65,9 @@ def train(
     model.config.training_loader = training_loader.name()
     model.config.inference_loader = inference_loader.name()
 
+    inference_loader.setup()
+    training_loader.setup()
+
     logger.info("loading train/test/val datasets")
     training_data = training_loader.load_training_data()
     validation_data = training_loader.load_validation_data()
