@@ -118,6 +118,7 @@ class TrainingModelWrapper(pl.LightningModule):
             torch.mean(torch.stack([x["loss"] for x in training_step_outputs])).item(),
             4,
         )
+        self.log("train_loss", self.average_training_loss)
         path = f"{self.output_dir}/epoch-{self.current_epoch}-train-loss-{str(self.average_training_loss)}-val-loss-{str(self.average_validation_loss)}"
         if (
             not self.save_only_last_epoch
@@ -132,6 +133,7 @@ class TrainingModelWrapper(pl.LightningModule):
             torch.mean(torch.stack(losses)).item(),
             4,
         )
+        self.log("val_loss", self.average_validation_loss)
         if self.current_epoch < self.skip_initial_epochs_validation:
             # no validation metrics to calculate in this epoch, just return early
             return
@@ -141,6 +143,11 @@ class TrainingModelWrapper(pl.LightningModule):
             self.log(f"val_{task_name}_f1", calc_eval_metrics(*counts)["f_score"])
 
     def test_epoch_end(self, test_step_outputs: list[Any]) -> None:
+        average_test_loss = np.round(
+            torch.mean(torch.stack([x["loss"] for x in test_step_outputs])).item(),
+            4,
+        )
+        self.log("test_loss", average_test_loss)
         metrics = merge_metrics([out["metrics"] for out in test_step_outputs])
         for task_name, counts in metrics.items():
             self.log(f"test_{task_name}_f1", calc_eval_metrics(*counts)["f_score"])
