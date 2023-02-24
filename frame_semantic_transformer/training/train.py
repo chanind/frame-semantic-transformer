@@ -4,9 +4,12 @@ from typing import Literal, Optional, Union
 import pytorch_lightning as pl
 import torch
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
-from pytorch_lightning.callbacks.progress import TQDMProgressBar
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import Callback
+from pytorch_lightning.callbacks import (
+    Callback,
+    ModelCheckpoint,
+    EarlyStopping,
+    TQDMProgressBar,
+)
 from frame_semantic_transformer.constants import DEFAULT_NUM_WORKERS, MODEL_MAX_LENGTH
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
@@ -115,6 +118,15 @@ def train(
             mode="min",
         )
         callbacks.append(early_stop_callback)
+
+    checkpoint_callback = ModelCheckpoint(
+        monitor="val_loss",
+        dirpath=output_dir,
+        filename="best-checkpoint",
+        save_top_k=1,
+        mode="min",
+    )
+    callbacks.append(checkpoint_callback)
 
     # prepare trainer
     trainer = pl.Trainer(
