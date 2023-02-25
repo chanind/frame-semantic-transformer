@@ -143,7 +143,7 @@ def train(
         gpus=1 if use_gpu else 0,
         precision=precision,
         log_every_n_steps=1,
-        logger=pl_loggers or [],
+        logger=pl_loggers or True,
     )
 
     logger.info("beginning training")
