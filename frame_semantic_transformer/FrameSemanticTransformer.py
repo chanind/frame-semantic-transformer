@@ -213,4 +213,13 @@ class FrameSemanticTransformer:
                         frame_element_tuples
                     )
         results_map = self._collate_results(results_acc)
-        return [results_map[parsed_sentences_map[sentence]] for sentence in sentences]
+        results = []
+        for sentence in sentences:
+            mapped_sentence = parsed_sentences_map[sentence]
+            if mapped_sentence in results_map:
+                results.append(results_map[mapped_sentence])
+            else:
+                results.append(
+                    DetectFramesResult(sentence, trigger_locations=[], frames=[])
+                )
+        return results

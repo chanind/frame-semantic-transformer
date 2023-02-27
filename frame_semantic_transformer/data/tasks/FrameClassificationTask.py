@@ -32,7 +32,8 @@ class FrameClassificationTask(Task):
     ) -> str | None:
         for pred in prediction_outputs:
             if loader_cache.is_valid_frame(pred):
-                return pred
+                # fix any capitalization differences between pred and the frame name
+                return loader_cache.get_frame(pred).name
         return None
 
     # -- helper properties --
