@@ -29,20 +29,20 @@ class LoaderDataCache:
         """
         results: dict[str, Frame] = {}
         for frame in self.loader.load_frames():
-            results[frame.name] = frame
+            results[normalize_frame_name(frame.name)] = frame
         return results
 
     def get_frame(self, name: str) -> Frame:
         """
         Get a frame by name
         """
-        return self.get_frames_by_name()[name]
+        return self.get_frames_by_name()[normalize_frame_name(name)]
 
     def is_valid_frame(self, name: str) -> bool:
         """
         Check if a frame name is valid
         """
-        return name in self.get_frames_by_name()
+        return normalize_frame_name(name) in self.get_frames_by_name()
 
     @lru_cache(1)
     def get_lexical_unit_bigram_to_frame_lookup_map(self) -> dict[str, list[str]]:
@@ -88,3 +88,10 @@ class LoaderDataCache:
 
     def _normalize_lexical_unit_ngram(self, ngram: list[str]) -> str:
         return "_".join([self.loader.normalize_lexical_unit_text(tok) for tok in ngram])
+
+
+def normalize_frame_name(frame_name: str) -> str:
+    """
+    Normalize a frame name to be lowercase and without underscores
+    """
+    return frame_name.lower().replace("_", "")
