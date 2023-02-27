@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.1 (2023-02-27)
+### Fix
+* Fixing errors when no frames are found ([#14](https://github.com/chanind/frame-semantic-transformer/issues/14)) ([`ef2424c`](https://github.com/chanind/frame-semantic-transformer/commit/ef2424cba57515b9aa8205fe29f015b57f26504e))
+
 ## v0.6.0 (2023-02-23)
 ### Feature
 * Adding support for running inference on multiple sentences in batches ([#11](https://github.com/chanind/frame-semantic-transformer/issues/11)) ([`e6423e5`](https://github.com/chanind/frame-semantic-transformer/commit/e6423e594de22850d9ea6369f80ca9a0e81ac8e0))
