@@ -1,17 +1,15 @@
 from __future__ import annotations
 from collections import defaultdict
 from typing import Any
+
 import numpy as np
 import pytorch_lightning as pl
 import torch
 from transformers import AdamW, T5ForConditionalGeneration, T5TokenizerFast
-from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
+from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import trim_batch
-from frame_semantic_transformer.training.evaluate_batch import (
-    calc_eval_metrics,
-    evaluate_batch,
-)
+from .evaluate_batch import calc_eval_metrics, evaluate_batch
 
 
 class TrainingModelWrapper(pl.LightningModule):
@@ -119,7 +117,15 @@ class TrainingModelWrapper(pl.LightningModule):
             4,
         )
         self.log("train_loss", self.average_training_loss)
-        path = f"{self.output_dir}/epoch-{self.current_epoch}-train-loss-{str(self.average_training_loss)}-val-loss-{str(self.average_validation_loss)}"
+        filename_parts = [
+            f"epoch={self.current_epoch}",
+            f"train_loss={self.average_training_loss}",
+            f"val_loss={self.average_validation_loss}",
+        ]
+        if self.val_metrics:
+            filename_parts.extend([f"{k}={v}" for k, v in self.val_metrics.items()])
+
+        path = f"{self.output_dir}/{'--'.join(filename_parts)}"
         if (
             not self.save_only_last_epoch
             or self.current_epoch == (self.trainer.max_epochs or 0) - 1
@@ -139,8 +145,12 @@ class TrainingModelWrapper(pl.LightningModule):
             return
 
         metrics = merge_metrics([out["metrics"] for out in validation_step_outputs])
+        self.val_metrics = {}
         for task_name, counts in metrics.items():
-            self.log(f"val_{task_name}_f1", calc_eval_metrics(*counts)["f_score"])
+            name = f"val_{task_name}_f1"
+            f_score = calc_eval_metrics(*counts)["f_score"]
+            self.val_metrics[name] = f_score
+            self.log(name, f_score)
 
     def test_epoch_end(self, test_step_outputs: list[Any]) -> None:
         average_test_loss = np.round(
