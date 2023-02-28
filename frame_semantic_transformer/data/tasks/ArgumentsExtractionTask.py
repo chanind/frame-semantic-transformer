@@ -1,6 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
+
+from transformers import T5TokenizerFast
+
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import standardize_punct
 
@@ -59,5 +62,10 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
             # invalid output - just skip this
             continue
         else:
-            outputs.append((parts[0].strip(), standardize_punct(parts[1].strip())))
+            outputs.append(
+                (
+                    parts[0].strip(),
+                    T5TokenizerFast.clean_up_tokenization(parts[1].strip()),
+                )
+            )
     return outputs
