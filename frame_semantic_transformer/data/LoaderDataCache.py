@@ -29,20 +29,36 @@ class LoaderDataCache:
         """
         results: dict[str, Frame] = {}
         for frame in self.loader.load_frames():
-            results[normalize_frame_name(frame.name)] = frame
+            results[normalize_name(frame.name)] = frame
+        return results
+
+    @lru_cache(1)
+    def get_frame_element_name_loopkup(self) -> dict[str, str]:
+        results: dict[str, str] = {}
+        for frame in self.get_frames_by_name().values():
+            for element in frame.core_elements:
+                results[normalize_name(element)] = element
+            for element in frame.non_core_elements:
+                results[normalize_name(element)] = element
         return results
 
     def get_frame(self, name: str) -> Frame:
         """
         Get a frame by name
         """
-        return self.get_frames_by_name()[normalize_frame_name(name)]
+        return self.get_frames_by_name()[normalize_name(name)]
 
     def is_valid_frame(self, name: str) -> bool:
         """
         Check if a frame name is valid
         """
-        return normalize_frame_name(name) in self.get_frames_by_name()
+        return normalize_name(name) in self.get_frames_by_name()
+
+    def standardize_element_name(self, name: str) -> str | None:
+        """
+        Standardize a frame element name
+        """
+        return self.get_frame_element_name_loopkup().get(normalize_name(name))
 
     @lru_cache(1)
     def get_lexical_unit_bigram_to_frame_lookup_map(self) -> dict[str, list[str]]:
@@ -90,8 +106,8 @@ class LoaderDataCache:
         return "_".join([self.loader.normalize_lexical_unit_text(tok) for tok in ngram])
 
 
-def normalize_frame_name(frame_name: str) -> str:
+def normalize_name(name: str) -> str:
     """
-    Normalize a frame name to be lowercase and without underscores
+    Normalize a frame or element name to be lowercase and without underscores
     """
-    return frame_name.lower().replace("_", "")
+    return name.lower().replace("_", "")
