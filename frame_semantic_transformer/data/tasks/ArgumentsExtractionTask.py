@@ -59,5 +59,5 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
             # invalid output - just skip this
             continue
         else:
-            outputs.append((parts[0].strip(), parts[1].strip()))
+            outputs.append((parts[0].strip(), standardize_punct(parts[1].strip())))
     return outputs
