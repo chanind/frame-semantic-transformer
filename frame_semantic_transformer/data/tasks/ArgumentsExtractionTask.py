@@ -56,7 +56,7 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
     [("Agent", "He"), ("Destination", "to the store")]
     """
     outputs: list[tuple[str, str]] = []
-    for span in output.split("|"):
+    for span in T5TokenizerFast.clean_up_tokenization(output).split("|"):
         parts = span.strip().split("=")
         if len(parts) == 1:
             # invalid output - just skip this
@@ -65,7 +65,7 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
             outputs.append(
                 (
                     parts[0].strip(),
-                    T5TokenizerFast.clean_up_tokenization(parts[1].strip()),
+                    parts[1].strip(),
                 )
             )
     return outputs
