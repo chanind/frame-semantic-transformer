@@ -48,12 +48,12 @@ def test_get_target(sample: ArgumentsExtractionSample) -> None:
     assert sample.get_target() == expected
 
 
-def test_evaluate_prediction_just_does_a_simple_string_match_for_now(
+def test_evaluate_prediction_strips_invalid_elements(
     sample: ArgumentsExtractionSample,
     loader_cache: LoaderDataCache,
 ) -> None:
     target = "Donor = Your | Recipient = to Goodwill"
-    incorrect_pred = "Donor = Your | Recipient = Me | Bleh = so what"
+    incorrect_pred = "Donor = Your | Recipient = Me | wrongwrong = so what"
     assert ArgumentsExtractionSample.evaluate_prediction(
         [target], target, sample.get_input(), loader_cache
     ) == (
@@ -65,6 +65,21 @@ def test_evaluate_prediction_just_does_a_simple_string_match_for_now(
         [incorrect_pred], target, sample.get_input(), loader_cache
     ) == (
         1.0,
-        2.0,
         1.0,
+        1.0,
+    )
+
+
+def test_evaluate_prediction_ignores_capitlization_for_frame_element(
+    sample: ArgumentsExtractionSample,
+    loader_cache: LoaderDataCache,
+) -> None:
+    target = "Donor = Your | Recipient = to Goodwill"
+    pred = "doNor = Your | recipieNt = to Goodwill"
+    assert ArgumentsExtractionSample.evaluate_prediction(
+        [pred], target, sample.get_input(), loader_cache
+    ) == (
+        2.0,
+        0.0,
+        0.0,
     )

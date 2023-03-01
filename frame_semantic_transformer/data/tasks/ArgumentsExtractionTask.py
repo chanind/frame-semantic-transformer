@@ -1,6 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
+
+from transformers import T5TokenizerFast
+
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import standardize_punct
 
@@ -29,9 +32,15 @@ class ArgumentsExtractionTask(Task):
 
     @staticmethod
     def parse_output(
-        prediction_outputs: Sequence[str], _loader_cache: LoaderDataCache
+        prediction_outputs: Sequence[str], loader_cache: LoaderDataCache
     ) -> list[tuple[str, str]]:
-        return split_output_fe_spans(prediction_outputs[0])
+        raw_elements = split_output_fe_spans(prediction_outputs[0])
+        processed_elements = []
+        for element, text in raw_elements:
+            fixed_element = loader_cache.standardize_element_name(element)
+            if fixed_element is not None:
+                processed_elements.append((fixed_element, text))
+        return processed_elements
 
     @property
     def trigger_labeled_text(self) -> str:
@@ -47,10 +56,16 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
     [("Agent", "He"), ("Destination", "to the store")]
     """
     outputs: list[tuple[str, str]] = []
-    for span in output.split("|"):
+    for span in T5TokenizerFast.clean_up_tokenization(output).split("|"):
         parts = span.strip().split("=")
         if len(parts) == 1:
-            outputs.append((parts[0].strip(), "N/A"))
+            # invalid output - just skip this
+            continue
         else:
-            outputs.append((parts[0].strip(), parts[1].strip()))
+            outputs.append(
+                (
+                    parts[0].strip(),
+                    parts[1].strip(),
+                )
+            )
     return outputs

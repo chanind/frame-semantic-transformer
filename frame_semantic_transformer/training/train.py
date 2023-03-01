@@ -4,9 +4,13 @@ from typing import Literal, Optional, Union
 import pytorch_lightning as pl
 import torch
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
-from pytorch_lightning.callbacks.progress import TQDMProgressBar
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import Callback
+from pytorch_lightning.loggers import Logger
+from pytorch_lightning.callbacks import (
+    Callback,
+    ModelCheckpoint,
+    EarlyStopping,
+    TQDMProgressBar,
+)
 from frame_semantic_transformer.constants import DEFAULT_NUM_WORKERS, MODEL_MAX_LENGTH
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
@@ -46,6 +50,8 @@ def train(
     skip_initial_epochs_validation: int = 0,
     inference_loader: Optional[InferenceLoader] = None,
     training_loader: Optional[TrainingLoader] = None,
+    pl_callbacks: Optional[list[Callback]] = None,
+    pl_loggers: Optional[list[Logger]] = None,
 ) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -61,6 +67,9 @@ def train(
 
     model.config.training_loader = training_loader.name()
     model.config.inference_loader = inference_loader.name()
+
+    inference_loader.setup()
+    training_loader.setup()
 
     logger.info("loading train/test/val datasets")
     training_data = training_loader.load_training_data()
@@ -105,6 +114,8 @@ def train(
 
     # add callbacks
     callbacks: list[Callback] = [TQDMProgressBar(refresh_rate=5)]
+    if pl_callbacks:
+        callbacks.extend(pl_callbacks)
 
     if early_stopping_patience_epochs > 0:
         early_stop_callback = EarlyStopping(
@@ -116,6 +127,15 @@ def train(
         )
         callbacks.append(early_stop_callback)
 
+    checkpoint_callback = ModelCheckpoint(
+        monitor="val_loss",
+        dirpath=output_dir,
+        filename="best-checkpoint",
+        save_top_k=1,
+        mode="min",
+    )
+    callbacks.append(checkpoint_callback)
+
     # prepare trainer
     trainer = pl.Trainer(
         callbacks=callbacks,
@@ -123,6 +143,7 @@ def train(
         gpus=1 if use_gpu else 0,
         precision=precision,
         log_every_n_steps=1,
+        logger=pl_loggers or True,
     )
 
     logger.info("beginning training")

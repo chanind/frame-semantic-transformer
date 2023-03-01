@@ -3,7 +3,7 @@ import re
 from typing import Iterator, Sequence, TypeVar
 from torch import Tensor
 
-from transformers import T5Tokenizer
+from transformers import T5TokenizerFast
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
 
@@ -19,7 +19,7 @@ def standardize_punct(sent: str) -> str:
     """
     Try to standardize things like "He 's a man" -> "He's a man"
     """
-    updated_sent = T5Tokenizer.clean_up_tokenization(sent)
+    updated_sent = T5TokenizerFast.clean_up_tokenization(sent)
     # remove space before punct
     updated_sent = re.sub(r"([a-zA-Z0-9])\s+(\*?[.',:?])", r"\1\2", updated_sent)
     # remove repeated *'s
