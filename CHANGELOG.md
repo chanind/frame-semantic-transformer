@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.2 (2023-03-01)
+### Performance
+* Minor performance improvements for arg extraction and frame detection ([#15](https://github.com/chanind/frame-semantic-transformer/issues/15)) ([`7e03969`](https://github.com/chanind/frame-semantic-transformer/commit/7e039695b8cfa1ae5b8de1b9b4d4145e5bec3884))
+
 ## v0.6.1 (2023-02-27)
 ### Fix
 * Fixing errors when no frames are found ([#14](https://github.com/chanind/frame-semantic-transformer/issues/14)) ([`ef2424c`](https://github.com/chanind/frame-semantic-transformer/commit/ef2424cba57515b9aa8205fe29f015b57f26504e))
