@@ -58,7 +58,10 @@ class LoaderDataCache:
         """
         Standardize a frame element name
         """
-        return self.get_frame_element_name_loopkup().get(normalize_name(name))
+        norm_name = normalize_name(name)
+        if norm_name not in self.get_frame_element_name_loopkup():
+            return None if self.loader.strict_frame_elements() else name
+        return self.get_frame_element_name_loopkup()[norm_name]
 
     @lru_cache(1)
     def get_lexical_unit_bigram_to_frame_lookup_map(self) -> dict[str, list[str]]:
