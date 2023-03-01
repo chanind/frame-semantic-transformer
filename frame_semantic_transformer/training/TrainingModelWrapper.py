@@ -25,6 +25,7 @@ class TrainingModelWrapper(pl.LightningModule):
     save_only_last_epoch: bool
     skip_initial_epochs_validation: int
     loader_cache: LoaderDataCache
+    val_metrics: dict[str, float] | None
 
     def __init__(
         self,
@@ -44,6 +45,7 @@ class TrainingModelWrapper(pl.LightningModule):
         self.output_dir = output_dir
         self.save_only_last_epoch = save_only_last_epoch
         self.skip_initial_epochs_validation = skip_initial_epochs_validation
+        self.val_metrics = None
 
     def forward(
         self,
