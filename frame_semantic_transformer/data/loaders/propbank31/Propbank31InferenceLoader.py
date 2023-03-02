@@ -1,11 +1,9 @@
 from __future__ import annotations
 import re
-import nltk
-from glob import glob
-from os import path
-from xml.etree import ElementTree
 
 from nltk.stem import PorterStemmer
+
+from .load_propbank_frames import load_propbank_frames
 
 from .ensure_propbank_downloaded import ensure_propbank_downloaded
 
@@ -35,28 +33,7 @@ class Propbank31InferenceLoader(InferenceLoader):
         """
         Load the full list of frames to be used during inference
         """
-        dataset_path = nltk.data.find("corpora/propbank-frames-3.1").path
-        frames_paths = glob(path.join(dataset_path, "frames", "*.xml"))
-        frames = []
-        for frame_path in frames_paths:
-            with open(frame_path, "r") as frame_file:
-                etree = ElementTree.parse(frame_file).getroot()
-                raw_frames = etree.findall("predicate/roleset")
-                for raw_frame in raw_frames:
-                    frame = Frame(
-                        name=raw_frame.attrib["id"],
-                        core_elements=[
-                            f"ARG{role.attrib['n']}-{role.attrib['f']}"
-                            for role in raw_frame.findall("roles/role")
-                        ],
-                        non_core_elements=[],
-                        lexical_units=[
-                            f"{alias.text}.{alias.attrib['pos']}"
-                            for alias in raw_frame.findall("aliases/alias")
-                        ],
-                    )
-                    frames.append(frame)
-        return frames
+        return load_propbank_frames()
 
     def normalize_lexical_unit_text(self, lu: str) -> str:
         """

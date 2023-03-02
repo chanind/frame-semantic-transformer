@@ -22,6 +22,7 @@ from frame_semantic_transformer.data.frame_types import (
     FrameElementAnnotation,
 )
 from ..loader import TrainingLoader
+from .load_propbank_frames import load_propbank_frames
 
 
 SPLITS = {
@@ -74,7 +75,9 @@ def conll_word_index_to_locs(words: list[str], word_index: int) -> tuple[int, in
     raise ValueError("word index out of range")
 
 
-def load_propbank_samples(docs_list: list[str]) -> list[FrameAnnotatedSentence]:
+def load_propbank_samples(
+    docs_list: list[str], valid_frames: set[str]
+) -> list[FrameAnnotatedSentence]:
     """
     Parse each of the propbank ontonotes and ewt gold conll files and return a list of FrameAnnotatedSentence objects
     """
@@ -90,8 +93,7 @@ def load_propbank_samples(docs_list: list[str]) -> list[FrameAnnotatedSentence]:
             words = [word[0] for word in srl_instance.words]
             sentence = " ".join(words)
             frame_name = srl_instance.verb_stem
-            # light verbs (LV) don't show up as an official frame, just ignore them for now
-            if frame_name[-2:].lower() == "lv":
+            if frame_name.lower() not in valid_frames:
                 continue
             trigger_locs = [
                 conll_word_index_to_locs(words, index)[0] for index in srl_instance.verb
@@ -130,12 +132,14 @@ class Propbank31TrainingLoader(TrainingLoader):
     train_docs: list[str] = []
     val_docs: list[str] = []
     test_docs: list[str] = []
+    valid_frames: set[str] = set()
 
     def __init__(self, propbank_release_dir: str) -> None:
         super().__init__()
         self.propbank_release_dir = propbank_release_dir
 
     def setup(self) -> None:
+        self.valid_frames = {frame.name.lower() for frame in load_propbank_frames()}
         self.train_docs = load_docs_set(self.propbank_release_dir, SPLITS["train"])
         self.val_docs = load_docs_set(self.propbank_release_dir, SPLITS["val"])
         self.test_docs = load_docs_set(self.propbank_release_dir, SPLITS["test"])
@@ -148,10 +152,10 @@ class Propbank31TrainingLoader(TrainingLoader):
         ]
 
     def load_training_data(self) -> list[FrameAnnotatedSentence]:
-        return load_propbank_samples(self.train_docs)
+        return load_propbank_samples(self.train_docs, self.valid_frames)
 
     def load_test_data(self) -> list[FrameAnnotatedSentence]:
-        return load_propbank_samples(self.test_docs)
+        return load_propbank_samples(self.test_docs, self.valid_frames)
 
     def load_validation_data(self) -> list[FrameAnnotatedSentence]:
-        return load_propbank_samples(self.val_docs)
+        return load_propbank_samples(self.val_docs, self.valid_frames)
