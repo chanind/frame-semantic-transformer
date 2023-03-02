@@ -42,5 +42,4 @@ class Propbank31InferenceLoader(InferenceLoader):
         normalized_lu = lu.lower().replace("_", " ")
         normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
         normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
-        parts = [base_stemmer.stem(part) for part in normalized_lu.strip().split(" ")]
-        return " ".join(parts)
+        return base_stemmer.stem(normalized_lu.strip())
