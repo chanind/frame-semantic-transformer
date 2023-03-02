@@ -62,7 +62,8 @@ class Propbank31InferenceLoader(InferenceLoader):
         """
         Normalize a lexical unit like "takes.v" to "take".
         """
-        normalized_lu = lu.lower()
+        normalized_lu = lu.lower().replace("_", " ")
         normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
         normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
-        return base_stemmer.stem(normalized_lu.strip())
+        parts = [base_stemmer.stem(part) for part in normalized_lu.strip().split(" ")]
+        return " ".join(parts)

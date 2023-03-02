@@ -97,6 +97,9 @@ def load_propbank_samples(docs_list: list[str]) -> list[FrameAnnotatedSentence]:
             frame_elements = []
             for argument in srl_instance.arguments:
                 words_range, frame_element_name = argument
+                # light verbs (LV) don't show up as an official frame, just ignore them for now
+                if frame_element_name[-2:] == "LV":
+                    continue
                 element_start_loc = conll_word_index_to_locs(words, words_range[0])[0]
                 element_end_loc = conll_word_index_to_locs(words, words_range[1] - 1)[1]
                 frame_elements.append(
