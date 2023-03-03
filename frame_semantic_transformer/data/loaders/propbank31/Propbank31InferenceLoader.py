@@ -14,6 +14,8 @@ from ..loader import InferenceLoader
 
 base_stemmer = PorterStemmer()
 
+LOW_PRIORITY_LONGER_LUS = set()
+
 
 class Propbank31InferenceLoader(InferenceLoader):
     """
@@ -43,3 +45,12 @@ class Propbank31InferenceLoader(InferenceLoader):
         normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
         normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
         return base_stemmer.stem(normalized_lu.strip())
+
+    def prioritize_lexical_unit(self, lu: str) -> bool:
+        """
+        Check if the lexical unit is relatively rare, so that it should be considered "high information"
+        """
+        norm_lu = self.normalize_lexical_unit_text(lu)
+        if len(norm_lu) >= 4:
+            print(norm_lu)
+        return len(norm_lu) >= 4 and norm_lu not in LOW_PRIORITY_LONGER_LUS

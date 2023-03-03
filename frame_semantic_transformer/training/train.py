@@ -52,6 +52,7 @@ def train(
     training_loader: Optional[TrainingLoader] = None,
     pl_callbacks: Optional[list[Callback]] = None,
     pl_loggers: Optional[list[Logger]] = None,
+    resume_from_checkpoint: Optional[str] = None,
 ) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -144,6 +145,7 @@ def train(
         precision=precision,
         log_every_n_steps=1,
         logger=pl_loggers or True,
+        resume_from_checkpoint=resume_from_checkpoint,
     )
 
     logger.info("beginning training")
