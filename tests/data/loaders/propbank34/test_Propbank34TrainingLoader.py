@@ -3,11 +3,11 @@ from __future__ import annotations
 import os
 
 from syrupy import SnapshotAssertion
-from frame_semantic_transformer.data.loaders.propbank31.load_propbank_frames import (
+from frame_semantic_transformer.data.loaders.propbank34.load_propbank_frames import (
     load_propbank_frames,
 )
 
-from frame_semantic_transformer.data.loaders.propbank31.Propbank31TrainingLoader import (
+from frame_semantic_transformer.data.loaders.propbank34.Propbank34TrainingLoader import (
     load_propbank_samples,
 )
 

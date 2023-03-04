@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
-from frame_semantic_transformer.data.loaders.propbank31 import Propbank31InferenceLoader
+from frame_semantic_transformer.data.loaders.propbank34 import Propbank34InferenceLoader
 
-pb_loader = Propbank31InferenceLoader()
+pb_loader = Propbank34InferenceLoader()
 pb_loader_cache = LoaderDataCache(pb_loader)
 
 

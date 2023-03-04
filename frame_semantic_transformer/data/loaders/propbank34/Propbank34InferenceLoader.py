@@ -14,10 +14,10 @@ from ..loader import InferenceLoader
 
 base_stemmer = PorterStemmer()
 
-LOW_PRIORITY_LONGER_LUS = set()
+LOW_PRIORITY_LONGER_LUS = {"back", "down", "make", "take", "have", "into", "come"}
 
 
-class Propbank31InferenceLoader(InferenceLoader):
+class Propbank34InferenceLoader(InferenceLoader):
     """
     Inference loader for Propbank 3.1 data
     """

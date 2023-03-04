@@ -9,7 +9,7 @@ from frame_semantic_transformer.data.loaders.framenet17 import (
 from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_downloaded import (
     ensure_framenet_downloaded,
 )
-from frame_semantic_transformer.data.loaders.propbank31.ensure_propbank_downloaded import (
+from frame_semantic_transformer.data.loaders.propbank34.ensure_propbank_downloaded import (
     ensure_propbank_downloaded,
 )
 

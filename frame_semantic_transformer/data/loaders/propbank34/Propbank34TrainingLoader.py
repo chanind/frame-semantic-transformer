@@ -120,7 +120,7 @@ def load_propbank_samples(
     return annotated_sentences
 
 
-class Propbank31TrainingLoader(TrainingLoader):
+class Propbank34TrainingLoader(TrainingLoader):
     """
     This loader uses ontonotes and ewt data from propbank 3.1 to train a model
     You must clone https://github.com/propbank/propbank-release and set the propbank_release_dir to the path of the cloned repo
