@@ -13,7 +13,7 @@ def load_propbank_frames() -> list[Frame]:
     """
     Load the full list of frames to be used during inference
     """
-    dataset_path = nltk.data.find("corpora/propbank-frames-3.1").path
+    dataset_path = nltk.data.find("corpora/propbank-frames-3.4.0").path
     frames_paths = glob(path.join(dataset_path, "frames", "*.xml"))
     frames = []
     for frame_path in frames_paths:

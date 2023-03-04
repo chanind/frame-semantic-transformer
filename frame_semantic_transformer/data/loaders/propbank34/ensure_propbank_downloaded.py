@@ -16,6 +16,6 @@ propbank34 = Package(
 
 def ensure_propbank_downloaded() -> None:
     try:
-        nltk.data.find("corpora/propbank-frames-3.4.zip")
+        nltk.data.find("corpora/propbank-frames-3.4.0.zip")
     except LookupError:
         nltk.download(propbank34)
