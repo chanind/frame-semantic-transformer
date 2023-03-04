@@ -51,6 +51,4 @@ class Propbank34InferenceLoader(InferenceLoader):
         Check if the lexical unit is relatively rare, so that it should be considered "high information"
         """
         norm_lu = self.normalize_lexical_unit_text(lu)
-        if len(norm_lu) >= 4:
-            print(norm_lu)
         return len(norm_lu) >= 4 and norm_lu not in LOW_PRIORITY_LONGER_LUS
