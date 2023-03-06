@@ -13,7 +13,8 @@ from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_download
 ensure_framenet_downloaded()
 
 _loader_cache = LoaderDataCache(Framenet17InferenceLoader())
-_training_loader = Framenet17TrainingLoader()
+# exemplars are really slow to load, so skip those for this fixture
+_training_loader = Framenet17TrainingLoader(include_exemplars=False)
 
 
 @pytest.fixture

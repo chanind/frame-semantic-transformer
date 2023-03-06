@@ -1,7 +1,7 @@
 from __future__ import annotations
 import re
 
-from nltk.stem import PorterStemmer
+from nltk.stem import PorterStemmer, LancasterStemmer, SnowballStemmer
 from nltk.corpus import framenet as fn
 
 from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_downloaded import (
@@ -13,7 +13,9 @@ from frame_semantic_transformer.data.frame_types import Frame
 from ..loader import InferenceLoader
 
 
-base_stemmer = PorterStemmer()
+porter_stemmer = PorterStemmer()
+lancaster_stemmer = LancasterStemmer()
+snowball_stemmer = SnowballStemmer("english")
 
 
 LOW_PRIORITY_LONGER_LUS = {"back", "down", "make", "take", "have", "into", "come"}
@@ -46,14 +48,19 @@ class Framenet17InferenceLoader(InferenceLoader):
             frames.append(frame)
         return frames
 
-    def normalize_lexical_unit_text(self, lu: str) -> str:
+    def normalize_lexical_unit_text(self, lu: str) -> str | set[str]:
         """
         Normalize a lexical unit like "takes.v" to "take".
         """
         normalized_lu = lu.lower()
         normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
         normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
-        return base_stemmer.stem(normalized_lu.strip())
+        normalized_lu = normalized_lu.strip()
+        return {
+            porter_stemmer.stem(normalized_lu),
+            lancaster_stemmer.stem(normalized_lu),
+            snowball_stemmer.stem(normalized_lu),
+        }
 
     def prioritize_lexical_unit(self, lu: str) -> bool:
         """

@@ -37,8 +37,8 @@ def test_load_sesame_train_samples() -> None:
         sample for sample in samples if sample.get_task_name() == "frame_classification"
     ]
     assert len(trigger_id_samples) == 3425
-    assert len(frame_id_samples) == 198507
-    assert len(samples) == 400439
+    assert len(frame_id_samples) == 198482
+    assert len(samples) == 400389
 
 
 def test_load_sesame_train_samples_excluding_exemplars() -> None:

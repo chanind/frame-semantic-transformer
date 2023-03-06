@@ -1,6 +1,7 @@
 from __future__ import annotations
 from collections import defaultdict
 from functools import lru_cache
+from itertools import product
 
 from .loaders.loader import InferenceLoader
 from .frame_types import Frame
@@ -74,11 +75,13 @@ class LoaderDataCache:
                 for part in parts:
                     # also key this as a mongram if there's only 1 element or the word is rare enough
                     if len(parts) == 1 or self.loader.prioritize_lexical_unit(part):
-                        lu_bigrams.append(self._normalize_lexical_unit_ngram([part]))
+                        for norm_part in self._normalize_lexical_unit_ngram([part]):
+                            lu_bigrams.append(norm_part)
                     if prev_part is not None:
-                        lu_bigrams.append(
-                            self._normalize_lexical_unit_ngram([prev_part, part])
-                        )
+                        for norm_parts in self._normalize_lexical_unit_ngram(
+                            [prev_part, part]
+                        ):
+                            lu_bigrams.append(norm_parts)
                     prev_part = part
 
                 for bigram in lu_bigrams:
@@ -94,16 +97,19 @@ class LoaderDataCache:
         possible_frames = []
         lookup_map = self.get_lexical_unit_bigram_to_frame_lookup_map()
         for bigram in bigrams:
-            normalized_bigram = self._normalize_lexical_unit_ngram(bigram)
-            if normalized_bigram in lookup_map:
-                bigram_frames = lookup_map[normalized_bigram]
-                possible_frames += bigram_frames
+            for normalized_bigram in self._normalize_lexical_unit_ngram(bigram):
+                if normalized_bigram in lookup_map:
+                    bigram_frames = lookup_map[normalized_bigram]
+                    possible_frames += bigram_frames
         # remove duplicates, while preserving order
         # https://stackoverflow.com/questions/1653970/does-python-have-an-ordered-set/53657523#53657523
         return list(dict.fromkeys(possible_frames))
 
-    def _normalize_lexical_unit_ngram(self, ngram: list[str]) -> str:
-        return "_".join([self.loader.normalize_lexical_unit_text(tok) for tok in ngram])
+    def _normalize_lexical_unit_ngram(self, ngram: list[str]) -> set[str]:
+        norm_toks = [
+            setify(self.loader.normalize_lexical_unit_text(tok)) for tok in ngram
+        ]
+        return {"_".join(combo) for combo in product(*norm_toks)}
 
 
 def normalize_name(name: str) -> str:
@@ -111,3 +117,12 @@ def normalize_name(name: str) -> str:
     Normalize a frame or element name to be lowercase and without underscores
     """
     return name.lower().replace("_", "")
+
+
+def setify(input: str | set[str]) -> set[str]:
+    """
+    Convert a string or set to a set
+    """
+    if isinstance(input, str):
+        return {input}
+    return input

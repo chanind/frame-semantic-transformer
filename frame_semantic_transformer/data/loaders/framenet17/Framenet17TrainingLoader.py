@@ -73,10 +73,15 @@ def parse_annotated_sentence_from_framenet_sentence(
             and "Target" in fn_annotation
             and "frame" in fn_annotation
         ):
+            trigger_locs = [loc[0] for loc in fn_annotation["Target"]]
+            # filter out broken annotations
+            for trigger_loc in trigger_locs:
+                if trigger_loc >= len(sentence_text):
+                    return None
             frame_annotations.append(
                 FrameAnnotation(
                     frame=fn_annotation["frame"]["name"],
-                    trigger_locs=[loc[0] for loc in fn_annotation["Target"]],
+                    trigger_locs=trigger_locs,
                     frame_elements=[
                         FrameElementAnnotation(
                             start_loc=fn_element[0],

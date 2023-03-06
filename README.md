@@ -131,7 +131,7 @@ class InferenceLoader(ABC):
         pass
 
     @abstractmethod
-    def normalize_lexical_unit_text(self, lu: str) -> str:
+    def normalize_lexical_unit_text(self, lu: str) -> str | set[str]:
         """
         Normalize a lexical unit like "takes.v" to "take".
         """

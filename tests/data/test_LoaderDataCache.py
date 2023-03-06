@@ -13,9 +13,11 @@ def test_get_lexical_unit_bigram_to_frame_lookup_map(
 
 
 def test_normalize_lexical_unit_ngram(loader_cache: LoaderDataCache) -> None:
-    assert loader_cache._normalize_lexical_unit_ngram(["can't", "stop"]) == "cant_stop"
-    assert loader_cache._normalize_lexical_unit_ngram(["he", "eats"]) == "he_eat"
-    assert loader_cache._normalize_lexical_unit_ngram(["eats"]) == "eat"
+    assert loader_cache._normalize_lexical_unit_ngram(["can't", "stop"]) == {
+        "cant_stop"
+    }
+    assert loader_cache._normalize_lexical_unit_ngram(["he", "eats"]) == {"he_eat"}
+    assert loader_cache._normalize_lexical_unit_ngram(["eats"]) == {"eat"}
 
 
 def test_get_possible_frames_for_trigger_bigrams(loader_cache: LoaderDataCache) -> None:
@@ -25,6 +27,9 @@ def test_get_possible_frames_for_trigger_bigrams(loader_cache: LoaderDataCache) 
     assert loader_cache.get_possible_frames_for_trigger_bigrams(
         [["can't", "help"]]
     ) == ["Self_control"]
+    assert loader_cache.get_possible_frames_for_trigger_bigrams(
+        [["and", "staffed"], ["staffed", "by"], ["staffed"]]
+    ) == ["Employing", "Working_a_post"]
 
 
 def test_get_possible_frames_for_trigger_bigrams_stems_bigrams(
