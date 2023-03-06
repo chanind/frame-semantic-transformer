@@ -37,5 +37,22 @@ def test_load_sesame_train_samples() -> None:
         sample for sample in samples if sample.get_task_name() == "frame_classification"
     ]
     assert len(trigger_id_samples) == 3425
+    assert len(frame_id_samples) == 198507
+    assert len(samples) == 400439
+
+
+def test_load_sesame_train_samples_excluding_exemplars() -> None:
+    training_loader_sans_exemplars = Framenet17TrainingLoader(include_exemplars=False)
+    sentences = training_loader_sans_exemplars.load_training_data()
+    samples = tasks_from_annotated_sentences(sentences, loader_cache)
+    trigger_id_samples = [
+        sample
+        for sample in samples
+        if sample.get_task_name() == "trigger_identification"
+    ]
+    frame_id_samples = [
+        sample for sample in samples if sample.get_task_name() == "frame_classification"
+    ]
+    assert len(trigger_id_samples) == 3425
     assert len(frame_id_samples) == 20597
     assert len(samples) == 44619

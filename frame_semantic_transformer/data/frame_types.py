@@ -25,6 +25,9 @@ class FrameAnnotatedSentence:
 
     text: str
     annotations: list[FrameAnnotation]
+    # if this text isn't annotated with every trigger loc, we shouldn't generate a trigger id task from it
+    # but it's still useful for frame classification and argument extraction tasks
+    skip_trigger_identification_task: bool = False
 
 
 @dataclass
