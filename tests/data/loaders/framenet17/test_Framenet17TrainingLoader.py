@@ -25,8 +25,9 @@ def test_load_sesame_dev_samples() -> None:
     assert len(samples) == 5166
 
 
-def test_load_sesame_train_samples() -> None:
-    sentences = training_loader.load_training_data()
+def test_load_sesame_train_samples_with_exemplars() -> None:
+    training_loader_with_exemplars = Framenet17TrainingLoader(include_exemplars=False)
+    sentences = training_loader_with_exemplars.load_training_data()
     samples = tasks_from_annotated_sentences(sentences, loader_cache)
     trigger_id_samples = [
         sample
@@ -41,9 +42,8 @@ def test_load_sesame_train_samples() -> None:
     assert len(samples) == 400389
 
 
-def test_load_sesame_train_samples_excluding_exemplars() -> None:
-    training_loader_sans_exemplars = Framenet17TrainingLoader(include_exemplars=False)
-    sentences = training_loader_sans_exemplars.load_training_data()
+def test_load_sesame_train_samples() -> None:
+    sentences = training_loader.load_training_data()
     samples = tasks_from_annotated_sentences(sentences, loader_cache)
     trigger_id_samples = [
         sample

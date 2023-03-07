@@ -104,7 +104,7 @@ def parse_annotated_sentence_from_framenet_sentence(
 class Framenet17TrainingLoader(TrainingLoader):
     include_exemplars: bool
 
-    def __init__(self, include_exemplars: bool = True) -> None:
+    def __init__(self, include_exemplars: bool = False) -> None:
         super().__init__()
         self.include_exemplars = include_exemplars
 
