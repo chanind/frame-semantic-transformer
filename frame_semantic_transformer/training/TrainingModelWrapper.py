@@ -1,5 +1,7 @@
 from __future__ import annotations
 from collections import defaultdict
+import json
+from os import path
 from typing import Any
 
 import numpy as np
@@ -9,7 +11,7 @@ from transformers import AdamW, T5ForConditionalGeneration, T5TokenizerFast
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import trim_batch
-from .evaluate_batch import calc_eval_metrics, evaluate_batch
+from .evaluate_batch import TaskEvalResults, calc_eval_metrics, evaluate_batch
 
 
 class TrainingModelWrapper(pl.LightningModule):
@@ -26,6 +28,7 @@ class TrainingModelWrapper(pl.LightningModule):
     skip_initial_epochs_validation: int
     loader_cache: LoaderDataCache
     val_metrics: dict[str, float] | None
+    log_eval_failures: bool
 
     def __init__(
         self,
@@ -36,6 +39,7 @@ class TrainingModelWrapper(pl.LightningModule):
         output_dir: str = "outputs",
         save_only_last_epoch: bool = False,
         skip_initial_epochs_validation: int = 0,
+        log_eval_failures: bool = False,
     ):
         super().__init__()
         self.lr = lr
@@ -46,6 +50,7 @@ class TrainingModelWrapper(pl.LightningModule):
         self.save_only_last_epoch = save_only_last_epoch
         self.skip_initial_epochs_validation = skip_initial_epochs_validation
         self.val_metrics = None
+        self.log_eval_failures = log_eval_failures
 
     def forward(
         self,
@@ -148,11 +153,18 @@ class TrainingModelWrapper(pl.LightningModule):
 
         metrics = merge_metrics([out["metrics"] for out in validation_step_outputs])
         self.val_metrics = {}
-        for task_name, counts in metrics.items():
+        for task_name, results in metrics.items():
             name = f"val_{task_name}_f1"
-            f_score = calc_eval_metrics(*counts)["f_score"]
+            f_score = calc_eval_metrics(results.scores)["f_score"]
             self.val_metrics[name] = f_score
             self.log(name, f_score)
+
+        if self.log_eval_failures:
+            failures_file = path.join(
+                self.output_dir, f"val_{self.current_epoch}_eval_failures.json"
+            )
+            with open(failures_file, "w") as f:
+                json.dump(metrics, f, indent=2)
 
     def test_epoch_end(self, test_step_outputs: list[Any]) -> None:
         average_test_loss = np.round(
@@ -161,15 +173,27 @@ class TrainingModelWrapper(pl.LightningModule):
         )
         self.log("test_loss", average_test_loss)
         metrics = merge_metrics([out["metrics"] for out in test_step_outputs])
-        for task_name, counts in metrics.items():
-            self.log(f"test_{task_name}_f1", calc_eval_metrics(*counts)["f_score"])
+        for task_name, results in metrics.items():
+            self.log(
+                f"test_{task_name}_f1", calc_eval_metrics(results.scores)["f_score"]
+            )
+        if self.log_eval_failures:
+            failures_file = path.join(
+                self.output_dir, f"test_{self.current_epoch}_eval_failures.json"
+            )
+            with open(failures_file, "w") as f:
+                json.dump(metrics, f, indent=2)
 
 
-def merge_metrics(metrics: list[dict[str, list[int]]]) -> dict[str, list[int]]:
-    merged_metrics: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
+def merge_metrics(
+    metrics: list[dict[str, TaskEvalResults]]
+) -> dict[str, TaskEvalResults]:
+    merged_metrics: dict[str, TaskEvalResults] = defaultdict(TaskEvalResults)
     for metric in metrics:
-        for task_name, counts in metric.items():
-            merged_metrics[task_name][0] += counts[0]
-            merged_metrics[task_name][1] += counts[1]
-            merged_metrics[task_name][2] += counts[2]
+        for task_name, eval_results in metric.items():
+            merged_metrics[task_name].scores.false_pos += eval_results.scores.false_pos
+            merged_metrics[task_name].scores.false_neg += eval_results.scores.false_neg
+            merged_metrics[task_name].scores.true_pos += eval_results.scores.true_pos
+            merged_metrics[task_name].false_negatives += eval_results.false_negatives
+            merged_metrics[task_name].false_positives += eval_results.false_positives
     return merged_metrics
