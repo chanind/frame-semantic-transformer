@@ -1,7 +1,7 @@
 from __future__ import annotations
 from collections import defaultdict
 import json
-from os import path
+from os import path, makedirs
 from typing import Any
 
 import numpy as np
@@ -160,11 +160,11 @@ class TrainingModelWrapper(pl.LightningModule):
             self.log(name, f_score)
 
         if self.log_eval_failures:
-            failures_file = path.join(
-                self.output_dir, f"val_{self.current_epoch}_eval_failures.json"
+            log_eval_failures(
+                self.output_dir,
+                f"val_{self.current_epoch}_eval_failures.json",
+                metrics,
             )
-            with open(failures_file, "w") as f:
-                json.dump(metrics, f, indent=2)
 
     def test_epoch_end(self, test_step_outputs: list[Any]) -> None:
         average_test_loss = np.round(
@@ -178,11 +178,11 @@ class TrainingModelWrapper(pl.LightningModule):
                 f"test_{task_name}_f1", calc_eval_metrics(results.scores)["f_score"]
             )
         if self.log_eval_failures:
-            failures_file = path.join(
-                self.output_dir, f"test_{self.current_epoch}_eval_failures.json"
+            log_eval_failures(
+                self.output_dir,
+                f"test_{self.current_epoch}_eval_failures.json",
+                metrics,
             )
-            with open(failures_file, "w") as f:
-                json.dump(metrics, f, indent=2)
 
 
 def merge_metrics(
@@ -197,3 +197,12 @@ def merge_metrics(
             merged_metrics[task_name].false_negatives += eval_results.false_negatives
             merged_metrics[task_name].false_positives += eval_results.false_positives
     return merged_metrics
+
+
+def log_eval_failures(
+    output_dir: str, filename: str, eval_results: dict[str, TaskEvalResults]
+) -> None:
+    failures_file = path.join(output_dir, filename)
+    makedirs(output_dir, exist_ok=True)
+    with open(failures_file, "w+") as f:
+        json.dump(eval_results, f, indent=2)
