@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections import defaultdict
 import logging
 from typing import Any, Type
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
@@ -70,6 +70,13 @@ class TaskEvalResults:
     scores: EvalScores = field(default_factory=EvalScores)
     false_positives: list[EvalFailure] = field(default_factory=list)
     false_negatives: list[EvalFailure] = field(default_factory=list)
+
+    def serialize(self) -> dict[str, Any]:
+        return {
+            "scores": asdict(self.scores),
+            "false_positives": list(map(asdict, self.false_positives)),
+            "false_negatives": list(map(asdict, self.false_negatives)),
+        }
 
 
 def evaluate_batch(
