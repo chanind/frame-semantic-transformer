@@ -4,7 +4,15 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
-
+  jobs:
+    post_install:
+      # torch won't auto-install, so install it manually here
+      - pip install torch
 sphinx:
   configuration: docs/conf.py
   fail_on_warning: true
+
+python:
+  install:
+    - method: pip
+      path: .
