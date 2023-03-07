@@ -202,7 +202,10 @@ def merge_metrics(
 def log_eval_failures(
     output_dir: str, filename: str, eval_results: dict[str, TaskEvalResults]
 ) -> None:
+    serialized_results = {
+        task: results.serialize() for task, results in eval_results.items()
+    }
     failures_file = path.join(output_dir, filename)
     makedirs(output_dir, exist_ok=True)
     with open(failures_file, "w+") as f:
-        json.dump(eval_results, f, indent=2)
+        json.dump(serialized_results, f, indent=2)
