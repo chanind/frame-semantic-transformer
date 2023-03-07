@@ -7,6 +7,8 @@ Frame-based semantic parsing library trained on [FrameNet](https://framenet2.ics
 
 **Live Demo: [chanind.github.io/frame-semantic-transformer](https://chanind.github.io/frame-semantic-transformer)**
 
+Full docs: [frame-semantic-transformer.readthedocs.io](https://frame-semantic-transformer.readthedocs.io/)
+
 ## About
 
 This library draws heavily on [Open-Sesame](https://github.com/swabhs/open-sesame) ([paper](https://arxiv.org/abs/1706.09528)) for inspiration on training and evaluation on FrameNet 1.7, and uses ideas from the paper [Open-Domain Frame Semantic Parsing Using Transformers](https://arxiv.org/abs/2010.10998) for using T5 as a frame-semantic parser. [SimpleT5](https://github.com/Shivanandroy/simpleT5) was also used as a base for the initial training setup.
