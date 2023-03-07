@@ -27,3 +27,7 @@ License
 -------
 
 The Frame Semantic Transformer code is released under a MIT license, however the pretrained models are released under an Apache 2.0 license in accordance with FrameNet training data and HuggingFace's T5 base models.
+
+
+.. _Open-Sesame: https://github.com/swabhs/open-sesame
+.. _SimpleT5: https://github.com/Shivanandroy/simpleT5

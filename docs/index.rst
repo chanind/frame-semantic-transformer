@@ -68,5 +68,3 @@ The main entry to interacting with the library is the `FrameSemanticTransformer`
 .. _PyPI: https://pypi.org/project/frame-semantic-transformer/
 .. _FrameNet 1.7: https://framenet2.icsi.berkeley.edu/
 .. _T5 Transformer: https://huggingface.co/docs/transformers/model_doc/t5
-.. _Open-Sesame: https://github.com/swabhs/open-sesame
-.. _SimpleT5: https://github.com/Shivanandroy/simpleT5
