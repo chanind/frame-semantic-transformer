@@ -1,13 +1,22 @@
 from __future__ import annotations
+from typing import Optional
 
 import torch
 from torch.utils.data import DataLoader
 from pytorch_lightning import Trainer
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from frame_semantic_transformer.constants import DEFAULT_NUM_WORKERS
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.TaskSampleDataset import TaskSampleDataset
-from frame_semantic_transformer.data.loaders.loader import TrainingLoader
+from frame_semantic_transformer.data.loaders.framenet17 import (
+    Framenet17InferenceLoader,
+    Framenet17TrainingLoader,
+)
+from frame_semantic_transformer.data.loaders.loader import (
+    InferenceLoader,
+    TrainingLoader,
+)
 from frame_semantic_transformer.data.tasks_from_annotated_sentences import (
     tasks_from_annotated_sentences,
 )
@@ -17,16 +26,22 @@ from .TrainingModelWrapper import TrainingModelWrapper
 def evaluate_model(
     model: T5ForConditionalGeneration,
     tokenizer: T5TokenizerFast,
-    loader_cache: LoaderDataCache,
-    training_loader: TrainingLoader,
-    batch_size: int,
-    num_workers: int,
+    batch_size: int = 8,
+    num_workers: int = DEFAULT_NUM_WORKERS,
+    inference_loader: Optional[InferenceLoader] = None,
+    training_loader: Optional[TrainingLoader] = None,
+    log_eval_failures: bool = False,
 ) -> None:
     """
     Benchmark this model against the validation and test sets
     """
 
-    inference_loader = loader_cache.loader
+    if not inference_loader:
+        inference_loader = Framenet17InferenceLoader()
+    loader_cache = LoaderDataCache(inference_loader)
+    if not training_loader:
+        training_loader = Framenet17TrainingLoader()
+
     inference_loader.setup()
     training_loader.setup()
 
@@ -51,7 +66,9 @@ def evaluate_model(
             f"Model was trained with training loader {expected_training_loader} but is being evaluated with {training_loader.name()}"
         )
 
-    model_wrapper = TrainingModelWrapper(model, tokenizer, loader_cache)
+    model_wrapper = TrainingModelWrapper(
+        model, tokenizer, loader_cache, log_eval_failures=log_eval_failures
+    )
     trainer = Trainer(gpus=1, precision=32, max_epochs=1)
 
     val_dataset = TaskSampleDataset(

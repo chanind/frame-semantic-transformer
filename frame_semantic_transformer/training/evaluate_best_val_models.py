@@ -4,8 +4,8 @@ import os
 
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
 
-from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.loaders.loader import (
+    InferenceLoader,
     TrainingLoader,
 )
 from frame_semantic_transformer.training.evaluate_model import evaluate_model
@@ -17,7 +17,7 @@ from frame_semantic_transformer.training.find_best_val_model_paths import (
 
 def evaluate_best_val_models(
     outputs_dir: str,
-    loader_cache: LoaderDataCache,
+    inference_loader: InferenceLoader,
     training_loader: TrainingLoader,
     batch_size: int,
     num_workers: int,
@@ -39,7 +39,7 @@ def evaluate_best_val_models(
         evaluate_model(
             model,
             tokenizer,
-            loader_cache=loader_cache,
+            inference_loader=inference_loader,
             training_loader=training_loader,
             batch_size=batch_size,
             num_workers=num_workers,
