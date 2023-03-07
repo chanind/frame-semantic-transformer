@@ -8,6 +8,8 @@ build:
     post_install:
       # torch won't auto-install, so install it manually here
       - pip install torch
+      # not sure why this isn't being auto-installed...
+      - pip install furo
 sphinx:
   configuration: docs/conf.py
   fail_on_warning: true
