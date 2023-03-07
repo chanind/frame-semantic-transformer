@@ -12,7 +12,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Becoming Biological_urge Cause_change Cause_to_move_in_place Change_direction Change_operational_state Contingency Moving_in_place Respond_to_proposal Submitting_documents Surrendering Temporal_subregion Turning_out Undergo_change : Because * turning welfare recipients into tax payers just makes sense.',
+      'FRAME Becoming Cause_change Cause_to_move_in_place Change_direction Contingency Moving_in_place Temporal_subregion Undergo_change : Because * turning welfare recipients into tax payers just makes sense.',
       'Cause_change',
     ),
     tuple(
@@ -37,7 +37,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_named First_experience Ordinal_numbers : When I * first came to Goodwill I was a single parent with little or no self-esteem.',
+      'FRAME Desirability First_experience Ordinal_numbers : When I * first came to Goodwill I was a single parent with little or no self-esteem.',
       'First_experience',
     ),
     tuple(
@@ -57,7 +57,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Personal_relationship Sole_instance : When I first came to Goodwill I was a * single parent with little or no self-esteem.',
+      'FRAME Accompaniment Personal_relationship Sole_instance : When I first came to Goodwill I was a * single parent with little or no self-esteem.',
       'Personal_relationship',
     ),
     tuple(
@@ -67,7 +67,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Kinship : When I first came to Goodwill I was a single * parent with little or no self-esteem.',
+      'FRAME Kinship Cutting People_by_jurisdiction Political_locales : When I first came to Goodwill I was a single * parent with little or no self-esteem.',
       'Kinship',
     ),
     tuple(
@@ -102,7 +102,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Documents : I was on welfare and without my * diploma.',
+      'FRAME Documents Leadership Social_interaction_evaluation : I was on welfare and without my * diploma.',
       'Documents',
     ),
     tuple(
@@ -117,7 +117,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Coming_to_be Process_end Waking_up Arriving Motion Relative_time Transition_to_a_situation : * Coming to Goodwill was the first step toward my becoming totally independent.',
+      'FRAME Coming_to_be Process_end Waking_up Arriving Motion Relative_time Transition_to_a_situation Activity_start Process_start Statement Stimulus_focus : * Coming to Goodwill was the first step toward my becoming totally independent.',
       'Arriving',
     ),
     tuple(
@@ -137,7 +137,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_named First_experience Ordinal_numbers : Coming to Goodwill was the * first step toward my becoming totally independent.',
+      'FRAME Desirability First_experience Ordinal_numbers : Coming to Goodwill was the * first step toward my becoming totally independent.',
       'Ordinal_numbers',
     ),
     tuple(
@@ -147,7 +147,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Cause_change_of_position_on_a_scale Connecting_architecture Cotheme Intentionally_act Quitting Self_motion : Coming to Goodwill was the first * step toward my becoming totally independent.',
+      'FRAME Connecting_architecture Intentionally_act Self_motion : Coming to Goodwill was the first * step toward my becoming totally independent.',
       'Intentionally_act',
     ),
     tuple(
@@ -157,7 +157,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Becoming Eventive_affecting Suitability : Coming to Goodwill was the first step toward my * becoming totally independent.',
+      'FRAME Becoming Suitability : Coming to Goodwill was the first step toward my * becoming totally independent.',
       'Becoming',
     ),
     tuple(
@@ -167,7 +167,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Adding_up Amounting_to Completeness Degree Render_nonfunctional : Coming to Goodwill was the first step toward my becoming * totally independent.',
+      'FRAME Adding_up Amounting_to Bringing Completeness Degree Render_nonfunctional Self_motion : Coming to Goodwill was the first step toward my becoming * totally independent.',
       'Degree',
     ),
     tuple(
@@ -192,7 +192,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Adding_up Amounting_to Completeness Degree Render_nonfunctional : I am now... * totally off of welfare.',
+      'FRAME Adding_up Amounting_to Bringing Completeness Degree Render_nonfunctional Self_motion : I am now... * totally off of welfare.',
       'Degree',
     ),
     tuple(
@@ -217,7 +217,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Desiring Difficulty Experiencer_focus Hedging Likelihood Similarity Sleep Statement : I really * like my job. '' -- Sherry",
+      "FRAME Experiencer_focus Hedging Likelihood Probability Similarity : I really * like my job. '' -- Sherry",
       'Experiencer_focus',
     ),
     tuple(
@@ -262,7 +262,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_employed Being_operational Collaboration Coming_to_believe Dimension Exercising Experiencer_focus Labor_product Locale_by_use Resolve_problem Usefulness Version_sequence Work Working_a_post : Because people want to * work.',
+      'FRAME Being_employed Being_operational Dimension Employing Labor_product Locale_by_use Usefulness Version_sequence Work Working_a_post : Because people want to * work.',
       'Being_employed',
     ),
     tuple(
@@ -287,7 +287,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Activity_done_state Activity_finish Process_completed_state : I'd never * finished high school.",
+      "FRAME Activity_done_state Activity_finish Process_completed_state Body_parts Desirability Domain Emotion_directed Fields Fining Funding Ordinal_numbers Origin Process_end Time_vector Usefulness Version_sequence : I'd never * finished high school.",
       'Activity_finish',
     ),
     tuple(
@@ -342,7 +342,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Sole_instance : I had no experience or skills... The * only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      "FRAME Accuracy Being_in_operation Cardinal_numbers Means Non-gradable_proximity Process_continue Sole_instance Spatial_contact Temporal_collocation Topic : I had no experience or skills... The * only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
       'Sole_instance',
     ),
     tuple(
@@ -352,7 +352,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Awareness Certainty Differentiation Familiarity Telling : I had no experience or skills... The only thing I did * know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      "FRAME Awareness Certainty Differentiation Familiarity : I had no experience or skills... The only thing I did * know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
       'Awareness',
     ),
     tuple(
@@ -362,7 +362,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Alternatives Becoming_aware Coincidence Daring Likelihood Opportunity Probability : I had no experience or skills... The only thing I did know for sure was here's a * chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      "FRAME Alternatives Coincidence Daring Likelihood Opportunity Probability Communication_manner : I had no experience or skills... The only thing I did know for sure was here's a * chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
       'Likelihood',
     ),
     tuple(
@@ -457,7 +457,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Attention_getting Existence Locative_relation Spatial_co-location Success_or_failure : I wanted to be * there... I had my second chance to change my life. '' -- Donna",
+      "FRAME Locative_relation Spatial_co-location : I wanted to be * there... I had my second chance to change my life. '' -- Donna",
       'Locative_relation',
     ),
     tuple(
@@ -497,7 +497,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Alternatives Becoming_aware Coincidence Daring Likelihood Opportunity Probability : I wanted to be there... I had my second * chance to change my life. '' -- Donna",
+      "FRAME Alternatives Coincidence Daring Likelihood Opportunity Probability Communication_manner : I wanted to be there... I had my second * chance to change my life. '' -- Donna",
       'Opportunity',
     ),
     tuple(
@@ -512,7 +512,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Education_teaching : Because * teaching a man to fish will keep him fed for his entire life.',
+      'FRAME Education_teaching People_by_vocation : Because * teaching a man to fish will keep him fed for his entire life.',
       'Education_teaching',
     ),
     tuple(
@@ -522,7 +522,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME People Working_a_post : Because teaching a * man to fish will keep him fed for his entire life.',
+      'FRAME Being_in_control Body_parts Buildings Conduct Grooming Manner Operating_a_system People People_by_vocation Success_or_failure Successful_action Text Working_a_post : Because teaching a * man to fish will keep him fed for his entire life.',
       'People',
     ),
     tuple(
@@ -542,7 +542,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME  : Because teaching a man to fish will keep him * fed for his entire life.',
+      'FRAME Political_locales : Because teaching a man to fish will keep him * fed for his entire life.',
       'Ingestion',
     ),
     tuple(
@@ -562,7 +562,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Activity_ongoing Attention Avoiding Cause_to_continue Compliance Preventing_or_letting Retaining Storing : Because teaching a man to fish will * keep him fed for his entire life.',
+      'FRAME Activity_ongoing Cause_to_continue Compliance Retaining Storing : Because teaching a man to fish will * keep him fed for his entire life.',
       'Cause_to_continue',
     ),
     tuple(
@@ -607,7 +607,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_obligated : Before I got to Goodwill, I was on a * mission.',
+      'FRAME Appellations Attention_getting Being_obligated Hit_or_miss Success_or_failure Text : Before I got to Goodwill, I was on a * mission.',
       'Being_obligated',
     ),
     tuple(
@@ -762,7 +762,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Desiring Difficulty Experiencer_focus Hedging Likelihood Similarity Sleep Statement : My instructor played a role * like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "FRAME Experiencer_focus Hedging Likelihood Probability Similarity : My instructor played a role * like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
       'Similarity',
     ),
     tuple(
@@ -772,7 +772,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Increment Personal_relationship : My instructor played a role like no * other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "FRAME Increment : My instructor played a role like no * other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
       'Increment',
     ),
     tuple(
@@ -802,7 +802,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Activity_done_state Process_completed_state : My instructor played a role like no other instructor I've ever had I appreciate everything that Goodwill has * done for me. '' -- Cornell",
+      "FRAME Activity_done_state Process_completed_state Dressing Giving : My instructor played a role like no other instructor I've ever had I appreciate everything that Goodwill has * done for me. '' -- Cornell",
       'Intentionally_affect',
     ),
     tuple(
@@ -812,7 +812,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Performers_and_roles : My instructor played a * role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "FRAME Performers_and_roles Body_movement Cause_motion Cause_to_move_in_place Food Mass_motion Motion Moving_in_place Reshaping Sound_movement : My instructor played a * role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
       'Performers_and_roles',
     ),
     tuple(
@@ -822,7 +822,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Being_relevant Cause_to_make_noise Competition Compliance Difficulty Make_noise Performers_and_roles Performing_arts : My instructor * played a role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "FRAME Cause_to_make_noise Competition Gizmo Make_noise Participation Performers Performers_and_roles Performing_arts : My instructor * played a role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
       'Performers_and_roles',
     ),
     tuple(
@@ -837,7 +837,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Calendric_unit Measure_duration : Each * year, we help thousands of people who face tremendous obstacles.',
+      'FRAME Calendric_unit Frequency Measure_duration : Each * year, we help thousands of people who face tremendous obstacles.',
       'Calendric_unit',
     ),
     tuple(
@@ -847,7 +847,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : Each year, we * help thousands of people who face tremendous obstacles.',
+      'FRAME Assistance : Each year, we * help thousands of people who face tremendous obstacles.',
       'Assistance',
     ),
     tuple(
@@ -887,7 +887,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Body_parts Compatibility Confronting_problem Contrary_circumstances Facial_expression Part_orientational : Each year, we help thousands of people who * face tremendous obstacles.',
+      'FRAME Body_parts Confronting_problem Facial_expression Part_orientational Grooming : Each year, we help thousands of people who * face tremendous obstacles.',
       'Confronting_problem',
     ),
     tuple(
@@ -902,7 +902,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Cardinal_numbers : Their * one common goal: they all want to work.',
+      'FRAME Accuracy Being_in_operation Cardinal_numbers Means Non-gradable_proximity Process_continue Sole_instance Spatial_contact Temporal_collocation Topic : Their * one common goal: they all want to work.',
       'Cardinal_numbers',
     ),
     tuple(
@@ -932,7 +932,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_employed Being_operational Collaboration Coming_to_believe Dimension Exercising Experiencer_focus Labor_product Locale_by_use Resolve_problem Usefulness Version_sequence Work Working_a_post : Their one common goal: they all want to * work.',
+      'FRAME Being_employed Being_operational Dimension Employing Labor_product Locale_by_use Usefulness Version_sequence Work Working_a_post : Their one common goal: they all want to * work.',
       'Being_employed',
     ),
     tuple(
@@ -947,7 +947,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Economy Frugality : A robust * economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      "FRAME Domain Economy Frugality : A robust * economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
       'Economy',
     ),
     tuple(
@@ -957,7 +957,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Assistance Self_control : A robust economy * helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      "FRAME Assistance : A robust economy * helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
       'Assistance',
     ),
     tuple(
@@ -967,7 +967,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Conditional_occurrence Supply : A robust economy helps by * providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      "FRAME Conditional_occurrence Supply Terms_of_agreement : A robust economy helps by * providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
       'Supply',
     ),
     tuple(
@@ -1017,7 +1017,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Being_employed Being_operational Collaboration Coming_to_believe Dimension Exercising Experiencer_focus Labor_product Locale_by_use Resolve_problem Usefulness Version_sequence Work Working_a_post : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't * working today are quite simply the ones who face the greatest obstacles.",
+      "FRAME Being_employed Being_operational Dimension Employing Labor_product Locale_by_use Usefulness Version_sequence Work Working_a_post : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't * working today are quite simply the ones who face the greatest obstacles.",
       'Being_employed',
     ),
     tuple(
@@ -1027,7 +1027,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Body_parts Compatibility Confronting_problem Contrary_circumstances Facial_expression Part_orientational : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who * face the greatest obstacles.",
+      "FRAME Body_parts Confronting_problem Facial_expression Part_orientational Grooming : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who * face the greatest obstacles.",
       'Confronting_problem',
     ),
     tuple(
@@ -1052,7 +1052,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Member_of_military Public_services Rite : The kinds of * services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'FRAME Public_services Rite Assistance Being_incarcerated Capacity Function Offering People_by_vocation Serving_in_capacity Sports_jargon Subordinates_and_superiors Successful_action Sufficiency : The kinds of * services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
       'Public_services',
     ),
     tuple(
@@ -1062,7 +1062,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Conditional_occurrence Supply : The kinds of services we * provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'FRAME Conditional_occurrence Supply Terms_of_agreement : The kinds of services we * provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
       'Supply',
     ),
     tuple(
@@ -1072,7 +1072,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : The kinds of services we provide * help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'FRAME Assistance : The kinds of services we provide * help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
       'Assistance',
     ),
     tuple(
@@ -1102,7 +1102,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Appellations Difficulty Kinship Offenses People_by_age : The kinds of services we provide help people deal with obstacles like health care, transportation and * child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'FRAME Appellations Kinship People_by_age : The kinds of services we provide help people deal with obstacles like health care, transportation and * child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
       'People_by_age',
     ),
     tuple(
@@ -1142,7 +1142,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Contingency : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by * factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'FRAME Contingency Locale_by_use Offshoot : The kinds of services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by * factors like physical and mental disabilities, illiteracy and lack of job skills.',
       'Contingency',
     ),
     tuple(
@@ -1187,7 +1187,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_named Duration_description Duration_relation Ordinal_numbers Relative_time : * Last year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
+      'FRAME Duration_description Duration_relation Ordinal_numbers Relative_time : * Last year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
       'Relative_time',
     ),
     tuple(
@@ -1197,7 +1197,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Calendric_unit Measure_duration : Last * year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
+      'FRAME Calendric_unit Frequency Measure_duration : Last * year, Goodwill helped 3,300 people find jobs that increased their self - sufficiency.',
       'Calendric_unit',
     ),
     tuple(
@@ -1207,7 +1207,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : Last year, Goodwill * helped 3,300 people find jobs that increased their self - sufficiency.',
+      'FRAME Assistance : Last year, Goodwill * helped 3,300 people find jobs that increased their self - sufficiency.',
       'Assistance',
     ),
     tuple(
@@ -1282,7 +1282,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Member_of_military Public_services Rite : Your gift to Goodwill will be used directly to support * services that will help even more find jobs.',
+      'FRAME Public_services Rite Assistance Being_incarcerated Capacity Function Offering People_by_vocation Serving_in_capacity Sports_jargon Subordinates_and_superiors Successful_action Sufficiency : Your gift to Goodwill will be used directly to support * services that will help even more find jobs.',
       'Public_services',
     ),
     tuple(
@@ -1292,7 +1292,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : Your gift to Goodwill will be used directly to support services that will * help even more find jobs.',
+      'FRAME Assistance : Your gift to Goodwill will be used directly to support services that will * help even more find jobs.',
       'Assistance',
     ),
     tuple(
@@ -1327,7 +1327,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Attention_getting Existence Locative_relation Spatial_co-location Success_or_failure : Right now, * there are thousands of people who do not know what it feels like to support themselves.',
+      'FRAME Locative_relation Spatial_co-location : Right now, * there are thousands of people who do not know what it feels like to support themselves.',
       'Existence',
     ),
     tuple(
@@ -1337,7 +1337,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME  : Right now, there * are thousands of people who do not know what it feels like to support themselves.',
+      'FRAME Arriving Biological_urge Cause_to_start Coming_to_be Experiencer_obj Personal_success Dimension Fields Locale : Right now, there * are thousands of people who do not know what it feels like to support themselves.',
       'Existence',
     ),
     tuple(
@@ -1377,7 +1377,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Awareness Certainty Differentiation Familiarity Telling : Right now, there are thousands of people who do not * know what it feels like to support themselves.',
+      'FRAME Awareness Certainty Differentiation Familiarity : Right now, there are thousands of people who do not * know what it feels like to support themselves.',
       'Awareness',
     ),
     tuple(
@@ -1387,7 +1387,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Desiring Feeling Give_impression Opinion Others_situation_as_stimulus Perception_active Perception_experience Seeking Sensation : Right now, there are thousands of people who do not know what it * feels like to support themselves.',
+      'FRAME Desiring Body_parts Feeling Give_impression Opinion Perception_active Perception_experience Seeking Sensation : Right now, there are thousands of people who do not know what it * feels like to support themselves.',
       'Feeling',
     ),
     tuple(
@@ -1412,7 +1412,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Capability Containers Firing Likelihood Measure_volume Possibility Preserving : You * can help them to know that feeling.',
+      'FRAME Capability Cause_harm Containers Corporal_punishment Firing Likelihood Locale_by_use Measure_volume Possibility Preserving : You * can help them to know that feeling.',
       'Capability',
     ),
     tuple(
@@ -1422,7 +1422,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : You can * help them to know that feeling.',
+      'FRAME Assistance : You can * help them to know that feeling.',
       'Assistance',
     ),
     tuple(
@@ -1432,7 +1432,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Awareness Certainty Differentiation Familiarity Telling : You can help them to * know that feeling.',
+      'FRAME Awareness Certainty Differentiation Familiarity : You can help them to * know that feeling.',
       'Awareness',
     ),
     tuple(
@@ -1447,7 +1447,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : Please * help Goodwill and help people find jobs.',
+      'FRAME Assistance : Please * help Goodwill and help people find jobs.',
       'Assistance',
     ),
     tuple(
@@ -1487,7 +1487,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Assistance Self_control : Please help Goodwill and * help people find jobs.',
+      'FRAME Assistance : Please help Goodwill and * help people find jobs.',
       'Assistance',
     ),
     tuple(

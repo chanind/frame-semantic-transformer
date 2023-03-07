@@ -26,7 +26,7 @@ def test_load_sesame_dev_samples() -> None:
 
 
 def test_load_sesame_train_samples_with_exemplars() -> None:
-    training_loader_with_exemplars = Framenet17TrainingLoader(include_exemplars=False)
+    training_loader_with_exemplars = Framenet17TrainingLoader(include_exemplars=True)
     sentences = training_loader_with_exemplars.load_training_data()
     samples = tasks_from_annotated_sentences(sentences, loader_cache)
     trigger_id_samples = [
