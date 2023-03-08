@@ -9,11 +9,8 @@ from nltk.stem import (
 )
 from nltk.corpus import framenet as fn
 
-from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_downloaded import (
-    ensure_framenet_downloaded,
-)
-
-
+from .ensure_framenet_downloaded import ensure_framenet_downloaded
+from .ensure_wordnet_downloaded import ensure_wordnet_downloaded
 from frame_semantic_transformer.data.frame_types import Frame
 from ..loader import InferenceLoader
 
@@ -36,6 +33,7 @@ class Framenet17InferenceLoader(InferenceLoader):
 
     def setup(self) -> None:
         ensure_framenet_downloaded()
+        ensure_wordnet_downloaded()
 
     def load_frames(self) -> list[Frame]:
         """

@@ -9,7 +9,11 @@ from frame_semantic_transformer.data.loaders.framenet17 import (
 from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_downloaded import (
     ensure_framenet_downloaded,
 )
+from frame_semantic_transformer.data.loaders.framenet17.ensure_wordnet_downloaded import (
+    ensure_wordnet_downloaded,
+)
 
+ensure_wordnet_downloaded()
 ensure_framenet_downloaded()
 
 _loader_cache = LoaderDataCache(Framenet17InferenceLoader())
