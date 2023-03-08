@@ -1,7 +1,12 @@
 from __future__ import annotations
 import re
 
-from nltk.stem import PorterStemmer, LancasterStemmer, SnowballStemmer
+from nltk.stem import (
+    PorterStemmer,
+    LancasterStemmer,
+    SnowballStemmer,
+    WordNetLemmatizer,
+)
 from nltk.corpus import framenet as fn
 
 from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_downloaded import (
@@ -16,6 +21,9 @@ from ..loader import InferenceLoader
 porter_stemmer = PorterStemmer()
 lancaster_stemmer = LancasterStemmer()
 snowball_stemmer = SnowballStemmer("english")
+wordnet_lemmatizer = WordNetLemmatizer()
+
+WORDNET_LEMMATIZER_POS = ["a", "r", "n", "v", "s"]
 
 
 LOW_PRIORITY_LONGER_LUS = {"back", "down", "make", "take", "have", "into", "come"}
@@ -56,11 +64,15 @@ class Framenet17InferenceLoader(InferenceLoader):
         normalized_lu = re.sub(r"\.[a-zA-Z]+$", "", normalized_lu)
         normalized_lu = re.sub(r"[^a-z0-9 ]", "", normalized_lu)
         normalized_lu = normalized_lu.strip()
-        return {
+        norm_lus = {
             porter_stemmer.stem(normalized_lu),
             lancaster_stemmer.stem(normalized_lu),
             snowball_stemmer.stem(normalized_lu),
         }
+        # try every possible part of speech for the wordnet lemmatizer
+        for pos in WORDNET_LEMMATIZER_POS:
+            norm_lus.add(wordnet_lemmatizer.lemmatize(normalized_lu, pos=pos))
+        return norm_lus
 
     def prioritize_lexical_unit(self, lu: str) -> bool:
         """

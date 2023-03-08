@@ -2,9 +2,11 @@ from __future__ import annotations
 from collections import defaultdict
 from functools import lru_cache
 from itertools import product
+from typing import TYPE_CHECKING
 
-from .loaders.loader import InferenceLoader
-from .frame_types import Frame
+if TYPE_CHECKING:
+    from .frame_types import Frame
+    from .loaders.loader import InferenceLoader
 
 
 class LoaderDataCache:
@@ -97,7 +99,8 @@ class LoaderDataCache:
         possible_frames = []
         lookup_map = self.get_lexical_unit_bigram_to_frame_lookup_map()
         for bigram in bigrams:
-            for normalized_bigram in self._normalize_lexical_unit_ngram(bigram):
+            # sorted here just to get a consistent ordering
+            for normalized_bigram in sorted(self._normalize_lexical_unit_ngram(bigram)):
                 if normalized_bigram in lookup_map:
                     bigram_frames = lookup_map[normalized_bigram]
                     possible_frames += bigram_frames

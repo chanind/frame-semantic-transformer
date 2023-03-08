@@ -5,8 +5,9 @@ from nltk.corpus import framenet as fn
 
 from frame_semantic_transformer.data.augmentations import (
     LowercaseAugmentation,
-    RemoveContractionsAugmentation,
+    SimpleMisspellingAugmentation,
     RemoveEndPunctuationAugmentation,
+    UppercaseAugmentation,
 )
 from frame_semantic_transformer.data.augmentations.DataAugmentation import (
     DataAugmentation,
@@ -113,9 +114,10 @@ class Framenet17TrainingLoader(TrainingLoader):
 
     def get_augmentations(self) -> list[DataAugmentation]:
         return [
-            RemoveEndPunctuationAugmentation(0.3),
+            RemoveEndPunctuationAugmentation(0.5),
+            SimpleMisspellingAugmentation(0.5),
             LowercaseAugmentation(0.2),
-            RemoveContractionsAugmentation(0.2),
+            UppercaseAugmentation(0.2),
         ]
 
     def load_training_data(self) -> list[FrameAnnotatedSentence]:
