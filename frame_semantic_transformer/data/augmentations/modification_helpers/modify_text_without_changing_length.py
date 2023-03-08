@@ -24,7 +24,9 @@ def modify_text_without_changing_length(
     def modify_text(text: str) -> str:
         new_text = modify_text_cb(text)
         if len(new_text) != len(text):
-            raise ValueError("Text length changed during augmentation")
+            raise ValueError(
+                f"Text length changed during augmentation: {text} -> {new_text}"
+            )
         return new_text
 
     if isinstance(task_sample, ArgumentsExtractionSample):

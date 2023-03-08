@@ -50,7 +50,7 @@ def splice_text(
         start_loc, delete_num, insert_text = modify_results
         if not is_valid_splice(start_loc, delete_num, critical_indices):
             raise ValueError(
-                "Critical index was deleted during splice. This is not allowed."
+                f"Critical index was deleted during splice. This is not allowed: {text}, {start_loc}, {delete_num}"
             )
         index_modifier = (
             lambda i: i if i <= start_loc else i + len(insert_text) - delete_num
