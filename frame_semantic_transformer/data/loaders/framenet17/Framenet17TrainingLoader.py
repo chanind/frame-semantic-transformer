@@ -116,8 +116,8 @@ class Framenet17TrainingLoader(TrainingLoader):
         return [
             RemoveEndPunctuationAugmentation(0.5),
             SimpleMisspellingAugmentation(0.5),
-            LowercaseAugmentation(0.2),
-            UppercaseAugmentation(0.2),
+            LowercaseAugmentation(0.1),
+            UppercaseAugmentation(0.1),
         ]
 
     def load_training_data(self) -> list[FrameAnnotatedSentence]:

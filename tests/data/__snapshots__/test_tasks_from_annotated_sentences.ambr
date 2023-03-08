@@ -57,7 +57,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Personal_relationship Sole_instance Accompaniment : When I first came to Goodwill I was a * single parent with little or no self-esteem.',
+      'FRAME Accompaniment Personal_relationship Sole_instance : When I first came to Goodwill I was a * single parent with little or no self-esteem.',
       'Personal_relationship',
     ),
     tuple(
@@ -117,7 +117,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Coming_to_be Process_end Waking_up Relative_time Activity_start Arriving Motion Process_start Statement Stimulus_focus Transition_to_a_situation : * Coming to Goodwill was the first step toward my becoming totally independent.',
+      'FRAME Coming_to_be Process_end Waking_up Activity_start Arriving Motion Process_start Relative_time Statement Stimulus_focus Transition_to_a_situation : * Coming to Goodwill was the first step toward my becoming totally independent.',
       'Arriving',
     ),
     tuple(
@@ -167,7 +167,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Adding_up Amounting_to Completeness Degree Render_nonfunctional Bringing Self_motion : Coming to Goodwill was the first step toward my becoming * totally independent.',
+      'FRAME Adding_up Amounting_to Bringing Completeness Degree Render_nonfunctional Self_motion : Coming to Goodwill was the first step toward my becoming * totally independent.',
       'Degree',
     ),
     tuple(
@@ -192,7 +192,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Adding_up Amounting_to Completeness Degree Render_nonfunctional Bringing Self_motion : I am now... * totally off of welfare.',
+      'FRAME Adding_up Amounting_to Bringing Completeness Degree Render_nonfunctional Self_motion : I am now... * totally off of welfare.',
       'Degree',
     ),
     tuple(
@@ -217,7 +217,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Experiencer_focus Hedging Likelihood Similarity Probability : I really * like my job. '' -- Sherry",
+      "FRAME Experiencer_focus Hedging Likelihood Probability Similarity : I really * like my job. '' -- Sherry",
       'Experiencer_focus',
     ),
     tuple(
@@ -287,7 +287,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Activity_done_state Process_completed_state Activity_finish Body_parts Desirability Domain Emotion_directed Fields Fining Funding Ordinal_numbers Origin Process_end Time_vector Usefulness Version_sequence : I'd never * finished high school.",
+      "FRAME Activity_done_state Activity_finish Body_parts Desirability Domain Emotion_directed Fields Fining Funding Ordinal_numbers Origin Process_completed_state Process_end Time_vector Usefulness Version_sequence : I'd never * finished high school.",
       'Activity_finish',
     ),
     tuple(
@@ -342,7 +342,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Sole_instance Accuracy Being_in_operation Cardinal_numbers Means Non-gradable_proximity Process_continue Spatial_contact Temporal_collocation Topic : I had no experience or skills... The * only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
+      "FRAME Accuracy Being_in_operation Cardinal_numbers Means Non-gradable_proximity Process_continue Sole_instance Spatial_contact Temporal_collocation Topic : I had no experience or skills... The * only thing I did know for sure was here's a chance to change things for me and my children... I rode a bike to Goodwill in the rain and snow.",
       'Sole_instance',
     ),
     tuple(
@@ -447,7 +447,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Want_suspect Desiring Possession : I * wanted to be there... I had my second chance to change my life. '' -- Donna",
+      "FRAME Desiring Possession Want_suspect : I * wanted to be there... I had my second chance to change my life. '' -- Donna",
       'Desiring',
     ),
     tuple(
@@ -587,7 +587,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Required_event Possession Arriving Board_vehicle Bringing Come_down_with Disembarking Getting Giving_birth Grasp Intentional_deception Transition_to_state : Before I * got to Goodwill, I was on a mission.',
+      'FRAME Required_event Arriving Board_vehicle Bringing Come_down_with Disembarking Getting Giving_birth Grasp Intentional_deception Possession Transition_to_state : Before I * got to Goodwill, I was on a mission.',
       'Arriving',
     ),
     tuple(
@@ -607,7 +607,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Being_obligated Appellations Attention_getting Hit_or_miss Success_or_failure Text : Before I got to Goodwill, I was on a * mission.',
+      'FRAME Appellations Attention_getting Being_obligated Hit_or_miss Success_or_failure Text : Before I got to Goodwill, I was on a * mission.',
       'Being_obligated',
     ),
     tuple(
@@ -622,7 +622,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Want_suspect Desiring Possession : I just * wanted a job.',
+      'FRAME Desiring Possession Want_suspect : I just * wanted a job.',
       'Desiring',
     ),
     tuple(
@@ -657,7 +657,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Want_suspect Desiring Possession : It didn't matter what the job was, I just * wanted one.",
+      "FRAME Desiring Possession Want_suspect : It didn't matter what the job was, I just * wanted one.",
       'Desiring',
     ),
     tuple(
@@ -707,7 +707,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Possession Arriving Board_vehicle Bringing Come_down_with Disembarking Getting Giving_birth Grasp Intentional_deception Transition_to_state : I've * got more than a job ; I've got a career.",
+      "FRAME Arriving Board_vehicle Bringing Come_down_with Disembarking Getting Giving_birth Grasp Intentional_deception Possession Transition_to_state : I've * got more than a job ; I've got a career.",
       'Possession',
     ),
     tuple(
@@ -737,7 +737,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Resolve_problem Possession Arriving Board_vehicle Bringing Come_down_with Disembarking Getting Giving_birth Grasp Intentional_deception Transition_to_state : I've got more than a job ; I've * got a career.",
+      "FRAME Resolve_problem Arriving Board_vehicle Bringing Come_down_with Disembarking Getting Giving_birth Grasp Intentional_deception Possession Transition_to_state : I've got more than a job ; I've * got a career.",
       'Possession',
     ),
     tuple(
@@ -762,7 +762,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Experiencer_focus Hedging Likelihood Similarity Probability : My instructor played a role * like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "FRAME Experiencer_focus Hedging Likelihood Probability Similarity : My instructor played a role * like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
       'Similarity',
     ),
     tuple(
@@ -802,7 +802,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Activity_done_state Dressing Giving Process_completed_state Ingest_substance Intentionally_act Intentionally_affect Sex Thriving Touring : My instructor played a role like no other instructor I've ever had I appreciate everything that Goodwill has * done for me. '' -- Cornell",
+      "FRAME Activity_done_state Ingest_substance Intentionally_act Intentionally_affect Process_completed_state Sex Thriving Touring Dressing Giving : My instructor played a role like no other instructor I've ever had I appreciate everything that Goodwill has * done for me. '' -- Cornell",
       'Intentionally_affect',
     ),
     tuple(
@@ -812,7 +812,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Performers_and_roles Body_movement Cause_motion Cause_to_move_in_place Food Mass_motion Motion Moving_in_place Reshaping Sound_movement : My instructor played a * role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
+      "FRAME Body_movement Cause_motion Cause_to_move_in_place Food Mass_motion Motion Moving_in_place Performers_and_roles Reshaping Sound_movement : My instructor played a * role like no other instructor I've ever had I appreciate everything that Goodwill has done for me. '' -- Cornell",
       'Performers_and_roles',
     ),
     tuple(
@@ -887,7 +887,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Body_parts Confronting_problem Facial_expression Part_orientational Grooming : Each year, we help thousands of people who * face tremendous obstacles.',
+      'FRAME Body_parts Confronting_problem Facial_expression Grooming Part_orientational : Each year, we help thousands of people who * face tremendous obstacles.',
       'Confronting_problem',
     ),
     tuple(
@@ -902,7 +902,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Cardinal_numbers Accuracy Being_in_operation Means Non-gradable_proximity Process_continue Sole_instance Spatial_contact Temporal_collocation Topic : Their * one common goal: they all want to work.',
+      'FRAME Accuracy Being_in_operation Cardinal_numbers Means Non-gradable_proximity Process_continue Sole_instance Spatial_contact Temporal_collocation Topic : Their * one common goal: they all want to work.',
       'Cardinal_numbers',
     ),
     tuple(
@@ -947,7 +947,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Economy Frugality Domain : A robust * economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
+      "FRAME Domain Economy Frugality : A robust * economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who face the greatest obstacles.",
       'Economy',
     ),
     tuple(
@@ -1027,7 +1027,7 @@
     ),
     tuple(
       'frame_classification',
-      "FRAME Body_parts Confronting_problem Facial_expression Part_orientational Grooming : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who * face the greatest obstacles.",
+      "FRAME Body_parts Confronting_problem Facial_expression Grooming Part_orientational : A robust economy helps by providing job opportunities, but to be honest, most of the people who aren't working today are quite simply the ones who * face the greatest obstacles.",
       'Confronting_problem',
     ),
     tuple(
@@ -1052,7 +1052,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Public_services Rite Assistance Being_incarcerated Capacity Function Offering People_by_vocation Serving_in_capacity Sports_jargon Subordinates_and_superiors Successful_action Sufficiency : The kinds of * services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
+      'FRAME Assistance Being_incarcerated Capacity Function Offering People_by_vocation Public_services Rite Serving_in_capacity Sports_jargon Subordinates_and_superiors Successful_action Sufficiency : The kinds of * services we provide help people deal with obstacles like health care, transportation and child care - problems that are big enough on their own without being compounded by factors like physical and mental disabilities, illiteracy and lack of job skills.',
       'Public_services',
     ),
     tuple(
@@ -1282,7 +1282,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Public_services Rite Assistance Being_incarcerated Capacity Function Offering People_by_vocation Serving_in_capacity Sports_jargon Subordinates_and_superiors Successful_action Sufficiency : Your gift to Goodwill will be used directly to support * services that will help even more find jobs.',
+      'FRAME Assistance Being_incarcerated Capacity Function Offering People_by_vocation Public_services Rite Serving_in_capacity Sports_jargon Subordinates_and_superiors Successful_action Sufficiency : Your gift to Goodwill will be used directly to support * services that will help even more find jobs.',
       'Public_services',
     ),
     tuple(
@@ -1337,7 +1337,7 @@
     ),
     tuple(
       'frame_classification',
-      'FRAME Existence Performers_and_roles Dimension Fields Locale Arriving Biological_urge Cause_to_start Coming_to_be Experiencer_obj Personal_success : Right now, there * are thousands of people who do not know what it feels like to support themselves.',
+      'FRAME Existence Arriving Biological_urge Cause_to_start Coming_to_be Experiencer_obj Personal_success Dimension Fields Locale Performers_and_roles : Right now, there * are thousands of people who do not know what it feels like to support themselves.',
       'Existence',
     ),
     tuple(
