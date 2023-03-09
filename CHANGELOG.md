@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0 (2023-03-09)
+### Feature
+* Propbank ([#16](https://github.com/chanind/frame-semantic-transformer/issues/16)) ([`4c53887`](https://github.com/chanind/frame-semantic-transformer/commit/4c538875be45c5b851286b1a17156b951c786a07))
+
 ## v0.6.2 (2023-03-01)
 ### Performance
 * Minor performance improvements for arg extraction and frame detection ([#15](https://github.com/chanind/frame-semantic-transformer/issues/15)) ([`7e03969`](https://github.com/chanind/frame-semantic-transformer/commit/7e039695b8cfa1ae5b8de1b9b4d4145e5bec3884))
