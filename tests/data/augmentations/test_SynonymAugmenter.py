@@ -16,7 +16,7 @@ def create_trigger_identification_sample(sentence: str) -> TriggerIdentification
 
 
 def test_SynonymAugmentation() -> None:
-    sentence = "I like to eat food 1234 and I like in a boat"
+    sentence = "I like to eat food 1234 and I like in a boat ."
     # just to make it almost certain something will be changed
     augmentation = SynonymAugmentation(1.0)
     sample = create_trigger_identification_sample(sentence)

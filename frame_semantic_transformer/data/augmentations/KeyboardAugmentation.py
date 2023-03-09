@@ -24,12 +24,21 @@ class KeyboardAugmentation(DataAugmentation):
 
     def apply_augmentation(self, task_sample: TaskSample) -> TaskSample:
         def augment_sent(sentence: str) -> str:
-            new_sentence, changes = self.augmenter.augment(sentence)[0]
-            # sometimes this augmenter changes token lengths, which we don't want
-            # just skip the changes if that happens
+            # this augmentation removes spaces around punctuation, so just manually do the changes
+            _, changes = self.augmenter.augment(sentence)[0]
+            new_sentence = sentence
             for change in changes:
+                # sometimes this augmenter changes token lengths, which we don't want
+                # just skip the changes if that happens
                 if len(change["orig_token"]) != len(change["new_token"]):
-                    return sentence
+                    return new_sentence
+                start_pos = change["orig_start_pos"]
+                end_pos = change["orig_start_pos"] + len(change["orig_token"])
+                new_sentence = (
+                    new_sentence[:start_pos]
+                    + change["new_token"]
+                    + new_sentence[end_pos:]
+                )
             return new_sentence
 
         return modify_text_without_changing_length(task_sample, augment_sent)
