@@ -20,7 +20,7 @@ class KeyboardAugmentation(DataAugmentation):
     def __init__(self, probability: float):
         super().__init__(probability)
         self.augmenter = KeyboardAug(
-            include_special_char=False, aug_char_p=0.1, aup_word_p=0.1
+            include_special_char=False, aug_char_p=0.1, aug_word_p=0.1
         )
         self.augmenter.include_detail = True
 
