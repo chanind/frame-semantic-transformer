@@ -2,6 +2,7 @@ from __future__ import annotations
 from collections import defaultdict
 import logging
 from typing import Any, Type
+from dataclasses import asdict, dataclass, field
 from transformers import T5ForConditionalGeneration, T5TokenizerFast
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
@@ -22,21 +23,19 @@ from frame_semantic_transformer.predict import predict_on_ids
 logger = logging.getLogger(__name__)
 
 
-def calc_eval_metrics(
-    true_pos: float, false_pos: float, false_neg: float
-) -> dict[str, float]:
+def calc_eval_metrics(scores: EvalScores) -> dict[str, float]:
     """
     Calculate precision, recall, and f score
     Based on https://github.com/swabhs/open-sesame/blob/master/sesame/evaluation.py
     """
-    if true_pos == 0 and false_pos == 0:
+    if scores.true_pos == 0 and scores.false_pos == 0:
         precision = 0.0
     else:
-        precision = true_pos / (true_pos + false_pos)
-    if true_pos == 0 and false_neg == 0:
+        precision = scores.true_pos / (scores.true_pos + scores.false_pos)
+    if scores.true_pos == 0 and scores.false_neg == 0:
         recall = 0.0
     else:
-        recall = true_pos / (true_pos + false_neg)
+        recall = scores.true_pos / (scores.true_pos + scores.false_neg)
     if precision == 0 and recall == 0:
         f_score = 0.0
     else:
@@ -52,13 +51,41 @@ TASK_SAMPLE_CLASS_MAP: dict[str, Type[TaskSample]] = {
 }
 
 
+@dataclass
+class EvalScores:
+    true_pos: float = 0
+    false_pos: float = 0
+    false_neg: float = 0
+
+
+@dataclass
+class EvalFailure:
+    input: str
+    target: str
+    predictions: list[str]
+
+
+@dataclass
+class TaskEvalResults:
+    scores: EvalScores = field(default_factory=EvalScores)
+    false_positives: list[EvalFailure] = field(default_factory=list)
+    false_negatives: list[EvalFailure] = field(default_factory=list)
+
+    def serialize(self) -> dict[str, Any]:
+        return {
+            "scores": asdict(self.scores),
+            "false_positives": list(map(asdict, self.false_positives)),
+            "false_negatives": list(map(asdict, self.false_negatives)),
+        }
+
+
 def evaluate_batch(
     model: T5ForConditionalGeneration,
     tokenizer: T5TokenizerFast,
     batch: Any,
     loader_cache: LoaderDataCache,
     predictions_per_sample: int = 5,
-) -> dict[str, list[float]]:
+) -> dict[str, TaskEvalResults]:
     predictions = predict_on_ids(
         model,
         tokenizer,
@@ -70,7 +97,7 @@ def evaluate_batch(
         num_return_sequences=predictions_per_sample,
     )
     batched_predictions = chunk_list(predictions, predictions_per_sample)
-    results: dict[str, list[float]] = defaultdict(lambda: [0, 0, 0])
+    results: dict[str, TaskEvalResults] = defaultdict(TaskEvalResults)
     for preds, task, label, input_ids in zip(
         batched_predictions, batch["task"], batch["labels"], batch["input_ids"]
     ):
@@ -91,8 +118,16 @@ def evaluate_batch(
         true_pos, false_pos, false_neg = sample_class.evaluate_prediction(
             preds, target, input, loader_cache
         )
-        results[task][0] += true_pos
-        results[task][1] += false_pos
-        results[task][2] += false_neg
+        results[task].scores.true_pos += true_pos
+        results[task].scores.false_pos += false_pos
+        results[task].scores.false_neg += false_neg
+        if false_pos > 0:
+            results[task].false_positives.append(
+                EvalFailure(input=input, target=target, predictions=list(preds))
+            )
+        if false_neg > 0:
+            results[task].false_negatives.append(
+                EvalFailure(input=input, target=target, predictions=list(preds))
+            )
 
     return results
