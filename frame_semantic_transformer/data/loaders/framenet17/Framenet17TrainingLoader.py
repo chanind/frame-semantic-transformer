@@ -117,9 +117,9 @@ class Framenet17TrainingLoader(TrainingLoader):
     def get_augmentations(self) -> list[DataAugmentation]:
         return [
             RemoveEndPunctuationAugmentation(0.5),
-            SynonymAugmentation(0.3),
+            SynonymAugmentation(0.7),
             KeyboardAugmentation(0.3),
-            SimpleMisspellingAugmentation(0.2),
+            SimpleMisspellingAugmentation(0.1),
             LowercaseAugmentation(0.1),
             UppercaseAugmentation(0.1),
         ]
