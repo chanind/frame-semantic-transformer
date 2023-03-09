@@ -17,7 +17,6 @@ def create_trigger_identification_sample(sentence: str) -> TriggerIdentification
 
 def test_KeyboardAugmentation() -> None:
     sentence = "I like , to , eat food 1234 and I like in a boat ."
-    # just to make it almost certain something will be changed
     augmentation = KeyboardAugmentation(1.0)
     sample = create_trigger_identification_sample(sentence)
 
@@ -30,4 +29,20 @@ def test_KeyboardAugmentation() -> None:
             is_same = False
         assert len(new_sentence) == len(sentence)
         assert len(new_sentence.split()) == len(sentence.split())
+    assert not is_same
+
+
+def test_KeyboardAugmentation_with_complex_sentence() -> None:
+    sentence = "Totally absorbed , the ringers stare straight ahead , using peripheral vision ( they call it `` rope-sight '' ) to watch the other ropes and thus time their pulls ."
+    augmentation = KeyboardAugmentation(1.0)
+    sample = create_trigger_identification_sample(sentence)
+
+    is_same = True
+    # do this 20 times since it's not guaranteed to change anything every time
+    for _ in range(20):
+        new_sample = cast(TriggerIdentificationSample, augmentation(sample))
+        new_sentence = new_sample.task.text
+        if new_sentence != sentence:
+            is_same = False
+        assert len(new_sentence) == len(sentence)
     assert not is_same

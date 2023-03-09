@@ -19,7 +19,7 @@ class KeyboardAugmentation(DataAugmentation):
 
     def __init__(self, probability: float):
         super().__init__(probability)
-        self.augmenter = KeyboardAug(include_special_char=False)
+        self.augmenter = KeyboardAug(include_special_char=False, aug_char_p=0.1)
         self.augmenter.include_detail = True
 
     def apply_augmentation(self, task_sample: TaskSample) -> TaskSample:
@@ -31,6 +31,8 @@ class KeyboardAugmentation(DataAugmentation):
                 # sometimes this augmenter changes token lengths, which we don't want
                 # just skip the changes if that happens
                 if len(change["orig_token"]) != len(change["new_token"]):
+                    return new_sentence
+                if change["orig_start_pos"] != change["new_start_pos"]:
                     return new_sentence
                 start_pos = change["orig_start_pos"]
                 end_pos = change["orig_start_pos"] + len(change["orig_token"])
