@@ -1,0 +1,127 @@
+ontonotes/wb/eng/00/eng_0012   0   0     Last    JJ  (TOP(NP(NP*   -   -
+ontonotes/wb/eng/00/eng_0012   0   1    tango    NN            *)  -   -
+ontonotes/wb/eng/00/eng_0012   0   2       in    IN         (PP*   -   -
+ontonotes/wb/eng/00/eng_0012   0   3    Paris   NNP      (NP*))))  -   -
+
+ontonotes/wb/eng/00/eng_0012   1   0      Paris   NNP   (TOP(S(NP*)   -       -        (ARG1*)
+ontonotes/wb/eng/00/eng_0012   1   1        was   VBD         (VP*    be  be.01           (V*)
+ontonotes/wb/eng/00/eng_0012   1   2       once    RB       (ADVP*)   -       -    (ARGM-TMP*)
+ontonotes/wb/eng/00/eng_0012   1   3        the    DT      (NP(NP*    -       -        (ARG2*
+ontonotes/wb/eng/00/eng_0012   1   4        sex    NN            *    -       -             *
+ontonotes/wb/eng/00/eng_0012   1   5    capital    NN            *)   -       -             *
+ontonotes/wb/eng/00/eng_0012   1   6         of    IN         (PP*    -       -             *
+ontonotes/wb/eng/00/eng_0012   1   7        the    DT         (NP*    -       -             *
+ontonotes/wb/eng/00/eng_0012   1   8      world    NN         *))))   -       -             *)
+ontonotes/wb/eng/00/eng_0012   1   9          .     .           *))   -       -             *
+
+ontonotes/wb/eng/00/eng_0012   2    0             But    CC     (TOP(S*         -            -      *    (ARGM-DIS*)
+ontonotes/wb/eng/00/eng_0012   2    1               a    DT  (NP(NP(NP*         -            -      *        (ARG0*
+ontonotes/wb/eng/00/eng_0012   2    2       crackdown    NN           *)        -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    3              on    IN        (PP*         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    4    prostitution    NN      (NP*)))        -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    5             and    CC           *         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    6             the    DT     (NP(NP*         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    7            rise    NN           *)        -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    8              of    IN        (PP*         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2    9            porn    NN        (NP*         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2   10      megastores   NNS        *))))        -            -      *             *)
+ontonotes/wb/eng/00/eng_0012   2   11             are   VBP        (VP*         be       be.03    (V*)            *
+ontonotes/wb/eng/00/eng_0012   2   12      destroying   VBG        (VP*    destroy  destroy.01      *           (V*)
+ontonotes/wb/eng/00/eng_0012   2   13               a    DT        (NP*         -            -      *        (ARG1*
+ontonotes/wb/eng/00/eng_0012   2   14          unique    JJ           *         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2   15               ,     ,           *         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2   16          secret    JJ           *         -            -      *             *
+ontonotes/wb/eng/00/eng_0012   2   17        heritage    NN         *)))        -            -      *             *)
+ontonotes/wb/eng/00/eng_0012   2   18               .     .          *))        -            -      *             *
+
+ontonotes/wb/eng/00/eng_0012   3   0     Andrew   NNP  (TOP(S(NP*        -           -   (ARG0*
+ontonotes/wb/eng/00/eng_0012   3   1     Hussey   NNP           *)       -           -        *)
+ontonotes/wb/eng/00/eng_0012   3   2    reports   VBZ      (VP*)))   report  report.01      (V*)
+
+ontonotes/wb/eng/00/eng_0012   4    0          Every     DT  (TOP(S(NP(NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4    1            day     NN              *)  -   -
+ontonotes/wb/eng/00/eng_0012   4    2             of     IN           (PP*   -   -
+ontonotes/wb/eng/00/eng_0012   4    3            the     DT           (NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4    4           week     NN             *))  -   -
+ontonotes/wb/eng/00/eng_0012   4    5              ,      ,              *   -   -
+ontonotes/wb/eng/00/eng_0012   4    6           from     IN        (PP(PP*   -   -
+ontonotes/wb/eng/00/eng_0012   4    7    mid-morning     NN          (NP*))  -   -
+ontonotes/wb/eng/00/eng_0012   4    8          until     IN           (PP*   -   -
+ontonotes/wb/eng/00/eng_0012   4    9            the     DT           (NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   10          early     JJ              *   -   -
+ontonotes/wb/eng/00/eng_0012   4   11          hours    NNS           *))))  -   -
+ontonotes/wb/eng/00/eng_0012   4   12              ,      ,              *   -   -
+ontonotes/wb/eng/00/eng_0012   4   13            the     DT        (NP(NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   14           Club    NNP              *   -   -
+ontonotes/wb/eng/00/eng_0012   4   15            88      CD              *)  -   -
+ontonotes/wb/eng/00/eng_0012   4   16             on     IN           (PP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   17            rue     FW        (NP(NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   18          Saint    NNP              *   -   -
+ontonotes/wb/eng/00/eng_0012   4   19             -    HYPH              *   -   -
+ontonotes/wb/eng/00/eng_0012   4   20          Denis    NNP              *)  -   -
+ontonotes/wb/eng/00/eng_0012   4   21             in     IN           (PP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   22        central     JJ           (NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   23          Paris    NNP          *)))))  -   -
+ontonotes/wb/eng/00/eng_0012   4   24           does    VBZ           (VP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   25              a     DT           (NP*   -   -
+ontonotes/wb/eng/00/eng_0012   4   26          brisk     JJ              *   -   -
+ontonotes/wb/eng/00/eng_0012   4   27          trade     NN             *))  -   -
+ontonotes/wb/eng/00/eng_0012   4   28              .      .             *))  -   -
+
+ontonotes/wb/eng/00/eng_0012   5    0             From     IN         (TOP(S(PP*             -                -   (ARGM-DIR*         *            *        *
+ontonotes/wb/eng/00/eng_0012   5    1              the     DT            (NP(NP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5    2          outside     NN                  *)            -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5    3               at     IN             (ADVP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5    4            least    JJS                *)))            -                -            *)        *            *        *
+ontonotes/wb/eng/00/eng_0012   5    5                ,      ,                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5    6            there     EX               (NP*)            -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5    7               is    VBZ               (VP*             be           be.02          (V*)        *            *        *
+ontonotes/wb/eng/00/eng_0012   5    8           little     JJ            (NP(NP*)            -                -       (ARG1*    (ARG0*)           *        *
+ontonotes/wb/eng/00/eng_0012   5    9               to     TO        (SBAR(S(VP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   10      distinguish     VB               (VP*    distinguish  distinguish.01            *       (V*)           *        *
+ontonotes/wb/eng/00/eng_0012   5   11               it    PRP               (NP*)            -                -            *    (ARG1*)           *        *
+ontonotes/wb/eng/00/eng_0012   5   12             from     IN               (PP*             -                -            *    (ARG2*            *        *
+ontonotes/wb/eng/00/eng_0012   5   13              the     DT            (NP(NP*             -                -            *         *       (ARG2*        *
+ontonotes/wb/eng/00/eng_0012   5   14            dozen     NN               (QP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   15               or     CC                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   16               so     RB                  *)            -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   17            rival     JJ                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   18              sex     NN                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   19            shops    NNS                  *)            -                -            *         *            *)       *
+ontonotes/wb/eng/00/eng_0012   5   20            which    WDT        (SBAR(WHNP*)            -                -            *         *     (R-ARG2*)       *
+ontonotes/wb/eng/00/eng_0012   5   21             line    VBP             (S(VP*           line         line.01            *         *          (V*)       *
+ontonotes/wb/eng/00/eng_0012   5   22              the     DT               (NP*             -                -            *         *       (ARG1*        *
+ontonotes/wb/eng/00/eng_0012   5   23          streets    NNS                  *)            -                -            *         *            *)       *
+ontonotes/wb/eng/00/eng_0012   5   24               in     IN               (PP*             -                -            *         *   (ARGM-LOC*        *
+ontonotes/wb/eng/00/eng_0012   5   25             this     DT            (NP(NP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   26             part     NN                  *)            -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   27               of     IN               (PP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   28            Paris    NNP            (NP*))))            -                -            *         *            *)       *
+ontonotes/wb/eng/00/eng_0012   5   29                ,      ,                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   30               in     IN               (PP*             -                -            *         *   (ARGM-LOC*        *
+ontonotes/wb/eng/00/eng_0012   5   31          between     IN                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   32              the     DT            (NP(NP*             -                -            *         *            *   (ARG0*
+ontonotes/wb/eng/00/eng_0012   5   33           stalls    NNS                  *)            -                -            *         *            *        *)
+ontonotes/wb/eng/00/eng_0012   5   34         flogging    VBG               (VP*           flog         flog.01            *         *            *      (V*)
+ontonotes/wb/eng/00/eng_0012   5   35            cheap     JJ            (NP(NP*             -                -            *         *            *   (ARG1*
+ontonotes/wb/eng/00/eng_0012   5   36              hip     NN              (NML*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   37               -    HYPH                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   38              hop     NN                  *)            -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   39             gear     NN                  *)            -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   40              and     CC                  *             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   41            drugs    NNS               (NP*             -                -            *         *            *        *
+ontonotes/wb/eng/00/eng_0012   5   42    paraphernalia    NNS   *))))))))))))))))            -                -            *)        *)           *)       *)
+ontonotes/wb/eng/00/eng_0012   5   43                .      .                 *))            -                -            *         *            *        *
+
+ontonotes/wb/eng/00/eng_0012   6    0          This    DT  (TOP(S(NP(NP*      -         -      *
+ontonotes/wb/eng/00/eng_0012   6    1          part    NN              *)     -         -      *
+ontonotes/wb/eng/00/eng_0012   6    2            of    IN           (PP*      -         -      *
+ontonotes/wb/eng/00/eng_0012   6    3           the    DT           (NP*      -         -      *
+ontonotes/wb/eng/00/eng_0012   6    4          city    NN            *)))     -         -      *
+ontonotes/wb/eng/00/eng_0012   6    5           has   VBZ           (VP*    have  have.01    (V*)
+ontonotes/wb/eng/00/eng_0012   6    6        always    RB         (ADVP*)     -         -      *
+ontonotes/wb/eng/00/eng_0012   6    7           had   VBN           (VP*      -         -      *
+ontonotes/wb/eng/00/eng_0012   6    8             a    DT           (NP*      -         -      *
+ontonotes/wb/eng/00/eng_0012   6    9         seedy    JJ              *      -         -      *
+ontonotes/wb/eng/00/eng_0012   6   10    reputation    NN            *)))     -         -      *
+ontonotes/wb/eng/00/eng_0012   6   11             .     .             *))     -         -      *

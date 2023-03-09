@@ -19,6 +19,12 @@ class InferenceLoader(ABC):
         """
         return self.__class__.__name__
 
+    def strict_frame_elements(self) -> bool:
+        """
+        Return whether the loader strips out frame elements not in the frame definition.
+        """
+        return True
+
     def setup(self) -> None:
         """
         Perform any setup required, e.g. downloading needed data

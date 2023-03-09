@@ -9,8 +9,12 @@ from frame_semantic_transformer.data.loaders.framenet17 import (
 from frame_semantic_transformer.data.loaders.framenet17.ensure_framenet_downloaded import (
     ensure_framenet_downloaded,
 )
+from frame_semantic_transformer.data.loaders.propbank34.ensure_propbank_downloaded import (
+    ensure_propbank_downloaded,
+)
 
 ensure_framenet_downloaded()
+ensure_propbank_downloaded()
 
 _loader_cache = LoaderDataCache(Framenet17InferenceLoader())
 _training_loader = Framenet17TrainingLoader()

@@ -43,6 +43,7 @@ def train(
     early_stopping_patience_epochs: int = 0,  # 0 to disable early stopping feature
     precision: Union[Literal[64, 32, 16], Literal["64", "32", "16", "bf16"]] = 32,
     lr: float = 1e-4,
+    lr_gamma: float = 1.0,
     num_workers: int = DEFAULT_NUM_WORKERS,
     save_only_last_epoch: bool = False,
     balance_tasks: bool = True,
@@ -52,6 +53,7 @@ def train(
     training_loader: Optional[TrainingLoader] = None,
     pl_callbacks: Optional[list[Callback]] = None,
     pl_loggers: Optional[list[Logger]] = None,
+    resume_from_checkpoint: Optional[str] = None,
 ) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -106,6 +108,7 @@ def train(
         model,
         tokenizer,
         lr=lr,
+        lr_gamma=lr_gamma,
         output_dir=output_dir,
         save_only_last_epoch=save_only_last_epoch,
         skip_initial_epochs_validation=skip_initial_epochs_validation,
@@ -140,10 +143,12 @@ def train(
     trainer = pl.Trainer(
         callbacks=callbacks,
         max_epochs=max_epochs,
-        gpus=1 if use_gpu else 0,
+        accelerator="gpu" if use_gpu else "cpu",
+        devices=1 if use_gpu else "auto",
         precision=precision,
         log_every_n_steps=1,
         logger=pl_loggers or True,
+        resume_from_checkpoint=resume_from_checkpoint,
     )
 
     logger.info("beginning training")

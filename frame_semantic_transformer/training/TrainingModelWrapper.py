@@ -7,6 +7,7 @@ from typing import Any
 import numpy as np
 import pytorch_lightning as pl
 import torch
+from torch.optim.lr_scheduler import ExponentialLR
 from transformers import AdamW, T5ForConditionalGeneration, T5TokenizerFast
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
@@ -28,6 +29,7 @@ class TrainingModelWrapper(pl.LightningModule):
     skip_initial_epochs_validation: int
     loader_cache: LoaderDataCache
     val_metrics: dict[str, float] | None
+    lr_gamma: float
     log_eval_failures: bool
 
     def __init__(
@@ -39,6 +41,7 @@ class TrainingModelWrapper(pl.LightningModule):
         output_dir: str = "outputs",
         save_only_last_epoch: bool = False,
         skip_initial_epochs_validation: int = 0,
+        lr_gamma: float = 1.0,
         log_eval_failures: bool = False,
     ):
         super().__init__()
@@ -50,6 +53,7 @@ class TrainingModelWrapper(pl.LightningModule):
         self.save_only_last_epoch = save_only_last_epoch
         self.skip_initial_epochs_validation = skip_initial_epochs_validation
         self.val_metrics = None
+        self.lr_gamma = lr_gamma
         self.log_eval_failures = log_eval_failures
 
     def forward(
@@ -114,8 +118,10 @@ class TrainingModelWrapper(pl.LightningModule):
         )
         return {"loss": loss, "metrics": metrics}
 
-    def configure_optimizers(self) -> AdamW:
-        return AdamW(self.parameters(), lr=self.lr)
+    def configure_optimizers(self) -> tuple[list[AdamW], list[ExponentialLR]]:
+        optimizer = AdamW(self.parameters(), lr=self.lr)
+        scheduler = ExponentialLR(optimizer, gamma=self.lr_gamma, verbose=True)
+        return [optimizer], [scheduler]
 
     def training_epoch_end(self, training_step_outputs: list[Any]) -> None:
         """save tokenizer and model on epoch end"""
