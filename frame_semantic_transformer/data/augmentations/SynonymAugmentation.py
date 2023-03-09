@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 from nlpaug.augmenter.word import SynonymAug
 
 from frame_semantic_transformer.data.augmentations.modification_helpers import (
