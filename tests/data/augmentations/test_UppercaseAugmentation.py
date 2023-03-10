@@ -28,3 +28,11 @@ def test_UppercaseAugmentation(input: str, expected: str) -> None:
     sample = create_trigger_identification_sample(input)
     new_sample = cast(TriggerIdentificationSample, augmentation(sample))
     assert new_sample.task.text == expected
+
+
+def test_UppercaseAugmentation_returns_original_sentence_if_contains_ligature() -> None:
+    sentence = "this is one character: ﬁ ."
+    augmentation = UppercaseAugmentation(1.0)
+    sample = create_trigger_identification_sample(sentence)
+    new_sample = cast(TriggerIdentificationSample, augmentation(sample))
+    assert new_sample.task.text == sentence
