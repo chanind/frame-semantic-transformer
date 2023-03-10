@@ -4,6 +4,7 @@ from typing import Any, Iterable, Optional
 from nltk.corpus import framenet as fn
 
 from frame_semantic_transformer.data.augmentations import (
+    DoubleQuotesAugmentation,
     KeyboardAugmentation,
     LowercaseAugmentation,
     SimpleMisspellingAugmentation,
@@ -117,6 +118,7 @@ class Framenet17TrainingLoader(TrainingLoader):
     def get_augmentations(self) -> list[DataAugmentation]:
         return [
             RemoveEndPunctuationAugmentation(0.5),
+            DoubleQuotesAugmentation(0.3),
             SynonymAugmentation(0.3),
             KeyboardAugmentation(0.3),
             SimpleMisspellingAugmentation(0.1),
