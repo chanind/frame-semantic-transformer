@@ -31,10 +31,8 @@ class StripPunctuationAugmentation(DataAugmentation):
         updated_sample = task_sample
         for _ in range(random.randint(self.min_to_remove, self.max_to_remove)):
             if len(punctuation_indices) == 0:
-                print("no more punctuation to remove!")
                 break
             punctuation_index = random.choice(punctuation_indices)
-            print(f"remove index {punctuation_index} from {punctuation_indices}")
             punctuation_indices.remove(punctuation_index)
             punctuation_indices = [
                 i - 1 if i > punctuation_index else i for i in punctuation_indices
