@@ -123,12 +123,12 @@ class Framenet17TrainingLoader(TrainingLoader):
             DoubleQuotesAugmentation(0.2),
             StripPunctuationAugmentation(0.2),
             SynonymAugmentation(
-                lambda sample: 0.25
+                lambda sample: 0.2
                 if isinstance(sample, TriggerIdentificationSample)
                 else 0.05
             ),
-            KeyboardAugmentation(0.1),
-            SimpleMisspellingAugmentation(0.1),
+            KeyboardAugmentation(0.05),
+            SimpleMisspellingAugmentation(0.05),
             LowercaseAugmentation(0.1),
             UppercaseAugmentation(0.1),
         ]
