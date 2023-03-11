@@ -9,6 +9,7 @@ from frame_semantic_transformer.data.augmentations import (
     LowercaseAugmentation,
     SimpleMisspellingAugmentation,
     RemoveEndPunctuationAugmentation,
+    StripPunctuationAugmentation,
     SynonymAugmentation,
     UppercaseAugmentation,
 )
@@ -119,7 +120,8 @@ class Framenet17TrainingLoader(TrainingLoader):
         return [
             RemoveEndPunctuationAugmentation(0.5),
             DoubleQuotesAugmentation(0.3),
-            SynonymAugmentation(0.3),
+            StripPunctuationAugmentation(0.3),
+            SynonymAugmentation(0.1),
             KeyboardAugmentation(0.3),
             SimpleMisspellingAugmentation(0.1),
             LowercaseAugmentation(0.1),
