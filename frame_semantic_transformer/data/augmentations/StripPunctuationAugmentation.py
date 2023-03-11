@@ -6,7 +6,7 @@ from frame_semantic_transformer.data.augmentations.modification_helpers import (
     splice_text,
 )
 from frame_semantic_transformer.data.tasks import TaskSample
-from .DataAugmentation import DataAugmentation
+from .DataAugmentation import DataAugmentation, ProbabilityType
 from .modification_helpers.get_sample_text import get_sample_text
 
 
@@ -16,7 +16,10 @@ class StripPunctuationAugmentation(DataAugmentation):
     min_to_remove: int
 
     def __init__(
-        self, probability: float, max_to_remove: int = 5, min_to_remove: int = 1
+        self,
+        probability: ProbabilityType,
+        max_to_remove: int = 5,
+        min_to_remove: int = 1,
     ):
         self.max_to_remove = max_to_remove
         self.min_to_remove = min_to_remove

@@ -7,7 +7,7 @@ from frame_semantic_transformer.data.augmentations.modification_helpers import (
 )
 
 from frame_semantic_transformer.data.tasks import TaskSample
-from .DataAugmentation import DataAugmentation
+from .DataAugmentation import DataAugmentation, ProbabilityType
 
 
 class SimpleMisspellingAugmentation(DataAugmentation):
@@ -17,7 +17,7 @@ class SimpleMisspellingAugmentation(DataAugmentation):
 
     def __init__(
         self,
-        probability: float,
+        probability: ProbabilityType,
         max_misspellings_per_sentence: int = 10,
         min_misspellings_per_sentence: int = 1,
     ):

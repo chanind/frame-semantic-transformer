@@ -6,7 +6,7 @@ from frame_semantic_transformer.data.augmentations.modification_helpers import (
     modify_text_without_changing_length,
 )
 from frame_semantic_transformer.data.tasks import TaskSample
-from .DataAugmentation import DataAugmentation
+from .DataAugmentation import DataAugmentation, ProbabilityType
 
 
 class KeyboardAugmentation(DataAugmentation):
@@ -17,7 +17,7 @@ class KeyboardAugmentation(DataAugmentation):
 
     augmenter: KeyboardAug
 
-    def __init__(self, probability: float):
+    def __init__(self, probability: ProbabilityType):
         super().__init__(probability)
         self.augmenter = KeyboardAug(
             include_special_char=False, aug_char_p=0.1, aug_word_p=0.1

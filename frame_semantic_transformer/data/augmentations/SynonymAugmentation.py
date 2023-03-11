@@ -10,7 +10,7 @@ from frame_semantic_transformer.data.augmentations.modification_helpers.splice_t
 )
 
 from frame_semantic_transformer.data.tasks import TaskSample
-from .DataAugmentation import DataAugmentation
+from .DataAugmentation import DataAugmentation, ProbabilityType
 
 
 class SynonymAugmentation(DataAugmentation):
@@ -20,7 +20,7 @@ class SynonymAugmentation(DataAugmentation):
 
     augmenter: SynonymAug
 
-    def __init__(self, probability: float):
+    def __init__(self, probability: ProbabilityType):
         super().__init__(probability)
         self.augmenter = SynonymAug(aug_max=1, aug_min=1)
         self.augmenter.include_detail = True

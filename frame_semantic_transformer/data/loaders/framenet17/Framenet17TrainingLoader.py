@@ -16,6 +16,7 @@ from frame_semantic_transformer.data.augmentations import (
 from frame_semantic_transformer.data.augmentations.DataAugmentation import (
     DataAugmentation,
 )
+from frame_semantic_transformer.data.tasks import TriggerIdentificationSample
 from .ensure_framenet_downloaded import ensure_framenet_downloaded
 from .sesame_data_splits import SESAME_DEV_FILES, SESAME_TEST_FILES
 
@@ -121,7 +122,11 @@ class Framenet17TrainingLoader(TrainingLoader):
             RemoveEndPunctuationAugmentation(0.5),
             DoubleQuotesAugmentation(0.2),
             StripPunctuationAugmentation(0.2),
-            SynonymAugmentation(0.1),
+            SynonymAugmentation(
+                lambda sample: 0.25
+                if isinstance(sample, TriggerIdentificationSample)
+                else 0.05
+            ),
             KeyboardAugmentation(0.1),
             SimpleMisspellingAugmentation(0.1),
             LowercaseAugmentation(0.1),
