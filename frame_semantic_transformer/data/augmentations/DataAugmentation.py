@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, Union
+from typing import Callable, Union
 from abc import ABC, abstractmethod
 from random import uniform
 
-if TYPE_CHECKING:
-    from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
+from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 
 
 ProbabilityType = Union[float, Callable[[TaskSample], float]]
