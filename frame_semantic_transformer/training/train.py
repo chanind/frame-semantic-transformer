@@ -54,6 +54,7 @@ def train(
     pl_callbacks: Optional[list[Callback]] = None,
     pl_loggers: Optional[list[Logger]] = None,
     resume_from_checkpoint: Optional[str] = None,
+    remove_non_optimal_models: bool = True,
 ) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -113,6 +114,7 @@ def train(
         save_only_last_epoch=save_only_last_epoch,
         skip_initial_epochs_validation=skip_initial_epochs_validation,
         loader_cache=loader_cache,
+        remove_non_optimal_models=remove_non_optimal_models,
     )
 
     # add callbacks

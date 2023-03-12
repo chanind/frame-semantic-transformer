@@ -12,6 +12,7 @@ from transformers import AdamW, T5ForConditionalGeneration, T5TokenizerFast
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import trim_batch
+from frame_semantic_transformer.training.ModelRecorder import ModelRecorder
 from .evaluate_batch import TaskEvalResults, calc_eval_metrics, evaluate_batch
 
 
@@ -31,6 +32,7 @@ class TrainingModelWrapper(pl.LightningModule):
     val_metrics: dict[str, float] | None
     lr_gamma: float
     log_eval_failures: bool
+    model_recorder: ModelRecorder
 
     def __init__(
         self,
@@ -43,6 +45,7 @@ class TrainingModelWrapper(pl.LightningModule):
         skip_initial_epochs_validation: int = 0,
         lr_gamma: float = 1.0,
         log_eval_failures: bool = False,
+        remove_non_optimal_models: bool = True,
     ):
         super().__init__()
         self.lr = lr
@@ -55,6 +58,8 @@ class TrainingModelWrapper(pl.LightningModule):
         self.val_metrics = None
         self.lr_gamma = lr_gamma
         self.log_eval_failures = log_eval_failures
+        self.model_recorder = ModelRecorder(output_dir)
+        self.remove_non_optimal_models = remove_non_optimal_models
 
     def forward(
         self,
@@ -130,21 +135,19 @@ class TrainingModelWrapper(pl.LightningModule):
             4,
         )
         self.log("train_loss", self.average_training_loss)
-        filename_parts = [
-            f"epoch={self.current_epoch}",
-            f"train_loss={self.average_training_loss}",
-            f"val_loss={self.average_validation_loss}",
-        ]
-        if self.val_metrics:
-            filename_parts.extend([f"{k}={v}" for k, v in self.val_metrics.items()])
-
-        path = f"{self.output_dir}/{'--'.join(filename_parts)}"
         if (
             not self.save_only_last_epoch
             or self.current_epoch == (self.trainer.max_epochs or 0) - 1
         ):
-            self.tokenizer.save_pretrained(path)
-            self.model.save_pretrained(path)
+            self.model_recorder.save_model(
+                self.model,
+                self.tokenizer,
+                epoch=self.current_epoch,
+                val_loss=self.average_training_loss,
+                task_val_metrics=self.val_metrics,
+            )
+            if self.remove_non_optimal_models:
+                self.model_recorder.remove_non_optimal_models()
 
     def validation_epoch_end(self, validation_step_outputs: list[Any]) -> None:
         losses = [out["loss"].cpu() for out in validation_step_outputs]

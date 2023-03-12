@@ -41,7 +41,7 @@ def get_model_scores(output_name: str) -> dict[str, float]:
     Helper function to get the scores for a given model
     """
     scores = {}
-    for name_part in output_name.split("--"):
+    for name_part in output_name.split("-"):
         if "=" in name_part:
             key, value = name_part.split("=")
             if key in KEYS_TO_CHECK:
