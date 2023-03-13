@@ -127,8 +127,16 @@ class Framenet17TrainingLoader(TrainingLoader):
                 if isinstance(sample, TriggerIdentificationSample)
                 else 0.05
             ),
-            KeyboardAugmentation(0.05),
-            SimpleMisspellingAugmentation(0.05),
+            KeyboardAugmentation(
+                lambda sample: 0.3
+                if isinstance(sample, TriggerIdentificationSample)
+                else 0.05
+            ),
+            SimpleMisspellingAugmentation(
+                lambda sample: 0.3
+                if isinstance(sample, TriggerIdentificationSample)
+                else 0.05
+            ),
             LowercaseAugmentation(0.1),
             UppercaseAugmentation(0.1),
         ]

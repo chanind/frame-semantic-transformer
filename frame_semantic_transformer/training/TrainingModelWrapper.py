@@ -143,7 +143,7 @@ class TrainingModelWrapper(pl.LightningModule):
                 self.model,
                 self.tokenizer,
                 epoch=self.current_epoch,
-                val_loss=self.average_training_loss,
+                val_loss=self.average_validation_loss,
                 task_val_metrics=self.val_metrics,
             )
             if self.remove_non_optimal_models:

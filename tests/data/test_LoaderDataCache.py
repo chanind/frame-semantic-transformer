@@ -74,3 +74,19 @@ def test_get_possible_frames_for_trigger_bigrams_stems_bigrams(
     assert loader_cache.get_possible_frames_for_trigger_bigrams(
         [["can't", "helps"]]
     ) == ["Self_control"]
+
+
+def test_get_possible_frames_for_trigger_bigrams_paper_examples(
+    loader_cache: LoaderDataCache,
+) -> None:
+    assert loader_cache.get_possible_frames_for_trigger_bigrams(
+        [["use", "trying"], ["trying"], ["trying", "to"]]
+    ) == [
+        "Attempt",
+        "Attempt_means",
+        "Operational_testing",
+        "Tasting",
+        "Trial",
+        "Try_defendant",
+        "Trying_out",
+    ]
