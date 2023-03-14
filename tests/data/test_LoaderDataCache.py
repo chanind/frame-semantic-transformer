@@ -76,17 +76,38 @@ def test_get_possible_frames_for_trigger_bigrams_stems_bigrams(
     ) == ["Self_control"]
 
 
+@pytest.mark.parametrize(
+    "ngrams,expected",
+    [
+        (
+            [["use", "trying"], ["trying"], ["trying", "to"]],
+            [
+                "Attempt",
+                "Attempt_means",
+                "Operational_testing",
+                "Tasting",
+                "Trial",
+                "Try_defendant",
+                "Trying_out",
+            ],
+        ),
+        (
+            [["the lift"], ["lift"]],
+            [
+                "Body_movement",
+                "Building_subparts",
+                "Cause_change_of_position_on_a_scale",
+                "Cause_motion",
+                "Cause_to_end",
+                "Connecting_architecture",
+                "Theft",
+            ],
+        ),
+    ],
+)
 def test_get_possible_frames_for_trigger_bigrams_paper_examples(
+    ngrams: list[list[str]],
+    expected: list[str],
     loader_cache: LoaderDataCache,
 ) -> None:
-    assert loader_cache.get_possible_frames_for_trigger_bigrams(
-        [["use", "trying"], ["trying"], ["trying", "to"]]
-    ) == [
-        "Attempt",
-        "Attempt_means",
-        "Operational_testing",
-        "Tasting",
-        "Trial",
-        "Try_defendant",
-        "Trying_out",
-    ]
+    assert loader_cache.get_possible_frames_for_trigger_bigrams(ngrams) == expected
