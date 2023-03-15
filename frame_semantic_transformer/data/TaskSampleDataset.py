@@ -19,7 +19,7 @@ MAX_TARGET_LEN = 512
 
 class TaskSampleDataset(Dataset[Any]):
     samples: Sequence[TaskSample]
-    augmentation: Optional[Callable[[str, str], tuple[str, str]]] = None
+    augmentation: Optional[Callable[[TaskSample], TaskSample]] = None
     tokenizer: T5TokenizerFast
 
     def __init__(
@@ -59,10 +59,11 @@ class TaskSampleDataset(Dataset[Any]):
         self, sample: TaskSample
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
 
-        input = sample.get_input()
-        target = sample.get_target()
+        aug_sample = sample
         if self.augmentation:
-            input, target = self.augmentation(input, target)
+            aug_sample = self.augmentation(sample)
+        input = aug_sample.get_input()
+        target = aug_sample.get_target()
 
         input_encoding = self.tokenizer(
             input,

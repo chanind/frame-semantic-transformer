@@ -8,9 +8,12 @@ import re
 from nltk.corpus.reader.conll import ConllCorpusReader
 
 from frame_semantic_transformer.data.augmentations import (
+    KeyboardAugmentation,
     LowercaseAugmentation,
-    RemoveContractionsAugmentation,
     RemoveEndPunctuationAugmentation,
+    SimpleMisspellingAugmentation,
+    SynonymAugmentation,
+    UppercaseAugmentation,
 )
 from frame_semantic_transformer.data.augmentations.DataAugmentation import (
     DataAugmentation,
@@ -146,9 +149,12 @@ class Propbank34TrainingLoader(TrainingLoader):
 
     def get_augmentations(self) -> list[DataAugmentation]:
         return [
-            RemoveEndPunctuationAugmentation(0.3),
-            LowercaseAugmentation(0.2),
-            RemoveContractionsAugmentation(0.2),
+            RemoveEndPunctuationAugmentation(0.5),
+            SynonymAugmentation(0.3),
+            KeyboardAugmentation(0.3),
+            SimpleMisspellingAugmentation(0.1),
+            LowercaseAugmentation(0.1),
+            UppercaseAugmentation(0.1),
         ]
 
     def load_training_data(self) -> list[FrameAnnotatedSentence]:

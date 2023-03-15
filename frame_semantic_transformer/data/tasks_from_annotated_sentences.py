@@ -44,11 +44,11 @@ def tasks_from_annotated_sentences(
                         frame_elements=annotation.frame_elements,
                     )
                 )
-
-        task_samples.append(
-            TriggerIdentificationSample(
-                task=TriggerIdentificationTask(text=annotated_sentence.text),
-                trigger_locs=trigger_locs,
+        if not annotated_sentence.skip_trigger_identification_task:
+            task_samples.append(
+                TriggerIdentificationSample(
+                    task=TriggerIdentificationTask(text=annotated_sentence.text),
+                    trigger_locs=trigger_locs,
+                )
             )
-        )
     return task_samples

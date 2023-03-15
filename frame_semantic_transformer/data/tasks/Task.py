@@ -1,8 +1,9 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Any, Sequence
+from typing import Any, Sequence, TYPE_CHECKING
 
-from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
+if TYPE_CHECKING:
+    from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 
 
 class Task(ABC):
