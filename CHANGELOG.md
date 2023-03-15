@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.1 (2023-03-15)
+### Fix
+* Auto-download omw-1.4 for inference ([`343906c`](https://github.com/chanind/frame-semantic-transformer/commit/343906c3a0df59cd111355d8aa84d33b39003459))
+
 ## v0.8.0 (2023-03-15)
 ### Feature
 * New models trained on Framenet exemplars ([#18](https://github.com/chanind/frame-semantic-transformer/issues/18)) ([`3f937fb`](https://github.com/chanind/frame-semantic-transformer/commit/3f937fbc475bd8600cb62ca885fcf0e4a80effba))
