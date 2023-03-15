@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "frame-semantic-transformer"
-version = "0.7.0"
+version = "0.8.0"
 description = "Frame Semantic Parser based on T5 and FrameNet"
 license = "MIT"
 readme = "README.md"

@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0 (2023-03-15)
+### Feature
+* New models trained on Framenet exemplars ([#18](https://github.com/chanind/frame-semantic-transformer/issues/18)) ([`3f937fb`](https://github.com/chanind/frame-semantic-transformer/commit/3f937fbc475bd8600cb62ca885fcf0e4a80effba))
+
 ## v0.7.0 (2023-03-09)
 ### Feature
 * Propbank ([#16](https://github.com/chanind/frame-semantic-transformer/issues/16)) ([`4c53887`](https://github.com/chanind/frame-semantic-transformer/commit/4c538875be45c5b851286b1a17156b951c786a07))
