@@ -9,7 +9,7 @@ authors = ["David Chanin <chanindav@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-nltk = "^3.7"
+nltk = "^3.8"
 transformers = "^4.18.0"
 pytorch-lightning = "^1.6.2"
 tqdm = "^4.64.0"

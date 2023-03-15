@@ -162,14 +162,17 @@ class TrainingModelWrapper(pl.LightningModule):
 
         metrics = merge_metrics([out["metrics"] for out in validation_step_outputs])
         self.val_metrics = {}
+        f_scores = []
         for task_name, results in metrics.items():
             scores = calc_eval_metrics(results.scores)
-            name = f"val_{task_name}_f1"
+            task_f1_name = f"val_{task_name}_f1"
             f_score = scores["f_score"]
-            self.val_metrics[name] = f_score
-            self.log(name, f_score)
+            f_scores.append(f_score)
+            self.val_metrics[task_f1_name] = f_score
+            self.log(task_f1_name, f_score)
             self.log(f"val_{task_name}_recall", scores["recall"])
             self.log(f"val_{task_name}_precision", scores["precision"])
+        self.val_metrics["val_avg_f1"] = float(np.mean(f_scores))
 
         if self.log_eval_failures:
             log_eval_failures(

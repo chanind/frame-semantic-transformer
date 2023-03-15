@@ -55,6 +55,7 @@ def train(
     pl_loggers: Optional[list[Logger]] = None,
     resume_from_checkpoint: Optional[str] = None,
     remove_non_optimal_models: bool = True,
+    save_checkpoint: bool = True,
 ) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
@@ -132,14 +133,15 @@ def train(
         )
         callbacks.append(early_stop_callback)
 
-    checkpoint_callback = ModelCheckpoint(
-        monitor="val_loss",
-        dirpath=output_dir,
-        filename="best-checkpoint",
-        save_top_k=1,
-        mode="min",
-    )
-    callbacks.append(checkpoint_callback)
+    if save_checkpoint:
+        checkpoint_callback = ModelCheckpoint(
+            monitor="train_loss",
+            dirpath=output_dir,
+            filename="checkpoint",
+            save_top_k=1,
+            mode="min",
+        )
+        callbacks.append(checkpoint_callback)
 
     # prepare trainer
     trainer = pl.Trainer(
