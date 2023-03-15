@@ -35,6 +35,17 @@ class ModelRecorder:
             )
         )
 
+    def get_best_model_record_by_val_metric(self, val_metric: str) -> ModelSaveRecord:
+        """
+        Find the model record which scored the best on the given validation metric.
+        """
+        best_model = _find_best_val_metric_models(self.records).get(val_metric)
+        if best_model is None:
+            raise ValueError(
+                f"Could not find a model with a validation metric for {val_metric}"
+            )
+        return best_model
+
     def remove_non_optimal_models(self) -> None:
         """
         Delete any saved model that doesn't have the best validation loss or

@@ -31,6 +31,7 @@ def evaluate_model(
     inference_loader: Optional[InferenceLoader] = None,
     training_loader: Optional[TrainingLoader] = None,
     log_eval_failures: bool = False,
+    use_gpu: bool = torch.cuda.is_available(),
 ) -> None:
     """
     Benchmark this model against the validation and test sets
@@ -69,7 +70,12 @@ def evaluate_model(
     model_wrapper = TrainingModelWrapper(
         model, tokenizer, loader_cache, log_eval_failures=log_eval_failures
     )
-    trainer = Trainer(gpus=1, precision=32, max_epochs=1)
+    trainer = Trainer(
+        precision=32,
+        max_epochs=1,
+        accelerator="gpu" if use_gpu else "cpu",
+        devices=1 if use_gpu else "auto",
+    )
 
     val_dataset = TaskSampleDataset(
         tasks_from_annotated_sentences(

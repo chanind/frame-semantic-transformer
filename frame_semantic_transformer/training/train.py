@@ -30,6 +30,7 @@ from frame_semantic_transformer.training.TrainingDataModule import TrainDataModu
 from frame_semantic_transformer.training.TrainingModelWrapper import (
     TrainingModelWrapper,
 )
+from frame_semantic_transformer.training.evaluate_model import evaluate_model
 
 logger = logging.getLogger(__name__)
 
@@ -56,10 +57,11 @@ def train(
     resume_from_checkpoint: Optional[str] = None,
     remove_non_optimal_models: bool = True,
     save_checkpoint: bool = True,
+    evaluate_best_model: bool = True,
+    skip_augmentations: bool = False,
 ) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
-    device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
-    model = T5ForConditionalGeneration.from_pretrained(base_model).to(device)
+    model = T5ForConditionalGeneration.from_pretrained(base_model)
     tokenizer = T5TokenizerFast.from_pretrained(
         base_model, model_max_length=MODEL_MAX_LENGTH
     )
@@ -85,7 +87,9 @@ def train(
         tokenizer,
         balance_tasks=balance_tasks,
         max_task_duplication_factor=max_task_duplication_factor,
-        augmentations=training_loader.get_augmentations(),
+        augmentations=None
+        if skip_augmentations
+        else training_loader.get_augmentations(),
     )
     val_dataset = TaskSampleDataset(
         tasks_from_annotated_sentences(validation_data, loader_cache),
@@ -159,5 +163,30 @@ def train(
 
     # fit trainer
     trainer.fit(model_wrapper, data_module)
+
+    if evaluate_best_model:
+        best_model_record = (
+            model_wrapper.model_recorder.get_best_model_record_by_val_metric(
+                "val_avg_f1"
+            )
+        )
+        logger.info(
+            f"evaluating best model by val_avg_f1: {best_model_record.save_path}"
+        )
+        best_model = T5ForConditionalGeneration.from_pretrained(
+            best_model_record.save_path
+        )
+        best_tokenizer = T5TokenizerFast.from_pretrained(
+            best_model_record.save_path, model_max_length=MODEL_MAX_LENGTH
+        )
+        evaluate_model(
+            best_model,
+            best_tokenizer,
+            batch_size=batch_size,
+            use_gpu=use_gpu,
+            inference_loader=inference_loader,
+            training_loader=training_loader,
+            num_workers=num_workers,
+        )
 
     return model, tokenizer
