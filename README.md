@@ -107,12 +107,10 @@ The code contained in this repo is released under a MIT license, however the pre
 
 If you use Frame semantic transformer in your work, please cite the following:
 ```bibtex
-@misc{chanin2023opensource,
-      title={Open-source Frame Semantic Parsing}, 
-      author={David Chanin},
-      year={2023},
-      eprint={2303.12788},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@article{chanin2023opensource,
+  title={Open-source Frame Semantic Parsing},
+  author={Chanin, David},
+  journal={arXiv preprint arXiv:2303.12788},
+  year={2023}
 }
 ```
