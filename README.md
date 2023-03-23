@@ -102,3 +102,17 @@ This project uses [Black](https://github.com/psf/black) for code formatting, [Fl
 ## License
 
 The code contained in this repo is released under a MIT license, however the pretrained models are released under an Apache 2.0 license in accordance with FrameNet training data and HuggingFace's T5 base models.
+
+## Citation
+
+If you use Frame semantic transformer in your work, please cite the following:
+```bibtex
+@misc{chanin2023opensource,
+      title={Open-source Frame Semantic Parsing}, 
+      author={David Chanin},
+      year={2023},
+      eprint={2303.12788},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
