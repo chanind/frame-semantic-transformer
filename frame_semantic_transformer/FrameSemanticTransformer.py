@@ -179,8 +179,12 @@ class FrameSemanticTransformer:
             ):
                 if isinstance(task, TriggerIdentificationTask):
                     # first identify triggers
-                    text_with_triggers_marked = task.parse_output(preds, self.loader_cache)
-                    trigger_locs = marked_string_to_locs(task.text, text_with_triggers_marked)
+                    text_with_triggers_marked = task.parse_output(
+                        preds, self.loader_cache
+                    )
+                    trigger_locs = marked_string_to_locs(
+                        task.text, text_with_triggers_marked
+                    )
                     for trigger_loc in trigger_locs:
                         tasks_queue.append(
                             FrameClassificationTask(
