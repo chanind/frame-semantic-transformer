@@ -87,22 +87,31 @@ def test_standardize_punct_with_swedish() -> None:
 
 
 @pytest.mark.parametrize(
-    "input,expected",
+    "origin_text,marked_text,trigger_locations",
     [
-        ("Hi * there", ("Hi there", [3])),
-        ("Hi there", ("Hi there", [])),
+        ("Hi there", "Hi * there", [3]),
+        ("Hi there", "Hi there", []),
         (
+            "Does Iran intend to become a Nuclear State?",
             "Does Iran * intend to * become a Nuclear State?",
-            ("Does Iran intend to become a Nuclear State?", [10, 20]),
+            [10, 20],
         ),
         (
+            "Does Iran intend to become a Nuclear State?",
             "Does Iran * intend to *become a Nuclear State?",
-            ("Does Iran intend to become a Nuclear State?", [10, 20]),
+            [10, 20],
+        ),
+        (
+            "The people you refer to (<PERSON>, <PERSON>, <PERSON>) were never involved.",
+            "The people you * refer to (PERSON>, PERSON>, PERSON>, PERSON>, PERSON>, PERSON>) were never * involved.",
+            [15, 66],
         ),
     ],
 )
-def test_marked_string_to_locs(input: str, expected: tuple[str, list[int]]) -> None:
-    assert marked_string_to_locs(input) == expected
+def test_marked_string_to_locs(
+    origin_text: str, marked_text: str, trigger_locations: list[int]
+) -> None:
+    assert marked_string_to_locs(origin_text, marked_text) == trigger_locations
 
 
 def test_trim_batch() -> None:
