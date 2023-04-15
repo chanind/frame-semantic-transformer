@@ -168,9 +168,6 @@ class FrameSemanticTransformer:
         tasks_queue: list[Task] = []
         # slowly build up results from each task as they complete
         results_acc: ResultsAccumulator = defaultdict(dict)
-        # T5 doesn't necessarily have to output the original sentence, even though it's supposed to
-        # This map just keeps track of the original sentence for each output sentence so we can match them up
-        parsed_sentences_map: dict[str, str] = {}
         for sentence in sentences:
             tasks_queue.append(TriggerIdentificationTask(text=sentence))
         while len(tasks_queue) > 0:
@@ -182,9 +179,12 @@ class FrameSemanticTransformer:
             ):
                 if isinstance(task, TriggerIdentificationTask):
                     # first identify triggers
-                    result = task.parse_output(preds, self.loader_cache)
-                    parsed_sent, trigger_locs = marked_string_to_locs(result)
-                    parsed_sentences_map[task.text] = parsed_sent
+                    text_with_triggers_marked = task.parse_output(
+                        preds, self.loader_cache
+                    )
+                    trigger_locs = marked_string_to_locs(
+                        task.text, text_with_triggers_marked
+                    )
                     for trigger_loc in trigger_locs:
                         tasks_queue.append(
                             FrameClassificationTask(
@@ -215,9 +215,8 @@ class FrameSemanticTransformer:
         results_map = self._collate_results(results_acc)
         results = []
         for sentence in sentences:
-            mapped_sentence = parsed_sentences_map[sentence]
-            if mapped_sentence in results_map:
-                results.append(results_map[mapped_sentence])
+            if sentence in results_map:
+                results.append(results_map[sentence])
             else:
                 results.append(
                     DetectFramesResult(sentence, trigger_locations=[], frames=[])

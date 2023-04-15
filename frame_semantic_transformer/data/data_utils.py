@@ -1,6 +1,7 @@
 from __future__ import annotations
 import re
 from typing import Iterator, Sequence, TypeVar
+from difflib import SequenceMatcher, Match
 from torch import Tensor
 
 from transformers import T5TokenizerFast
@@ -36,27 +37,49 @@ def standardize_punct(sent: str) -> str:
     return updated_sent.strip()
 
 
-def marked_string_to_locs(
-    text: str, symbol: str = "*", remove_spaces: bool = True
-) -> tuple[str, list[int]]:
+def marked_string_to_locs(origin_text: str, marked_text: str) -> list[int]:
     """
-    Take a string like "He * went to the * store" and return the indices of the tagged words,
-    in this case "went" and "store", and remove the tags (in this case the *'s)
-    """
-    output_str = ""
-    remaining_str = text
-    locs: list[int] = []
-    symbol_index = remaining_str.find("*")
+    Take a sentence like "He went to the store" and also the output of the trigger identification task, which
+    will be a string like "He * went to the * store". We return the character indicies of the words in the
+    original sentence that correspond to the marked words in the second sentence. In the example, the marked
+    words are "went" and "store", and their indicies in the original sentence are 3 and 15, so the list
+    [3, 15] is returned.
 
-    while symbol_index != -1:
-        locs.append(symbol_index + len(output_str))
-        output_str += remaining_str[:symbol_index]
-        remaining_str = remaining_str[symbol_index + len(symbol) :]
-        if remove_spaces:
-            remaining_str = remaining_str.strip()
-        symbol_index = remaining_str.find("*")
-    output_str += remaining_str
-    return output_str, locs
+    The transformer that generates the marked text is trained to reproduce the original sentence, but there
+    is nothing that guarantees that it will do so, and in some cases the transformer will even be inherently
+    unable to reproduce the original sentence, such as when the original sentence contains substrings that
+    the transformer's tokenizer parses to <unk>.
+
+    Therefore this function does not assume that the marked sentence will be identical to the original sentence,
+    modulo the trigger marks. Rather the trigger locations are transferred from the marked sentence to the original
+    sentence via an alignment between the two sentences.
+    """
+    locs: list[int] = []
+
+    # collapse the space between each "*" and the word it marks so that there are not extra spaces during alignment
+    marked_text = marked_text.replace("* ", "*")
+
+    # align the output of the trigger identification task with the original sentence
+    matcher = SequenceMatcher(a=origin_text, b=marked_text, autojunk=False)
+    matches = matcher.get_matching_blocks()
+
+    # discard the ending null match since there shouldn't be a "*" after the last word, and, if there is one, we
+    # don't want to record it as a valid trigger location
+    matches = matches[:-1]
+
+    # add a starting null match so that we can recognize a "*" marking the first word, if there happens to be one
+    matches.insert(0, Match(0, 0, 0))
+
+    # any one-character-wide gaps between matches that contain "*" we record as trigger locations
+    for match, next_match in zip(matches[:-1], matches[1:]):
+        if (
+            match.a + match.size == next_match.a
+            and match.b + match.size + len("*") == next_match.b
+            and "*" == marked_text[match.b + match.size]
+        ):
+            locs.append(next_match.a)
+
+    return locs
 
 
 def trim_batch(
