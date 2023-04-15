@@ -21,6 +21,18 @@ def test_problematic_sentence() -> None:
     assert len(result.frames) > 0
 
 
+def test_sentence_with_unk_chars() -> None:
+    result = transformer.detect_frames(
+        "The people you refer to (<PERSON>, <PERSON>, <PERSON>) were never involved."
+    )
+    assert (
+        result.sentence
+        == "The people you refer to (<PERSON>, <PERSON>, <PERSON>) were never involved."
+    )
+    assert len(result.trigger_locations) > 0
+    assert len(result.frames) > 0
+
+
 def test_no_results() -> None:
     result = transformer.detect_frames("nope")
     assert result.sentence == "nope"
