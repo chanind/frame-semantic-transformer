@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.2 (2023-04-15)
+### Fix
+* Align trigger-marked sentence to original sentence ([#19](https://github.com/chanind/frame-semantic-transformer/issues/19)) ([`6683a22`](https://github.com/chanind/frame-semantic-transformer/commit/6683a224740ddd8a19a707247f732bfc9e694ba2))
+
 ## v0.8.1 (2023-03-15)
 ### Fix
 * Auto-download omw-1.4 for inference ([`343906c`](https://github.com/chanind/frame-semantic-transformer/commit/343906c3a0df59cd111355d8aa84d33b39003459))
