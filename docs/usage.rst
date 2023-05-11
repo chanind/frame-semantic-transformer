@@ -37,6 +37,20 @@ For more efficient bulk processing of text, there's a `detect_frames_bulk` metho
         "The hallway smelt of boiled cabbage and old rag mats.",
     ])
 
+
+**Note**: It's not recommended to pass more than a single sentence per string to `detect_frames()` or `detect_frames_bulk()`. If you have a paragraph of text to process, it's best to split the paragraph into a list of sentences and pass the sentences as a list to `detect_frames_bulk()`. Only single sentences per string were used during training, so it's not clear how the model will handle multiple sentences in the same string.
+
+.. code-block:: python
+
+    # ❌ Bad, don't do this
+    frame_transformer.detect_frames("Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.")
+
+    # 👍 Do this instead
+    frame_transformer.detect_frames_bulk([
+        "Fuzzy Wuzzy was a bear.",
+        "Fuzzy Wuzzy had no hair.",
+    ])
+
 Running on GPU vs CPU
 ''''''''''''''''''''''
 

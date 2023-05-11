@@ -67,6 +67,19 @@ result = frame_transformer.detect_frames_bulk([
 ])
 ```
 
+**Note**: It's not recommended to pass more than a single sentence per string to `detect_frames()` or `detect_frames_bulk()`. If you have a paragraph of text to process, it's best to split the paragraph into a list of sentences and pass the sentences as a list to `detect_frames_bulk()`. Only single sentences per string were used during training, so it's not clear how the model will handle multiple sentences in the same string.
+
+```python
+# ❌ Bad, don't do this
+frame_transformer.detect_frames("Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.")
+
+# 👍 Do this instead
+frame_transformer.detect_frames_bulk([
+  "Fuzzy Wuzzy was a bear.",
+  "Fuzzy Wuzzy had no hair.",
+])
+```
+
 ### Running on GPU vs CPU
 
 By default, `FrameSemanticTransformer` will attempt to use a GPU if one is available. If you'd like to explictly set whether to run on GPU vs CPU, you can pass the `use_gpu` param.
@@ -106,6 +119,7 @@ The code contained in this repo is released under a MIT license, however the pre
 ## Citation
 
 If you use Frame semantic transformer in your work, please cite the following:
+
 ```bibtex
 @article{chanin2023opensource,
   title={Open-source Frame Semantic Parsing},
