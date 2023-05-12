@@ -13,6 +13,8 @@ jobs:
         with:
           # pending https://github.com/python-poetry/poetry/issues/7691
           version: 1.4.0
+      - name: Install torch
+        run: poetry run pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Install dependencies
         run: poetry install --no-interaction
       - name: flake8 linting
