@@ -25,6 +25,7 @@ flake8 = "^4.0.1"
 syrupy = "^2.0.0"
 pygments = "^2.14.0"
 furo = "^2022.12.7"
+torch = "^1.13.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
