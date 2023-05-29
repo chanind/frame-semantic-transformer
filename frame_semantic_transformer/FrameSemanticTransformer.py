@@ -60,7 +60,7 @@ class FrameSemanticTransformer:
     def __init__(
         self,
         model_name_or_path: str = "base",
-        use_gpu: bool = torch.cuda.is_available(),
+        use_gpu: bool | int = torch.cuda.is_available(),
         batch_size: int = 8,
         predictions_per_sample: int = 5,
         inference_loader: Optional[InferenceLoader] = None,
@@ -69,7 +69,15 @@ class FrameSemanticTransformer:
         if model_name_or_path in OFFICIAL_RELEASES:
             self.model_path = f"chanind/frame-semantic-transformer-{model_name_or_path}"
             self.model_revision = MODEL_REVISION
-        self.device = torch.device("cuda" if use_gpu else "cpu")
+        # bool is a subtype of int, so isinstance(False, int) returns True
+        if isinstance(use_gpu, int) and not isinstance(use_gpu, bool):
+            assert use_gpu in range(torch.cuda.device_count())
+            self.device = torch.device(f"cuda:{use_gpu}")
+        elif isinstance(use_gpu, bool) and use_gpu:
+            assert torch.cuda.is_available()
+            self.device = torch.device("cuda")
+        else:
+            self.device = torch.device("cpu")
         self.batch_size = batch_size
         self.predictions_per_sample = predictions_per_sample
         loader = inference_loader or Framenet17InferenceLoader()
