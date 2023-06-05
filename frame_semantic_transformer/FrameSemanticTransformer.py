@@ -73,9 +73,16 @@ class FrameSemanticTransformer:
         if logging_level not in logging._levelToName:
             logging_level = logging.WARNING
 
-        logging.basicConfig(format="%(levelname)s: %(name)s: %(funcName)s: %(message)s")
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging_level)
+        if not self.logger.hasHandlers():
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging_level)
+            formatter = logging.Formatter(
+                "%(levelname)s: %(name)s: %(funcName)s: %(message)s"
+            )
+            console_handler.setFormatter(formatter)
+            self.logger.addHandler(console_handler)
 
         if logging_level != caller_supplied_logging_level:
             self.logger.warning(
