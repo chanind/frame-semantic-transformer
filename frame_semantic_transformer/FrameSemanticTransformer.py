@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import logging
+from textwrap import dedent
+from pprint import pformat
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Dict, Iterable, Optional, Tuple, cast
@@ -60,16 +63,78 @@ class FrameSemanticTransformer:
     def __init__(
         self,
         model_name_or_path: str = "base",
-        use_gpu: bool = torch.cuda.is_available(),
+        use_gpu: bool | int = torch.cuda.is_available(),
         batch_size: int = 8,
         predictions_per_sample: int = 5,
         inference_loader: Optional[InferenceLoader] = None,
+        logging_level: int = logging.WARNING,
     ):
+        caller_supplied_logging_level = logging_level
+        if logging_level not in logging._levelToName:
+            logging_level = logging.WARNING
+
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging_level)
+        if not self.logger.hasHandlers():
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging_level)
+            formatter = logging.Formatter(
+                "%(levelname)s: %(name)s: %(funcName)s: %(message)s"
+            )
+            console_handler.setFormatter(formatter)
+            self.logger.addHandler(console_handler)
+
+        if logging_level != caller_supplied_logging_level:
+            self.logger.warning(
+                dedent(
+                    """\
+                    caller passed logging_level={0}
+                    which is not a legal logging level;
+                    the default level of {1} (i.e., {2})
+                    will be used"""
+                )
+                .replace("\n", " ")
+                .format(
+                    pformat(caller_supplied_logging_level),
+                    logging_level,
+                    logging.getLevelName(logging_level),
+                )
+            )
+
         self.model_path = model_name_or_path
         if model_name_or_path in OFFICIAL_RELEASES:
             self.model_path = f"chanind/frame-semantic-transformer-{model_name_or_path}"
             self.model_revision = MODEL_REVISION
-        self.device = torch.device("cuda" if use_gpu else "cpu")
+
+        # bool is a subtype of int, so isinstance(False, int) returns True
+        if (
+            isinstance(use_gpu, int)
+            and not isinstance(use_gpu, bool)
+            and use_gpu in range(torch.cuda.device_count())
+        ):
+            self.device = torch.device(f"cuda:{use_gpu}")
+        elif isinstance(use_gpu, bool) and use_gpu and torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        elif isinstance(use_gpu, bool) and not use_gpu:
+            self.device = torch.device("cpu")
+        else:
+            if torch.cuda.is_available():
+                self.device = torch.device("cuda")
+                device_description = "the first available GPU"
+            else:
+                self.device = torch.device("cpu")
+                device_description = "the CPU"
+            self.logger.warning(
+                dedent(
+                    """\
+                    caller passed use_gpu={0} but a bool
+                    or the int index of an available GPU
+                    was expected; defaulting to {1}"""
+                )
+                .replace("\n", " ")
+                .format(pformat(use_gpu), device_description)
+            )
+
         self.batch_size = batch_size
         self.predictions_per_sample = predictions_per_sample
         loader = inference_loader or Framenet17InferenceLoader()
