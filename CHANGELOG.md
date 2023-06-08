@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0 (2023-06-08)
+### Feature
+* Removing logger config for release ([`7947f8b`](https://github.com/chanind/frame-semantic-transformer/commit/7947f8bac4e4e2f6e9c1d437dbdcccbde0880132))
+
 ## v0.8.2 (2023-04-15)
 ### Fix
 * Align trigger-marked sentence to original sentence ([#19](https://github.com/chanind/frame-semantic-transformer/issues/19)) ([`6683a22`](https://github.com/chanind/frame-semantic-transformer/commit/6683a224740ddd8a19a707247f732bfc9e694ba2))
