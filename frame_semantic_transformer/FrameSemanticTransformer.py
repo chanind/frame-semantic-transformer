@@ -144,6 +144,7 @@ class FrameSemanticTransformer:
             self.model_path,
             revision=self.model_revision,
             model_max_length=MODEL_MAX_LENGTH,
+            legacy=False,
         )
         self.loader_cache.setup()
         self._validate_loader()

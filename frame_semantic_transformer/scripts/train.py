@@ -2,6 +2,7 @@ from __future__ import annotations
 import logging
 import os
 import argparse
+import torch
 
 from frame_semantic_transformer.training.train import train
 
@@ -18,6 +19,18 @@ if __name__ == "__main__":
         default="t5-base",
         help="The HuggingFace T5 model to use as a starting point, default t5-base",
     )
+    parser.add_argument(
+        "--use-gpu",
+        default=torch.cuda.is_available(),
+        action='store_true',
+        help=f"Whether to use GPU for training, default {torch.cuda.is_available()}",
+    )
+    parser.add_argument(
+        "--use-cpu",
+        dest="use_gpu",
+        action='store_false',
+        help=f"Whether to use CPU for training, default {not torch.cuda.is_available()}",
+    )
     parser.add_argument("--learning-rate", default=1e-4, type=float)
     parser.add_argument("--batch-size", type=int, default=8, help="default 8")
     parser.add_argument("--epochs", type=int, default=10, help="default 10")
@@ -33,6 +46,7 @@ if __name__ == "__main__":
     train(
         base_model=args.base_model,
         batch_size=args.batch_size,
+        use_gpu=args.use_gpu,
         lr=args.learning_rate,
         max_epochs=args.epochs,
         output_dir=args.output_dir,
