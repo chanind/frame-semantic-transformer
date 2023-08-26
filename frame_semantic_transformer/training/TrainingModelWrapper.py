@@ -8,7 +8,8 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch.optim.lr_scheduler import ExponentialLR
-from transformers import AdamW, T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from torch.optim import AdamW
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import trim_batch

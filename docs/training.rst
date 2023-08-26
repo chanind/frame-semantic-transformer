@@ -8,7 +8,7 @@ If you want to train a new model on the Framenet 1.7 dataset yourself, you can r
 
 .. code-block:: python
 
-    python -m frame_semantic_transformer.train \
+    python -m frame_semantic_transformer.scripts.train \
         --base-model t5-base \
         --use-gpu \
         --batch-size 8 \
