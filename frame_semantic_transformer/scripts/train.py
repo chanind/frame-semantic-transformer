@@ -22,13 +22,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--use-gpu",
         default=torch.cuda.is_available(),
-        action='store_true',
+        action="store_true",
         help=f"Whether to use GPU for training, default {torch.cuda.is_available()}",
     )
     parser.add_argument(
         "--use-cpu",
         dest="use_gpu",
-        action='store_false',
+        action="store_false",
         help=f"Whether to use CPU for training, default {not torch.cuda.is_available()}",
     )
     parser.add_argument("--learning-rate", default=1e-4, type=float)
