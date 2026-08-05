@@ -8,7 +8,7 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch.optim.lr_scheduler import ExponentialLR
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 from torch.optim import AdamW
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
@@ -24,7 +24,7 @@ class TrainingModelWrapper(pl.LightningModule):
 
     lr: float
     model: T5ForConditionalGeneration
-    tokenizer: T5TokenizerFast
+    tokenizer: T5Tokenizer
     trainer: pl.Trainer
     output_dir: str
     save_only_last_epoch: bool
@@ -38,7 +38,7 @@ class TrainingModelWrapper(pl.LightningModule):
     def __init__(
         self,
         model: T5ForConditionalGeneration,
-        tokenizer: T5TokenizerFast,
+        tokenizer: T5Tokenizer,
         loader_cache: LoaderDataCache,
         lr: float = 1e-4,
         output_dir: str = "outputs",

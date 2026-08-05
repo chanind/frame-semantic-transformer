@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Sequence
 
-from transformers import T5TokenizerFast
+from transformers import T5Tokenizer
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
 from frame_semantic_transformer.data.data_utils import standardize_punct
@@ -56,7 +56,8 @@ def split_output_fe_spans(output: str) -> list[tuple[str, str]]:
     [("Agent", "He"), ("Destination", "to the store")]
     """
     outputs: list[tuple[str, str]] = []
-    for span in T5TokenizerFast.clean_up_tokenization(output).split("|"):
+    tokenizer = T5Tokenizer()
+    for span in tokenizer.clean_up_tokenization(output).split("|"):
         parts = span.strip().split("=")
         if len(parts) == 1:
             # invalid output - just skip this

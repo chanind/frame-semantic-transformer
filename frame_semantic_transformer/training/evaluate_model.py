@@ -4,7 +4,7 @@ from typing import Optional
 import torch
 from torch.utils.data import DataLoader
 from pytorch_lightning import Trainer
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 from frame_semantic_transformer.constants import DEFAULT_NUM_WORKERS
 
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
@@ -25,7 +25,7 @@ from .TrainingModelWrapper import TrainingModelWrapper
 
 def evaluate_model(
     model: T5ForConditionalGeneration,
-    tokenizer: T5TokenizerFast,
+    tokenizer: T5Tokenizer,
     batch_size: int = 8,
     num_workers: int = DEFAULT_NUM_WORKERS,
     inference_loader: Optional[InferenceLoader] = None,

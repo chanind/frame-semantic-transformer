@@ -3,7 +3,7 @@ from collections import defaultdict
 import logging
 from typing import Any, Type
 from dataclasses import asdict, dataclass, field
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
@@ -81,7 +81,7 @@ class TaskEvalResults:
 
 def evaluate_batch(
     model: T5ForConditionalGeneration,
-    tokenizer: T5TokenizerFast,
+    tokenizer: T5Tokenizer,
     batch: Any,
     loader_cache: LoaderDataCache,
     predictions_per_sample: int = 5,

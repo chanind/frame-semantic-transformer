@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.data.loaders.loader import (
     InferenceLoader,
@@ -34,7 +34,7 @@ def evaluate_best_val_models(
         print(f"Best {key} model: {output_name}")
         model_path = os.path.join(outputs_dir, output_name)
         model = T5ForConditionalGeneration.from_pretrained(model_path)
-        tokenizer = T5TokenizerFast.from_pretrained(model_path)
+        tokenizer = T5Tokenizer.from_pretrained(model_path)
         print(f"Evaluating model: {output_name}")
         evaluate_model(
             model,

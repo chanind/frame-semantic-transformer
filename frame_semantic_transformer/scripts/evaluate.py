@@ -1,7 +1,7 @@
 from __future__ import annotations
 import argparse
 import logging
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.training import evaluate_model
 
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     logger.setLevel(logging.INFO)
 
     model = T5ForConditionalGeneration.from_pretrained(args.model_path)
-    tokenizer = T5TokenizerFast.from_pretrained(args.model_path)
+    tokenizer = T5Tokenizer.from_pretrained(args.model_path)
 
     evaluate_model(
         model,
