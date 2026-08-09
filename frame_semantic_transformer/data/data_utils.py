@@ -1,8 +1,11 @@
 from __future__ import annotations
 import re
+from functools import lru_cache
 from typing import Iterator, Sequence, TypeVar
 from difflib import SequenceMatcher, Match
 from torch import Tensor
+
+from transformers import T5Tokenizer
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
 
@@ -14,29 +17,23 @@ def chunk_list(lst: Sequence[T], chunk_size: int) -> Iterator[Sequence[T]]:
         yield lst[i : i + chunk_size]
 
 
+@lru_cache(maxsize=1)
+def _cleanup_tokenizer() -> T5Tokenizer:
+    """
+    transformers 5 exposes clean_up_tokenization as an instance method, but it is a
+    pure string transform that touches no tokenizer state, so a single throwaway
+    instance serves every call. Built lazily and cached, since constructing one costs
+    ~0.5ms and standardize_punct runs per sample and per prediction.
+    """
+    return T5Tokenizer()
+
+
 def clean_up_tokenization(text: str) -> str:
     """
     Undo the spacing that tokenization introduces around punctuation and
     contractions, e.g. "He 's a man ." -> "He's a man."
-
-    This is a verbatim copy of transformers' PreTrainedTokenizerBase.clean_up_tokenization,
-    which is a pure string transform with no tokenizer state. It lived on the tokenizer
-    as a staticmethod through transformers 4.x, was removed in 5.0, and came back as an
-    instance method in 5.3 — keeping our own copy makes punctuation handling independent
-    of the installed transformers version, and avoids building a tokenizer per call.
     """
-    return (
-        text.replace(" .", ".")
-        .replace(" ?", "?")
-        .replace(" !", "!")
-        .replace(" ,", ",")
-        .replace(" ' ", "'")
-        .replace(" n't", "n't")
-        .replace(" 'm", "'m")
-        .replace(" 's", "'s")
-        .replace(" 've", "'ve")
-        .replace(" 're", "'re")
-    )
+    return _cleanup_tokenizer().clean_up_tokenization(text)
 
 
 def standardize_punct(sent: str) -> str:
