@@ -69,7 +69,8 @@ def evaluate_model(
     model_wrapper = TrainingModelWrapper(
         model, tokenizer, loader_cache, log_eval_failures=log_eval_failures
     )
-    trainer = Trainer(gpus=1, precision=32, max_epochs=1)
+    # pytorch-lightning 2.x replaced `gpus=1` with accelerator/devices
+    trainer = Trainer(accelerator="gpu", devices=1, precision=32, max_epochs=1)
 
     val_dataset = TaskSampleDataset(
         tasks_from_annotated_sentences(

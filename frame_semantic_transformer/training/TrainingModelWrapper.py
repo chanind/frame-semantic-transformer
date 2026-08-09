@@ -25,7 +25,6 @@ class TrainingModelWrapper(pl.LightningModule):
     lr: float
     model: T5ForConditionalGeneration
     tokenizer: T5Tokenizer
-    trainer: pl.Trainer
     output_dir: str
     save_only_last_epoch: bool
     skip_initial_epochs_validation: int
@@ -34,6 +33,11 @@ class TrainingModelWrapper(pl.LightningModule):
     lr_gamma: float
     log_eval_failures: bool
     model_recorder: ModelRecorder
+    # pytorch-lightning 2.x removed the `*_epoch_end(outputs)` hooks, so we
+    # accumulate step outputs ourselves and clear them at each epoch end
+    training_step_outputs: list[Any]
+    validation_step_outputs: list[Any]
+    test_step_outputs: list[Any]
 
     def __init__(
         self,
@@ -61,6 +65,9 @@ class TrainingModelWrapper(pl.LightningModule):
         self.log_eval_failures = log_eval_failures
         self.model_recorder = ModelRecorder(output_dir)
         self.remove_non_optimal_models = remove_non_optimal_models
+        self.training_step_outputs = []
+        self.validation_step_outputs = []
+        self.test_step_outputs = []
 
     def forward(
         self,
@@ -80,7 +87,7 @@ class TrainingModelWrapper(pl.LightningModule):
             labels=labels,
         )
 
-    def training_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
+    def training_step(self, batch: Any, _batch_idx: int) -> Any:
         output = self._step(batch)
         loss = output.loss
         self.log(
@@ -92,12 +99,15 @@ class TrainingModelWrapper(pl.LightningModule):
             on_step=True,
             batch_size=len(batch["input_ids"]),
         )
+        # detach so the epoch's losses don't retain their autograd graphs
+        self.training_step_outputs.append(loss.detach())
         return loss
 
-    def validation_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
+    def validation_step(self, batch: Any, _batch_idx: int) -> Any:
         output = self._step(batch)
         loss = output.loss
         if self.current_epoch < self.skip_initial_epochs_validation:
+            self.validation_step_outputs.append({"loss": loss})
             return {"loss": loss}
         metrics = evaluate_batch(self.model, self.tokenizer, batch, self.loader_cache)
         self.log(
@@ -109,9 +119,10 @@ class TrainingModelWrapper(pl.LightningModule):
             on_step=True,
             batch_size=len(batch["input_ids"]),
         )
+        self.validation_step_outputs.append({"loss": loss, "metrics": metrics})
         return {"loss": loss, "metrics": metrics}
 
-    def test_step(self, batch: Any, _batch_idx: int) -> Any:  # type: ignore
+    def test_step(self, batch: Any, _batch_idx: int) -> Any:
         output = self._step(batch)
         loss = output.loss
         metrics = evaluate_batch(self.model, self.tokenizer, batch, self.loader_cache)
@@ -122,17 +133,21 @@ class TrainingModelWrapper(pl.LightningModule):
             logger=True,
             batch_size=len(batch["input_ids"]),
         )
+        self.test_step_outputs.append({"loss": loss, "metrics": metrics})
         return {"loss": loss, "metrics": metrics}
 
     def configure_optimizers(self) -> tuple[list[AdamW], list[ExponentialLR]]:
         optimizer = AdamW(self.parameters(), lr=self.lr)
-        scheduler = ExponentialLR(optimizer, gamma=self.lr_gamma, verbose=True)
+        # torch removed the schedulers' `verbose` param, deprecated since 2.2
+        scheduler = ExponentialLR(optimizer, gamma=self.lr_gamma)
         return [optimizer], [scheduler]
 
-    def training_epoch_end(self, training_step_outputs: list[Any]) -> None:
+    def on_train_epoch_end(self) -> None:
         """save tokenizer and model on epoch end"""
+        training_step_outputs = self.training_step_outputs
+        self.training_step_outputs = []
         self.average_training_loss = np.round(
-            torch.mean(torch.stack([x["loss"] for x in training_step_outputs])).item(),
+            torch.mean(torch.stack(training_step_outputs)).item(),
             4,
         )
         self.log("train_loss", self.average_training_loss)
@@ -150,7 +165,9 @@ class TrainingModelWrapper(pl.LightningModule):
             if self.remove_non_optimal_models:
                 self.model_recorder.remove_non_optimal_models()
 
-    def validation_epoch_end(self, validation_step_outputs: list[Any]) -> None:
+    def on_validation_epoch_end(self) -> None:
+        validation_step_outputs = self.validation_step_outputs
+        self.validation_step_outputs = []
         losses = [out["loss"].cpu() for out in validation_step_outputs]
         self.average_validation_loss = np.round(
             torch.mean(torch.stack(losses)).item(),
@@ -179,7 +196,9 @@ class TrainingModelWrapper(pl.LightningModule):
                 metrics,
             )
 
-    def test_epoch_end(self, test_step_outputs: list[Any]) -> None:
+    def on_test_epoch_end(self) -> None:
+        test_step_outputs = self.test_step_outputs
+        self.test_step_outputs = []
         average_test_loss = np.round(
             torch.mean(torch.stack([x["loss"] for x in test_step_outputs])).item(),
             4,

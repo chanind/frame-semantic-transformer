@@ -4,8 +4,6 @@ from typing import Iterator, Sequence, TypeVar
 from difflib import SequenceMatcher, Match
 from torch import Tensor
 
-from transformers import T5Tokenizer
-
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
 
 T = TypeVar("T")
@@ -16,12 +14,36 @@ def chunk_list(lst: Sequence[T], chunk_size: int) -> Iterator[Sequence[T]]:
         yield lst[i : i + chunk_size]
 
 
+def clean_up_tokenization(text: str) -> str:
+    """
+    Undo the spacing that tokenization introduces around punctuation and
+    contractions, e.g. "He 's a man ." -> "He's a man."
+
+    This is a verbatim copy of transformers' PreTrainedTokenizerBase.clean_up_tokenization,
+    which is a pure string transform with no tokenizer state. It lived on the tokenizer
+    as a staticmethod through transformers 4.x, was removed in 5.0, and came back as an
+    instance method in 5.3 — keeping our own copy makes punctuation handling independent
+    of the installed transformers version, and avoids building a tokenizer per call.
+    """
+    return (
+        text.replace(" .", ".")
+        .replace(" ?", "?")
+        .replace(" !", "!")
+        .replace(" ,", ",")
+        .replace(" ' ", "'")
+        .replace(" n't", "n't")
+        .replace(" 'm", "'m")
+        .replace(" 's", "'s")
+        .replace(" 've", "'ve")
+        .replace(" 're", "'re")
+    )
+
+
 def standardize_punct(sent: str) -> str:
     """
     Try to standardize things like "He 's a man" -> "He's a man"
     """
-    tokenizer = T5Tokenizer()
-    updated_sent = tokenizer.clean_up_tokenization(sent)
+    updated_sent = clean_up_tokenization(sent)
     # remove space before punct
     updated_sent = re.sub(r"([a-zA-Z0-9])\s+(\*?[.',:?])", r"\1\2", updated_sent)
     # remove repeated *'s

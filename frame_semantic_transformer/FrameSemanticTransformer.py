@@ -137,12 +137,16 @@ class FrameSemanticTransformer:
         Initialize the model and tokenizer, and download models / files as needed
         If this is not called explicitly it will be lazily called before inference
         """
+        # transformers types `revision` as str and wraps `to()` in a decorator mypy
+        # can't see through; a None revision is valid and means "the default branch"
         self._model = T5ForConditionalGeneration.from_pretrained(
-            self.model_path, revision=self.model_revision
-        ).to(self.device)
+            self.model_path, revision=self.model_revision  # type: ignore[arg-type]
+        ).to(
+            self.device  # type: ignore[arg-type]
+        )
         self._tokenizer = T5Tokenizer.from_pretrained(
             self.model_path,
-            revision=self.model_revision,
+            revision=self.model_revision,  # type: ignore[arg-type]
             model_max_length=MODEL_MAX_LENGTH,
             legacy=False,
         )

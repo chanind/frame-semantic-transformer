@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Iterable
+from typing import Iterable, cast
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
@@ -97,7 +97,9 @@ def predict_on_ids(
     skip_special_tokens: bool = True,
     clean_up_tokenization_spaces: bool = True,
 ) -> list[str]:
-    generated_ids = model.generate(
+    # transformers 5 declares generate() on a GenerativePreTrainedModel mixin that
+    # T5ForConditionalGeneration doesn't statically satisfy, though it does at runtime
+    generated_ids = model.generate(  # type: ignore[misc]
         input_ids=input_ids.to(model.device),
         attention_mask=attention_mask.to(model.device),
         num_beams=num_beams,
@@ -110,11 +112,16 @@ def predict_on_ids(
         do_sample=do_sample,
         num_return_sequences=num_return_sequences,
     )
+    # decode() is typed as returning str | list[str], but returns a str for the
+    # single sequence we hand it
     preds = [
-        tokenizer.decode(
-            generated_id,
-            skip_special_tokens=skip_special_tokens,
-            clean_up_tokenization_spaces=clean_up_tokenization_spaces,
+        cast(
+            str,
+            tokenizer.decode(
+                generated_id,
+                skip_special_tokens=skip_special_tokens,
+                clean_up_tokenization_spaces=clean_up_tokenization_spaces,
+            ),
         )
         for generated_id in generated_ids
     ]
