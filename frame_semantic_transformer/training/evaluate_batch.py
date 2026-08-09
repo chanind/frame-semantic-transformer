@@ -1,9 +1,9 @@
 from __future__ import annotations
 from collections import defaultdict
 import logging
-from typing import Any, Type
+from typing import Any, Type, cast
 from dataclasses import asdict, dataclass, field
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
 from frame_semantic_transformer.data.LoaderDataCache import LoaderDataCache
@@ -81,7 +81,7 @@ class TaskEvalResults:
 
 def evaluate_batch(
     model: T5ForConditionalGeneration,
-    tokenizer: T5TokenizerFast,
+    tokenizer: T5Tokenizer,
     batch: Any,
     loader_cache: LoaderDataCache,
     predictions_per_sample: int = 5,
@@ -108,11 +108,23 @@ def evaluate_batch(
         input_tokens = [
             tok_id for tok_id in input_ids.tolist() if tok_id != PADDING_LABEL_ID
         ]
-        target = tokenizer.decode(
-            target_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
+        # decode() is typed as returning str | list[str], but returns a str for the
+        # single sequence we hand it
+        target = cast(
+            str,
+            tokenizer.decode(
+                target_tokens,
+                skip_special_tokens=True,
+                clean_up_tokenization_spaces=True,
+            ),
         )
-        input = tokenizer.decode(
-            input_tokens, skip_special_tokens=True, clean_up_tokenization_spaces=True
+        input = cast(
+            str,
+            tokenizer.decode(
+                input_tokens,
+                skip_special_tokens=True,
+                clean_up_tokenization_spaces=True,
+            ),
         )
         sample_class = TASK_SAMPLE_CLASS_MAP[task]
         true_pos, false_pos, false_neg = sample_class.evaluate_prediction(

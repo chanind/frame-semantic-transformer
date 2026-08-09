@@ -3,7 +3,7 @@ import logging
 from typing import Literal, Optional, Union
 import pytorch_lightning as pl
 import torch
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 from pytorch_lightning.loggers import Logger
 from pytorch_lightning.callbacks import (
     Callback,
@@ -55,11 +55,14 @@ def train(
     pl_loggers: Optional[list[Logger]] = None,
     resume_from_checkpoint: Optional[str] = None,
     remove_non_optimal_models: bool = True,
-) -> tuple[T5ForConditionalGeneration, T5TokenizerFast]:
+) -> tuple[T5ForConditionalGeneration, T5Tokenizer]:
     device = torch.device("cuda" if use_gpu else "cpu")
     logger.info("loading base T5 model")
-    model = T5ForConditionalGeneration.from_pretrained(base_model).to(device)
-    tokenizer = T5TokenizerFast.from_pretrained(
+    # transformers wraps `to()` in a decorator mypy can't see through
+    model = T5ForConditionalGeneration.from_pretrained(base_model).to(
+        device  # type: ignore[arg-type]
+    )
+    tokenizer = T5Tokenizer.from_pretrained(
         base_model, model_max_length=MODEL_MAX_LENGTH
     )
     if not inference_loader:
@@ -150,12 +153,12 @@ def train(
         precision=precision,
         log_every_n_steps=1,
         logger=pl_loggers or True,
-        resume_from_checkpoint=resume_from_checkpoint,
     )
 
     logger.info("beginning training")
 
     # fit trainer
-    trainer.fit(model_wrapper, data_module)
+    # pytorch-lightning 2.x moved resume_from_checkpoint off Trainer onto fit()
+    trainer.fit(model_wrapper, data_module, ckpt_path=resume_from_checkpoint)
 
     return model, tokenizer

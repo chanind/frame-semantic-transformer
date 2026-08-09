@@ -5,6 +5,7 @@ from os import path
 from glob import glob
 import re
 
+import nltk
 from nltk.corpus.reader.conll import ConllCorpusReader
 
 from frame_semantic_transformer.data.augmentations import (
@@ -86,8 +87,14 @@ def load_propbank_samples(
     """
     annotated_sentences = []
     for doc in docs_list:
+        doc_dir = path.dirname(doc)
+        # nltk >= 3.10 refuses to open corpus files outside of nltk.data.path.
+        # These docs live wherever the caller points us, so authorize their
+        # directory before handing it to ConllCorpusReader.
+        if doc_dir not in nltk.data.path:
+            nltk.data.path.append(doc_dir)
         conll_reader = ConllCorpusReader(
-            path.dirname(doc),
+            doc_dir,
             path.basename(doc),
             ("ignore", "ignore", "ignore", "words", "pos", "tree", "srl"),
         )

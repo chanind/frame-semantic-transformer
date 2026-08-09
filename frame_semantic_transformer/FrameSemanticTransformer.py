@@ -7,7 +7,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Dict, Iterable, Optional, Tuple, cast
 import torch
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from frame_semantic_transformer.constants import (
     MODEL_MAX_LENGTH,
@@ -52,7 +52,7 @@ class DetectFramesResult:
 
 class FrameSemanticTransformer:
     _model: T5ForConditionalGeneration | None = None
-    _tokenizer: T5TokenizerFast | None = None
+    _tokenizer: T5Tokenizer | None = None
     model_path: str
     model_revision: str | None = None
     device: torch.device
@@ -137,12 +137,16 @@ class FrameSemanticTransformer:
         Initialize the model and tokenizer, and download models / files as needed
         If this is not called explicitly it will be lazily called before inference
         """
+        # transformers types `revision` as str and wraps `to()` in a decorator mypy
+        # can't see through; a None revision is valid and means "the default branch"
         self._model = T5ForConditionalGeneration.from_pretrained(
-            self.model_path, revision=self.model_revision
-        ).to(self.device)
-        self._tokenizer = T5TokenizerFast.from_pretrained(
+            self.model_path, revision=self.model_revision  # type: ignore[arg-type]
+        ).to(
+            self.device  # type: ignore[arg-type]
+        )
+        self._tokenizer = T5Tokenizer.from_pretrained(
             self.model_path,
-            revision=self.model_revision,
+            revision=self.model_revision,  # type: ignore[arg-type]
             model_max_length=MODEL_MAX_LENGTH,
             legacy=False,
         )
@@ -175,10 +179,10 @@ class FrameSemanticTransformer:
         return cast(T5ForConditionalGeneration, self._model)
 
     @property
-    def tokenizer(self) -> T5TokenizerFast:
+    def tokenizer(self) -> T5Tokenizer:
         if not self._tokenizer:
             self.setup()
-        return cast(T5TokenizerFast, self._tokenizer)
+        return cast(T5Tokenizer, self._tokenizer)
 
     def _batch_predict(self, inputs: list[str]) -> list[str]:
         """

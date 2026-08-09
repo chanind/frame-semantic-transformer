@@ -1,3 +1,4 @@
+# serializer version: 1
 # name: test_load_propbank_samples
   list([
     FrameAnnotatedSentence(text='Paris was once the sex capital of the world .', annotations=[FrameAnnotation(frame='be.01', trigger_locs=[6], frame_elements=[FrameElementAnnotation(name='ARG1', start_loc=0, end_loc=5), FrameElementAnnotation(name='ARGM-TMP', start_loc=10, end_loc=14), FrameElementAnnotation(name='ARG2', start_loc=15, end_loc=43)])], skip_trigger_identification_task=False),

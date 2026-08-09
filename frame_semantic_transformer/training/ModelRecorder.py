@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import shutil
 from typing import Optional
 
-from transformers import T5ForConditionalGeneration, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 
 class ModelRecorder:
@@ -18,7 +18,7 @@ class ModelRecorder:
     def save_model(
         self,
         model: T5ForConditionalGeneration,
-        tokenizer: T5TokenizerFast,
+        tokenizer: T5Tokenizer,
         epoch: int,
         val_loss: float,
         task_val_metrics: Optional[dict[str, float]] = None,

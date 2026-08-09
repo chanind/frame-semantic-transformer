@@ -1,10 +1,11 @@
 from __future__ import annotations
 import re
+from functools import lru_cache
 from typing import Iterator, Sequence, TypeVar
 from difflib import SequenceMatcher, Match
 from torch import Tensor
 
-from transformers import T5TokenizerFast
+from transformers import T5Tokenizer
 
 from frame_semantic_transformer.constants import PADDING_LABEL_ID
 
@@ -16,11 +17,30 @@ def chunk_list(lst: Sequence[T], chunk_size: int) -> Iterator[Sequence[T]]:
         yield lst[i : i + chunk_size]
 
 
+@lru_cache(maxsize=1)
+def _cleanup_tokenizer() -> T5Tokenizer:
+    """
+    transformers 5 exposes clean_up_tokenization as an instance method, but it is a
+    pure string transform that touches no tokenizer state, so a single throwaway
+    instance serves every call. Built lazily and cached, since constructing one costs
+    ~0.5ms and standardize_punct runs per sample and per prediction.
+    """
+    return T5Tokenizer()
+
+
+def clean_up_tokenization(text: str) -> str:
+    """
+    Undo the spacing that tokenization introduces around punctuation and
+    contractions, e.g. "He 's a man ." -> "He's a man."
+    """
+    return _cleanup_tokenizer().clean_up_tokenization(text)
+
+
 def standardize_punct(sent: str) -> str:
     """
     Try to standardize things like "He 's a man" -> "He's a man"
     """
-    updated_sent = T5TokenizerFast.clean_up_tokenization(sent)
+    updated_sent = clean_up_tokenization(sent)
     # remove space before punct
     updated_sent = re.sub(r"([a-zA-Z0-9])\s+(\*?[.',:?])", r"\1\2", updated_sent)
     # remove repeated *'s
