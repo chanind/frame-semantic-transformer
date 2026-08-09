@@ -36,5 +36,4 @@ version_variables = [
     "frame_semantic_transformer/__init__.py:__version__",
     "pyproject.toml:version",
 ]
-branch = "main"
 build_command = "pip install poetry && poetry build"
