@@ -22,7 +22,7 @@ sentencepiece = "^0.2.0"
 protobuf = "^5.29"
 nlpaug = "^1.1.11"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.0"
 black = "^22.3.0"
 mypy = "^1.18"

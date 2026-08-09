@@ -15,8 +15,9 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          # newest Poetry that still runs on the Python 3.8 above; 2.x needs >= 3.9
-          version: 1.8.5
+          # 2.x resolves this dependency set in seconds where 1.8.5 took ~14 min;
+          # it needs the Python >= 3.10 set up above
+          version: 2.4.1
       - name: Install dependencies
         run: poetry install --no-interaction
       - name: flake8 linting
