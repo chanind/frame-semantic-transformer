@@ -9,8 +9,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 16
       - run: yarn install
@@ -22,7 +22,7 @@ jobs:
           PUBLIC_URL: https://chanind.github.io/frame-semantic-transformer
           REACT_APP_ROOT_PATH: /frame-semantic-transformer
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./demo/client/build
