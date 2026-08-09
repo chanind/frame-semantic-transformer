@@ -11,6 +11,7 @@ from frame_semantic_transformer.data.augmentations.modification_helpers.splice_t
 
 from frame_semantic_transformer.data.tasks import TaskSample
 from .DataAugmentation import DataAugmentation, ProbabilityType
+from .ensure_pos_tagger_downloaded import ensure_pos_tagger_downloaded
 
 
 class SynonymAugmentation(DataAugmentation):
@@ -22,6 +23,7 @@ class SynonymAugmentation(DataAugmentation):
 
     def __init__(self, probability: ProbabilityType):
         super().__init__(probability)
+        ensure_pos_tagger_downloaded()
         self.augmenter = SynonymAug(aug_max=1, aug_min=1)
         self.augmenter.include_detail = True
 
