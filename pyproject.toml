@@ -24,7 +24,7 @@ nlpaug = "^1.1.11"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"
-black = "^22.3.0"
+black = "^26.5"
 mypy = "^1.18"
 flake8 = "^7.3"
 syrupy = "^4.6"
