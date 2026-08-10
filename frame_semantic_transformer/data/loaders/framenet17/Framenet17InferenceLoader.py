@@ -14,7 +14,6 @@ from .ensure_wordnet_downloaded import ensure_wordnet_downloaded
 from frame_semantic_transformer.data.frame_types import Frame
 from ..loader import InferenceLoader
 
-
 porter_stemmer = PorterStemmer()
 lancaster_stemmer = LancasterStemmer()
 snowball_stemmer = SnowballStemmer("english")

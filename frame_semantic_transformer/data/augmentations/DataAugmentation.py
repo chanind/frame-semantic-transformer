@@ -6,7 +6,6 @@ from random import uniform
 
 from frame_semantic_transformer.data.tasks.TaskSample import TaskSample
 
-
 ProbabilityType = Union[float, Callable[[TaskSample], float]]
 
 

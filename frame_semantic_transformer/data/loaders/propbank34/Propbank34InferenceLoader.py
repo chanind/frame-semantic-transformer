@@ -11,7 +11,6 @@ from .ensure_propbank_downloaded import ensure_propbank_downloaded
 from frame_semantic_transformer.data.frame_types import Frame
 from ..loader import InferenceLoader
 
-
 base_stemmer = PorterStemmer()
 
 LOW_PRIORITY_LONGER_LUS = {"back", "down", "make", "take", "have", "into", "come"}

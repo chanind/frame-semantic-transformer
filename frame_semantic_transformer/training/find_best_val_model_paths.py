@@ -3,7 +3,6 @@ from __future__ import annotations
 import glob
 import os
 
-
 KEYS_TO_CHECK = {
     "val_loss": {"minimize": True},
     "val_args_extraction_f1": {"minimize": False},

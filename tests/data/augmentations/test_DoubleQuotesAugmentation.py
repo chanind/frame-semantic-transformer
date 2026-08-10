@@ -39,7 +39,9 @@ def test_DoubleQuotesAugmentation_changes_standard_quotes_to_latex_quotes() -> N
     assert new_sample.task.text in {"This is a quote: '' .", "This is a quote: `` ."}
 
 
-def test_DoubleQuotesAugmentation_leaves_samples_unchanged_if_no_quotes_are_present() -> None:
+def test_DoubleQuotesAugmentation_leaves_samples_unchanged_if_no_quotes_are_present() -> (
+    None
+):
     augmentation = DoubleQuotesAugmentation(1.0)
     sample = create_trigger_identification_sample("Nothing to see here !")
     new_sample = cast(TriggerIdentificationSample, augmentation(sample))

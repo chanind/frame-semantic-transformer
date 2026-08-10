@@ -57,7 +57,7 @@ def load_framenet_samples_from_exemplars() -> list[FrameAnnotatedSentence]:
 
 
 def parse_annotated_sentences_from_framenet_doc(
-    fn_doc: dict[str, Any]
+    fn_doc: dict[str, Any],
 ) -> list[FrameAnnotatedSentence]:
     annotated_sentences = []
     for sentence in fn_doc["sentence"]:
@@ -123,19 +123,19 @@ class Framenet17TrainingLoader(TrainingLoader):
             DoubleQuotesAugmentation(0.2),
             StripPunctuationAugmentation(0.2),
             SynonymAugmentation(
-                lambda sample: 0.2
-                if isinstance(sample, TriggerIdentificationSample)
-                else 0.05
+                lambda sample: (
+                    0.2 if isinstance(sample, TriggerIdentificationSample) else 0.05
+                )
             ),
             KeyboardAugmentation(
-                lambda sample: 0.3
-                if isinstance(sample, TriggerIdentificationSample)
-                else 0.05
+                lambda sample: (
+                    0.3 if isinstance(sample, TriggerIdentificationSample) else 0.05
+                )
             ),
             SimpleMisspellingAugmentation(
-                lambda sample: 0.3
-                if isinstance(sample, TriggerIdentificationSample)
-                else 0.05
+                lambda sample: (
+                    0.3 if isinstance(sample, TriggerIdentificationSample) else 0.05
+                )
             ),
             LowercaseAugmentation(0.1),
             UppercaseAugmentation(0.1),

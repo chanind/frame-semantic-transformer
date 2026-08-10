@@ -78,13 +78,11 @@ class FrameSemanticTransformer:
 
         if logging_level != caller_supplied_logging_level:
             self.logger.warning(
-                dedent(
-                    """\
+                dedent("""\
                     caller passed logging_level={0}
                     which is not a legal logging level;
                     the default level of {1} (i.e., {2})
-                    will be used"""
-                )
+                    will be used""")
                 .replace("\n", " ")
                 .format(
                     pformat(caller_supplied_logging_level),
@@ -117,12 +115,10 @@ class FrameSemanticTransformer:
                 self.device = torch.device("cpu")
                 device_description = "the CPU"
             self.logger.warning(
-                dedent(
-                    """\
+                dedent("""\
                     caller passed use_gpu={0} but a bool
                     or the int index of an available GPU
-                    was expected; defaulting to {1}"""
-                )
+                    was expected; defaulting to {1}""")
                 .replace("\n", " ")
                 .format(pformat(use_gpu), device_description)
             )

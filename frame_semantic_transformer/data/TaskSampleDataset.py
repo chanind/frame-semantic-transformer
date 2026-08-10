@@ -13,7 +13,6 @@ from frame_semantic_transformer.data.augmentations import (
 )
 from frame_semantic_transformer.data.tasks import TaskSample
 
-
 MAX_TARGET_LEN = 512
 
 

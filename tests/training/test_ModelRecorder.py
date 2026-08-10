@@ -21,7 +21,9 @@ def test_ModelRecorder_get_save_path_no_task_val_metrics() -> None:
     assert save_path == "output_dir/epoch=1-val_loss=0.5"
 
 
-def test_ModelRecorder_get_save_path_replaces_dashes_with_underscores_in_tasks() -> None:
+def test_ModelRecorder_get_save_path_replaces_dashes_with_underscores_in_tasks() -> (
+    None
+):
     recorder = ModelRecorder("output_dir")
     save_path = recorder.get_save_path(1, 0.5, {"task1-f1": 0.5, "task2-f1": 0.6})
     assert save_path == "output_dir/epoch=1-val_loss=0.5-task1_f1=0.5-task2_f1=0.6"

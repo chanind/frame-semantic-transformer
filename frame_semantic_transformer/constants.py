@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 
-
 MODEL_MAX_LENGTH = 512
 OFFICIAL_RELEASES = ["base", "small"]  # TODO: small, large
 MODEL_REVISION = "v0.2.0"
