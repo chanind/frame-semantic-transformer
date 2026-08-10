@@ -1,7 +1,6 @@
 import nltk
 from nltk.downloader import Package
 
-
 # NLTK only has v1.0 of PropBank, so hackily create a NLTK package and download v3.1
 propbank34 = Package(
     id="propbank-frames-3.4.0",

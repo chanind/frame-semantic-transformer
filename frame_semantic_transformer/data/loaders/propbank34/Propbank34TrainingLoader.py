@@ -28,7 +28,6 @@ from frame_semantic_transformer.data.frame_types import (
 from ..loader import TrainingLoader
 from .load_propbank_frames import load_propbank_frames
 
-
 SPLITS = {
     "train": [
         "docs/evaluation/ewt.dev.txt",

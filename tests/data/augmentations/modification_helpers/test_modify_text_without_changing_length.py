@@ -101,7 +101,9 @@ def test_modify_text_without_changing_length_for_frame_classification_sample(
     callback.assert_called_with(sentence)
 
 
-def test_modify_text_without_changing_length_for_trigger_identification_sample() -> None:
+def test_modify_text_without_changing_length_for_trigger_identification_sample() -> (
+    None
+):
     sentence = "The quick brown fox jumps over the lazy dog"
     new_sentence = "The quick BROWN fox jumps over the LAZY MAN"
     sample = create_trigger_identification_sample(sentence)

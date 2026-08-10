@@ -8,7 +8,6 @@ from frame_semantic_transformer.data.tasks import TaskSample
 from .DataAugmentation import DataAugmentation
 from .modification_helpers.get_sample_text import get_sample_text
 
-
 LATEX_QUOTES = ["``", "''"]
 STANDARD_QUOTE = '"'
 ALL_QUOTES = LATEX_QUOTES + [STANDARD_QUOTE]

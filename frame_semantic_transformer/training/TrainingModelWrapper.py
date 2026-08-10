@@ -219,7 +219,7 @@ class TrainingModelWrapper(pl.LightningModule):
 
 
 def merge_metrics(
-    metrics: list[dict[str, TaskEvalResults]]
+    metrics: list[dict[str, TaskEvalResults]],
 ) -> dict[str, TaskEvalResults]:
     merged_metrics: dict[str, TaskEvalResults] = defaultdict(TaskEvalResults)
     for metric in metrics:

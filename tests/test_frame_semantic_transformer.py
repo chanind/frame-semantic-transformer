@@ -2,7 +2,6 @@ from syrupy.assertion import SnapshotAssertion
 
 from frame_semantic_transformer import FrameSemanticTransformer
 
-
 transformer = FrameSemanticTransformer("small")
 
 
